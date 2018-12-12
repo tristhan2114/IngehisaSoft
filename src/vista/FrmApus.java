@@ -32,6 +32,9 @@ import modelo.FormatoApus;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import util.gestionApusPaneles;
@@ -59,6 +62,10 @@ public class FrmApus extends javax.swing.JInternalFrame {
     Workbook wb;
 
     final String[] cabeceraEquipo = {"DESCRIPCION", "CANTIDAD", "TARIFA", "COSTO HORA", "RENDIMIENTO", "COSTO UNITARIO"};
+    final String[] cabeceraMateriales = {"DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO", "COSTO UNITARIO"};
+    final String[] cabeceraTransporte = {"DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO", "COSTO UNITARIO"};
+    final String[] cabeceraManObr = {"DESCRIPCION", "CANTIDAD", "JORNAL REAL/HORA", "COSTO HORA", "RENDIMIENTO", "COSTO UNITARIO"};
+
     public FrmApus() {
         initComponents();
         //setResizable(true);
@@ -5091,6 +5098,16 @@ public class FrmApus extends javax.swing.JInternalFrame {
             //hoja.addMergedRegion(new CellRangeAddress(1, 1, 1, 6));
             //  cuantos apus salen
             acumRowDto = 0;
+            // Creamos el estilo paga las celdas del encabezado
+            CellStyle style = wb.createCellStyle();
+            Font headerFont = wb.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            // Indicamos que tendra un fondo azul aqua
+            // con patron solido del color indicado
+            //style.setFillForegroundColor(IndexedColors.AQUA.getIndex());
+            style.setFillPattern(CellStyle.ALIGN_CENTER);
+            style.setFont(headerFont);
+
             for (FormatoApus dto : datos) {
                 // formo cada apu segun recorro y encuentro datos
                 // cabecera
@@ -5103,17 +5120,19 @@ public class FrmApus extends javax.swing.JInternalFrame {
                         celda.setCellValue("");
                         acumRowDto++;
                     } else {
-                        acumRowDto++;
                         switch (i) {
                             case 1:
+                                celda.setCellStyle(style);
                                 celda.setCellValue(dto.getEmpresa());
                                 //hoja.addMergedRegion(new CellRangeAddress(2, 2, 1, 7));
                                 break;
                             case 2:
+                                celda.setCellStyle(style);
                                 celda.setCellValue(dto.getProyecto());
                                 //hoja.addMergedRegion(new CellRangeAddress(3, 3, 1, 7));
                                 break;
                             case 4:
+                                celda.setCellStyle(style);
                                 celda.setCellValue(dto.getAnalisis());
                                 //hoja.addMergedRegion(new CellRangeAddress(5, 5, 1, 7));
                                 break;
@@ -5145,26 +5164,34 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 celda.setCellValue("1.- EQUIPOS");
                                 break;
                             case 10: // TABLA EQUIPO
-                                //String[] cabeceraManObr = {"DESCRIPCION", "CANTIDAD", "JORNAL REAL/HORA", "COSTO HORA", "RENDIMIENTO", "COSTO UNITARIO"};
                                 int ac = 0;
                                 for (int j = 1; j < 7; j++) {
                                     Cell celda2 = fila.createCell(j);
                                     celda2.setCellValue(cabeceraEquipo[ac]);
                                     ac++;
                                 }
-                                List<String> ff = dto.getTablaEquipo();
-                                System.out.println("vvv "+ff.size());
+
                                 int tamañoTblEquipo = dto.getTablaEquipo().size();
-                                System.out.println("eee "+tamañoTblEquipo);
+                                System.out.println("vvv " + tamañoTblEquipo);
+                                for (List<String> str : dto.getTablaEquipo()) {
+                                    System.out.println("Teq " + str.toString());
+                                    int v = 0;
+                                    for (int j = 1; j < 7; j++) {
+                                        Cell celda2 = fila.createCell(j);
+                                        celda2.setCellValue(str.get(v));
+                                        v++;
+                                    }
+                                }
+                                //System.out.println("eee " + tamañoTblEquipo);
                                 /*if (tamañoTblEquipo != 6) {
                                     tamañoTblEquipo = tamañoTblEquipo / 2;
                                 }*/
                                 for (int j = 1; j < 7; j++) {
                                     //Cell celda2 = fila.createCell(j);
-                                    for (String str : dto.getTablaEquipo()) {
-                                        //System.out.println("sss "+str);
-                                        //celda2.setCellValue(str);
-                                    }
+                                    //for (String str : dto.getTablaEquipo()) {
+                                    //System.out.println("sss "+str);
+                                    //celda2.setCellValue(str);
+                                    //}
 
                                 }
 
@@ -5172,6 +5199,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             default:
                                 break;
                         }
+                        acumRowDto++;
                     }
                 }// fin cabecera
 
@@ -5306,47 +5334,54 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                                             //System.out.println("position table  " + (position++));
                                                             if (position == 7) {
                                                                 List<String> tablaEquipo = new ArrayList<>();
-                                                                for (int lis = 0; lis < 6; ++lis) {
-                                                                    tablaEquipo.add(table.getValueAt(ii, lis).toString());
-                                                                    ///dañe las tablas sdsdsdfsd
-                                                                }
-                                                                entFormtApus.setTablaEquipo(tablaEquipo);
+                                                                tablaEquipo.add(table.getValueAt(ii, 0).toString());
+                                                                tablaEquipo.add(table.getValueAt(ii, 1).toString());
+                                                                tablaEquipo.add(table.getValueAt(ii, 2).toString());
+                                                                tablaEquipo.add(table.getValueAt(ii, 3).toString());
+                                                                tablaEquipo.add(table.getValueAt(ii, 4).toString());
+                                                                tablaEquipo.add(table.getValueAt(ii, 5).toString());
+                                                                entFormtApus.getTablaEquipo().add(tablaEquipo);
                                                             } else if (position == 10) {
                                                                 List<String> tabla = new ArrayList<>();
-                                                                for (int lis = 0; lis < 6; ++lis) {
-                                                                    tabla.add(table.getValueAt(ii, lis).toString());
-                                                                }
-                                                                entFormtApus.setTablaManObra(tabla);
+                                                                tabla.add(table.getValueAt(ii, 0).toString());
+                                                                tabla.add(table.getValueAt(ii, 1).toString());
+                                                                tabla.add(table.getValueAt(ii, 2).toString());
+                                                                tabla.add(table.getValueAt(ii, 3).toString());
+                                                                tabla.add(table.getValueAt(ii, 4).toString());
+                                                                tabla.add(table.getValueAt(ii, 5).toString());
+                                                                entFormtApus.getTablaManObra().add(tabla);
                                                             }
                                                             /*System.out.println("**table " + table.getValueAt(ii, 0));
                                                             System.out.println("**table " + table.getValueAt(ii, 5));*/
-                                                            position++;
                                                         }
+                                                        position++;
                                                     }
+
                                                 } else {
                                                     //System.out.println("table encontr");
                                                     if (size > 0) {
-                                                        String[] cabeceraMateriales = {"DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO", "COSTO UNITARIO"};
-                                                        String[] cabeceraTransporte = {"DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO", "COSTO UNITARIO"};
                                                         for (int ii = 0; ii < size; ++ii) {
                                                             /*System.out.println("**table " + table.getValueAt(ii, 0));
                                                             System.out.println("**table " + table.getValueAt(ii, 4));*/
-
                                                             if (position == 13) {
                                                                 List<String> tabla = new ArrayList<>();
-                                                                for (int lis = 0; lis < 5; ++lis) {
-                                                                    tabla.add(table.getValueAt(ii, lis).toString());
-                                                                }
-                                                                entFormtApus.setTablaMateriales(tabla);
+                                                                tabla.add(table.getValueAt(ii, 0).toString());
+                                                                tabla.add(table.getValueAt(ii, 1).toString());
+                                                                tabla.add(table.getValueAt(ii, 2).toString());
+                                                                tabla.add(table.getValueAt(ii, 3).toString());
+                                                                tabla.add(table.getValueAt(ii, 4).toString());
+                                                                entFormtApus.getTablaMateriales().add(tabla);
                                                             } else if (position == 16) {
                                                                 List<String> tabla = new ArrayList<>();
-                                                                for (int lis = 0; lis < 5; ++lis) {
-                                                                    tabla.add(table.getValueAt(ii, lis).toString());
-                                                                }
-                                                                entFormtApus.setTablaTransport(tabla);
+                                                                tabla.add(table.getValueAt(ii, 0).toString());
+                                                                tabla.add(table.getValueAt(ii, 1).toString());
+                                                                tabla.add(table.getValueAt(ii, 2).toString());
+                                                                tabla.add(table.getValueAt(ii, 3).toString());
+                                                                tabla.add(table.getValueAt(ii, 4).toString());
+                                                                entFormtApus.getTablaTransport().add(tabla);
                                                             }
-                                                            position++;
                                                         }
+                                                        position++;
                                                     }
                                                 }
                                             }
@@ -5361,11 +5396,11 @@ public class FrmApus extends javax.swing.JInternalFrame {
             }
 
         }
-        for (FormatoApus dt : listApus) {
+        /*for (FormatoApus dt : listApus) {
             //System.out.println("datos----11- ");
             System.out.println("datos----- " + dt.toString());
 
-        }
+        }*/
         return listApus;
     }
 }

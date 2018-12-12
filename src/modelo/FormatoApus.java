@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,19 +22,19 @@ public class FormatoApus {
     private String detalle; // 5
 
     private String txtIdEquipo; // 6
-    private List<String> tablaEquipo; // 7
+    private List<List<String>> tablaEquipo = new ArrayList<>(); // 7
     private String txtIdManObr; // 8
     private String txtSubtEquipo; // 9
 
-    private List<String> tablaManObra; // 10
+    private List<List<String>> tablaManObra = new ArrayList<>(); // 10
     private String txtIdMateriales; // 11
     private String txtSubtManObra; // 12
 
-    private List<String> tablaMateriales; // 13
+    private List<List<String>> tablaMateriales = new ArrayList<>(); // 13
     private String txtIdTransport; // 14
     private String txtSubtMateriales; // 15
 
-    private List<String> tablaTransport; // 16
+    private List<List<String>> tablaTransport = new ArrayList<>(); // 16
     private String txtSubtTransport; // 17
     
     
@@ -50,7 +51,11 @@ public class FormatoApus {
     public FormatoApus() {
     }
 
-    public FormatoApus(String empresa, String proyecto, String analisis, String rubro, String unidad, String detalle, String txtIdEquipo, List<String> tablaEquipo, String txtIdManObr, String txtSubtEquipo, List<String> tablaManObra, String txtIdMateriales, String txtSubtManObra, List<String> tablaMateriales, String txtIdTransport, String txtSubtMateriales, List<String> tablaTransport, String txtSubtTransport, String costDirecto, String costTotRubro, String valorOfert, String nIngrUtil, String nOthUtil, String rIngrUtil, String rOthUtil) {
+    public FormatoApus(String empresa, String proyecto, String analisis, String rubro, String unidad, 
+            String detalle, String txtIdEquipo, List<List<String>> tablaEquipo, String txtIdManObr, String txtSubtEquipo, 
+            List<List<String>> tablaManObra, String txtIdMateriales, String txtSubtManObra, List<List<String>> tablaMateriales, 
+            String txtIdTransport, String txtSubtMateriales, List<List<String>> tablaTransport, String txtSubtTransport, 
+            String costDirecto, String costTotRubro, String valorOfert, String nIngrUtil, String nOthUtil, String rIngrUtil, String rOthUtil) {
         this.empresa = empresa;
         this.proyecto = proyecto;
         this.analisis = analisis;
@@ -134,11 +139,11 @@ public class FormatoApus {
         this.txtIdEquipo = txtIdEquipo;
     }
 
-    public List<String> getTablaEquipo() {
+    public List<List<String>> getTablaEquipo() {
         return tablaEquipo;
     }
 
-    public void setTablaEquipo(List<String> tablaEquipo) {
+    public void setTablaEquipo(List<List<String>> tablaEquipo) {
         this.tablaEquipo = tablaEquipo;
     }
 
@@ -158,11 +163,11 @@ public class FormatoApus {
         this.txtSubtEquipo = txtSubtEquipo;
     }
 
-    public List<String> getTablaManObra() {
+    public List<List<String>> getTablaManObra() {
         return tablaManObra;
     }
 
-    public void setTablaManObra(List<String> tablaManObra) {
+    public void setTablaManObra(List<List<String>> tablaManObra) {
         this.tablaManObra = tablaManObra;
     }
 
@@ -182,11 +187,11 @@ public class FormatoApus {
         this.txtSubtManObra = txtSubtManObra;
     }
 
-    public List<String> getTablaMateriales() {
+    public List<List<String>> getTablaMateriales() {
         return tablaMateriales;
     }
 
-    public void setTablaMateriales(List<String> tablaMateriales) {
+    public void setTablaMateriales(List<List<String>> tablaMateriales) {
         this.tablaMateriales = tablaMateriales;
     }
 
@@ -206,11 +211,11 @@ public class FormatoApus {
         this.txtSubtMateriales = txtSubtMateriales;
     }
 
-    public List<String> getTablaTransport() {
+    public List<List<String>> getTablaTransport() {
         return tablaTransport;
     }
 
-    public void setTablaTransport(List<String> tablaTransport) {
+    public void setTablaTransport(List<List<String>> tablaTransport) {
         this.tablaTransport = tablaTransport;
     }
 
