@@ -9,7 +9,7 @@ package vista;
  *
  * @author personal
  */
-public class FrmMateriales extends javax.swing.JFrame {
+public class FrmMateriales extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form materiales

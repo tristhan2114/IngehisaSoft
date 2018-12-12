@@ -22,13 +22,14 @@ public class home extends javax.swing.JFrame {
     FrmEquipo frmequipo;
     FrmMano_obra frmMano_obra;
     FrmApus frmApus;
+    FrmMateriales frmmateriales;
     
      // imagen logo fondo
     private ImageIcon imagenFondo;
     private ImageIcon imagenFondoRedimensionado;
     
     // atributo que controla frmInternos abiertos o no
-    public static boolean activoEquipo, activoManoObra, activoApus;
+    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales;
     
     public home() {
         initComponents();
@@ -117,6 +118,11 @@ public class home extends javax.swing.JFrame {
         jMenuItem2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/materiales.png"))); // NOI18N
         jMenuItem2.setText("MATERIAL");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu12.add(jMenuItem2);
 
         menuIManoObra.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -165,6 +171,11 @@ public class home extends javax.swing.JFrame {
         jMenuItem10.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/oferta.png"))); // NOI18N
         jMenuItem10.setText("OFERTAS");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem10);
 
         jMenuBar1.add(jMenu4);
@@ -241,6 +252,31 @@ public class home extends javax.swing.JFrame {
             //System.out.println("err-  "+e.getMessage());
         }
     }//GEN-LAST:event_menuIApusActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        //enlazar
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+          try {
+            if (activoMateriales == true) {
+               
+                frmmateriales.setLocation(23, 23);
+                frmmateriales.moveToFront();
+                frmmateriales.show();
+        } else {
+               activoMateriales = true;
+                 frmmateriales = new FrmMateriales();
+                escritorio.add(frmmateriales);
+                frmmateriales.setLocation(23, 23);
+                frmmateriales.show();
+        }
+        } catch (Exception e) {
+            e.getMessage();
+            //System.out.println("err-  "+e.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
