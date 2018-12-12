@@ -5308,7 +5308,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                                                 List<String> tablaEquipo = new ArrayList<>();
                                                                 for (int lis = 0; lis < 6; ++lis) {
                                                                     tablaEquipo.add(table.getValueAt(ii, lis).toString());
-                                                                    ///dañe las tablas
+                                                                    ///dañe las tablas sdsdsdfsd
                                                                 }
                                                                 entFormtApus.setTablaEquipo(tablaEquipo);
                                                             } else if (position == 10) {
