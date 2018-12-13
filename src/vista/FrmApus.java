@@ -61,7 +61,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
     File archivo;
     Workbook wb;
 
-    final String[] cabeceraEquipo = {"DESCRIPCION", "CANTIDAD", "TARIFA", "COSTO HORA", "RENDIMIENTO", "COSTO UNITARIO"};
+    final String[] cabeceraEquipo = {"DESCRIPCION \n A", "CANTIDAD\n B", "TARIFA\n C", "COSTO HORA\n D=B*C", "RENDIMIENTO\n E", "COSTO UNITARIO\n F=D*E"};
     final String[] cabeceraMateriales = {"DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO", "COSTO UNITARIO"};
     final String[] cabeceraTransporte = {"DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO", "COSTO UNITARIO"};
     final String[] cabeceraManObr = {"DESCRIPCION", "CANTIDAD", "JORNAL REAL/HORA", "COSTO HORA", "RENDIMIENTO", "COSTO UNITARIO"};
@@ -5094,16 +5094,50 @@ public class FrmApus extends javax.swing.JInternalFrame {
             CellStyle style = wb.createCellStyle();
             Font headerFont = wb.createFont();
             headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
-            // Indicamos que tendra un fondo azul aqua
-            // con patron solido del color indicado
-            //style.setFillForegroundColor(IndexedColors.AQUA.getIndex());
-            style.setFillPattern(CellStyle.ALIGN_CENTER);
+            // con patron solido del color indicado       
+            style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            style.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+            style.setAlignment(CellStyle.ALIGN_CENTER);
             style.setFont(headerFont);
+            
+            CellStyle styleNegra = wb.createCellStyle();
+            //styleSoloBlanco.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+            styleNegra.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleNegra.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+            styleNegra.setFont(headerFont);
+            
+            CellStyle styleAllBlanco = wb.createCellStyle();
+            styleAllBlanco.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleAllBlanco.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+            //styleAllBlanco.setBorderTop(CellStyle.BORDER_THIN);
+            
+            // para las cabeceras de la tablas
+            Font headerCab = wb.createFont();
+            headerCab.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            CellStyle styleCab = wb.createCellStyle();
+            styleCab.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleCab.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+            styleCab.setBorderTop(CellStyle.BORDER_THIN);
+            styleCab.setBorderBottom(CellStyle.BORDER_THIN);
+            styleCab.setAlignment(CellStyle.ALIGN_JUSTIFY/* CellStyle.ALIGN_CENTER*/);
+            styleCab.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            
+            styleCab.setFont(headerFont);
+            
+            // para los subtitulos valores
+            CellStyle styleSub = wb.createCellStyle();
+            styleSub.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleSub.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+            styleSub.setAlignment(CellStyle.ALIGN_RIGHT);
+            styleSub.setFont(headerFont);
+            
+            
+            
 
             int sizeRowAux = 0; // 12*
             int sizeRowApus = 0;
             for (FormatoApus dto : datos) {
-                sizeRowApus += 24
+                sizeRowApus += 31
                         + dto.getTablaEquipo().size()
                         + dto.getTablaManObra().size()
                         + dto.getTablaMateriales().size()
@@ -5122,17 +5156,33 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 for (int i = sizeRowAux; i < sizeRowApus; i++) {
                     Row fila = hoja.createRow(i);
                     Cell celda = fila.createCell(1);
-                    if (positionAuxVuelt == 2 || positionAuxVuelt == 4 || positionAuxVuelt == 7) {
+                    if (positionAuxVuelt == 2 || positionAuxVuelt == 4 || positionAuxVuelt == 7
+                            || positionAuxVuelt == 25 || positionAuxVuelt == 28) {
+
+                        // agrupar celdas                        x   y
+                        hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 7));
+                        celda.setCellStyle(style);
                         celda.setCellValue("");
                         positionAuxVuelt++;
                     } else {
                         if (positionAuxVuelt == 0) {
+                            hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 7));
+                            celda.setCellStyle(style);
                             celda.setCellValue(dto.getEmpresa());
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 1) {
-                            celda.setCellValue(dto.getProyecto());
+                            hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 7));
+                            celda.setCellStyle(style);                           
+                            celda.setCellValue("PROYECTO: " + dto.getProyecto());
+                            
+                            /*style.setBorderTop(CellStyle.BORDER_MEDIUM);
+                            style.setBorderRight(CellStyle.BORDER_MEDIUM);
+                            style.setBorderLeft(CellStyle.BORDER_MEDIUM);*/
+                            
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 3) {
+                            hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 7));
+                            celda.setCellStyle(style);
                             celda.setCellValue(dto.getAnalisis());
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 5) {
@@ -5140,13 +5190,19 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             for (int j = 0; j < 8; j++) {
                                 Cell celda2 = fila.createCell(j);
                                 if (j == 1) {
+                                    celda2.setCellStyle(styleAllBlanco);
                                     celda2.setCellValue("RUBRO:");
                                 } else if (j == 2) {
+                                    celda2.setCellStyle(styleAllBlanco);
                                     celda2.setCellValue(dto.getRubro());
                                 } else if (j == 6) {
+                                    celda2.setCellStyle(styleAllBlanco);
                                     celda2.setCellValue("UNIDAD:");
                                 } else if (j == 7) {
+                                    celda2.setCellStyle(styleAllBlanco);
                                     celda2.setCellValue(dto.getUnidad());
+                                }else{
+                                    celda2.setCellStyle(styleAllBlanco);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5155,9 +5211,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             for (int j = 0; j < 8; j++) {
                                 Cell celda2 = fila.createCell(j);
                                 if (j == 1) {
+                                    celda2.setCellStyle(styleAllBlanco);
                                     celda2.setCellValue("DETALLE:");
                                 } else if (j == 2) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 2, 7));
+                                    celda2.setCellStyle(styleAllBlanco);
                                     celda2.setCellValue(dto.getDetalle());
+                                }else{
+                                    celda2.setCellStyle(styleAllBlanco);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5166,18 +5227,23 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             for (int j = 0; j < 8; j++) {
                                 Cell celda2 = fila.createCell(j);
                                 if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 7));
+                                    celda2.setCellStyle(styleNegra);
                                     celda2.setCellValue("1.-EQUIPOS:");
                                 }
                             }
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 9) {
                             // cabecera tabla equipo
-                            for (int j = 0; j < 8; j++) {
+                            for (int j = 1; j < 8; j++) {
                                 Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleCab);
                                 if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
                                     celda2.setCellValue(cabeceraEquipo[0]);
                                 } else if (j == 3) {
                                     celda2.setCellValue(cabeceraEquipo[1]);
+                                    hoja.autoSizeColumn(j);
                                 } else if (j == 4) {
                                     celda2.setCellValue(cabeceraEquipo[2]);
                                 } else if (j == 5) {
@@ -5186,13 +5252,12 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue(cabeceraEquipo[4]);
                                 } else if (j == 7) {
                                     celda2.setCellValue(cabeceraEquipo[5]);
+                                    hoja.autoSizeColumn(j);
                                 }
                             }
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 10) {
                             System.out.println("positionAuxVuelt " + positionAuxVuelt);
-                            System.out.println("sizeRowAux1 " + i);// row principal
-
                             // obtengo el tamaño de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaEquipo().size();
                             int sizeRowAux1 = i;
@@ -5200,68 +5265,377 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             System.out.println("hasta donde row inicio  " + sizeRowAux1);
                             System.out.println("hasta donde row fin " + fin);
                             // la tabla equipo-- veo el row y pongo posicion de for (sizeRowAux)
+                            int g = 0;
                             for (int tbl = sizeRowAux1; tbl < fin; ++tbl) {
+                                fila = hoja.createRow(i);
+                                System.out.println("tbl " + tbl);
+                                System.out.println("sizeRowAux1 " + i);// row principal
                                 // i empieza en 1 para alinear el numero de dias con los datos ya que
                                 // la columna 0 se usara para el nombre del posicion
-
-                                for (int g = 0; g < sizeTblEquip; ++g) {
-
-                                    // creo la celda con sus datos
-                                    for (int h = 1; h < 8; h++) {
-                                        Cell celda2 = fila.createCell(h);
-                                        List<List<String>> str = dto.getTablaEquipo();
-                                        System.out.println("aaa " + str.size());
-                                        if (h == 1) {
-                                            celda2.setCellValue(dto.getTablaEquipo().get(g).get(0));
-                                        } else if (h == 3) {
-                                            celda2.setCellValue(dto.getTablaEquipo().get(g).get(1));
-                                        } else if (h == 4) {
-                                            celda2.setCellValue(dto.getTablaEquipo().get(g).get(2));
-                                        } else if (h == 5) {
-                                            celda2.setCellValue(dto.getTablaEquipo().get(g).get(3));
-                                        } else if (h == 6) {
-                                            celda2.setCellValue(dto.getTablaEquipo().get(g).get(4));
-                                        } else if (h == 7) {
-                                            celda2.setCellValue(dto.getTablaEquipo().get(g).get(5));
-                                        }
-                                    }
-                                    // fin creo
-                                    
-                                    System.out.println("aaaw " + dto.getTablaEquipo().get(g).get(0));
-                                    System.out.println("aaaw " + dto.getTablaEquipo().get(g).get(1));
-                                    System.out.println("aaaw " + dto.getTablaEquipo().get(g).get(2));
-                                    System.out.println("aaaw " + dto.getTablaEquipo().get(g).get(3));
-                                    System.out.println("aaaw " + dto.getTablaEquipo().get(g).get(4));
-                                    System.out.println("aaaw " + dto.getTablaEquipo().get(g).get(5));
-
-                                    i++; // row principal
-                                    sizeRowAux++; // pongo posicion 11
-                                }
-
-                                /*for (int h = 1; h < 8; h++) {
+                                // creo la celda con sus datos
+                                for (int h = 1; h < 8; h++) {
                                     Cell celda2 = fila.createCell(h);
-                                    List<List<String>> str = dto.getTablaEquipo();
-                                    System.out.println("aaa "+str.size());
+                                    celda2.setCellStyle(styleAllBlanco);
                                     if (h == 1) {
-                                        celda2.setCellValue(dto.getTablaEquipo().get(0).toString());
+                                        hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
+                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(0));
                                     } else if (h == 3) {
-                                        celda2.setCellValue(dto.getTablaEquipo().get(1).toString());
+                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(1));
                                     } else if (h == 4) {
-                                        celda2.setCellValue(dto.getTablaEquipo().get(2).toString());
+                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(2));
                                     } else if (h == 5) {
-                                        celda2.setCellValue(dto.getTablaEquipo().get(3).toString());
+                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(3));
                                     } else if (h == 6) {
-                                        celda2.setCellValue(dto.getTablaEquipo().get(4).toString());
+                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(4));
                                     } else if (h == 7) {
-                                        celda2.setCellValue(dto.getTablaEquipo().get(5).toString());
+                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(5));
                                     }
-                                }*/
-                                //sizeRowAux++; // pongo posicion 11
+                                }
+                                g++;
+                                i++; // aumento el row pricipal
+                                // fin creo
+                                System.out.println("valor g " + g);
                             }
-                            positionAuxVuelt++; // rompo el ciclo
-
+                            i = i - 1;
+                            positionAuxVuelt++; // rompo el ciclo y pongo 11
+                        } else if (positionAuxVuelt == 11) {
+                            // subtotal de equipo table
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 6));
+                                    celda2.setCellStyle(styleSub);
+                                    celda2.setCellValue("EQUIPOS SUBTOTAL:");
+                                }
+                                if (j == 7) {
+                                    celda2.setCellValue(dto.getTxtSubtEquipo());
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 12) {
+                            // titulo de tabla mano de obra
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 7));
+                                    celda2.setCellStyle(styleNegra);
+                                    celda2.setCellValue("2.-MANO DE OBRA:");
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 13) {
+                            // cabecera tabla mano de obra
+                            for (int j = 1; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleCab);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
+                                    celda2.setCellValue(cabeceraManObr[0]);
+                                } else if (j == 3) {
+                                    celda2.setCellValue(cabeceraManObr[1]);
+                                } else if (j == 4) {
+                                    celda2.setCellValue(cabeceraManObr[2]);
+                                } else if (j == 5) {
+                                    celda2.setCellValue(cabeceraManObr[3]);
+                                } else if (j == 6) {
+                                    celda2.setCellValue(cabeceraManObr[4]);
+                                } else if (j == 7) {
+                                    celda2.setCellValue(cabeceraManObr[5]);
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 14) {
+                            // datos de la tabla mano de obra                            
+                            // obtengo el tamaño de la tabla (n) rows
+                            int sizeTblEquip = dto.getTablaManObra().size();
+                            int sizeRowAux1 = i;
+                            int fin = (sizeRowAux1 + sizeTblEquip);
+                            // la tabla equipo-- veo el row y pongo posicion de for (sizeRowAux)
+                            int g = 0;
+                            for (int tbl = sizeRowAux1; tbl < fin; ++tbl) {
+                                fila = hoja.createRow(i);
+                                // i empieza en 1 para alinear el numero de dias con los datos ya que
+                                // la columna 0 se usara para el nombre del posicion
+                                // creo la celda con sus datos
+                                for (int h = 1; h < 8; h++) {
+                                    Cell celda2 = fila.createCell(h);
+                                    celda2.setCellStyle(styleAllBlanco);
+                                    if (h == 1) {
+                                        hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
+                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(0));
+                                    } else if (h == 3) {
+                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(1));
+                                    } else if (h == 4) {
+                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(2));
+                                    } else if (h == 5) {
+                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(3));
+                                    } else if (h == 6) {
+                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(4));
+                                    } else if (h == 7) {
+                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(5));
+                                    }
+                                }
+                                g++;
+                                i++; // aumento el row pricipal
+                            }
+                            i = i - 1;
+                            positionAuxVuelt++; // rompo el ciclo y pongo 15
+                        } else if (positionAuxVuelt == 15) {
+                            // valor de subtotal de tabla mano de obra
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 6));
+                                    celda2.setCellStyle(styleSub);
+                                    celda2.setCellValue("MANO DE OBRA SUBTOTAL:");
+                                }
+                                if (j == 7) {
+                                    celda2.setCellValue(dto.getTxtSubtManObra());
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 16) {
+                            // titulo de tabla materiales
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 7));
+                                    celda2.setCellStyle(styleNegra);
+                                    celda2.setCellValue("3.-MATERIALES:");
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 17) {
+                            // cabecera de tabla materiales
+                            for (int j = 1; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleCab);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 3));
+                                    celda2.setCellValue(cabeceraMateriales[0]);
+                                } else if (j == 4) {
+                                    celda2.setCellValue(cabeceraMateriales[1]);
+                                } else if (j == 5) {
+                                    celda2.setCellValue(cabeceraMateriales[2]);
+                                } else if (j == 6) {
+                                    celda2.setCellValue(cabeceraMateriales[3]);
+                                } else if (j == 7) {
+                                    celda2.setCellValue(cabeceraMateriales[4]);
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 18) {
+                            // datos de la tabla materiales
+                            // obtengo el tamaño de la tabla (n) rows
+                            int sizeTblEquip = dto.getTablaMateriales().size();
+                            int sizeRowAux1 = i;
+                            int fin = (sizeRowAux1 + sizeTblEquip);
+                            // la tabla equipo-- veo el row y pongo posicion de for (sizeRowAux)
+                            int g = 0;
+                            for (int tbl = sizeRowAux1; tbl < fin; ++tbl) {
+                                fila = hoja.createRow(i);
+                                // i empieza en 1 para alinear el numero de dias con los datos ya que
+                                // la columna 0 se usara para el nombre del posicion
+                                // creo la celda con sus datos
+                                for (int h = 1; h < 8; h++) {
+                                    Cell celda2 = fila.createCell(h);
+                                    celda2.setCellStyle(styleAllBlanco);
+                                    if (h == 1) {
+                                        hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 3));
+                                        celda2.setCellValue(dto.getTablaMateriales().get(g).get(0));
+                                    } else if (h == 4) {
+                                        celda2.setCellValue(dto.getTablaMateriales().get(g).get(1));
+                                    } else if (h == 5) {
+                                        celda2.setCellValue(dto.getTablaMateriales().get(g).get(2));
+                                    } else if (h == 6) {
+                                        celda2.setCellValue(dto.getTablaMateriales().get(g).get(3));
+                                    } else if (h == 7) {
+                                        celda2.setCellValue(dto.getTablaMateriales().get(g).get(4));
+                                    }
+                                }
+                                g++;
+                                i++; // aumento el row pricipal
+                            }
+                            i = i - 1;
+                            positionAuxVuelt++; // rompo el ciclo y pongo 19
+                        } else if (positionAuxVuelt == 19) {
+                            // valor subtotal de tabla materiales
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 6));
+                                    celda2.setCellStyle(styleSub);
+                                    celda2.setCellValue("MATERIALES SUBTOTAL:");
+                                }
+                                if (j == 7) {
+                                    celda2.setCellValue(dto.getTxtSubtMateriales());
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 20) {
+                            // titulo de tabla transporte
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 7));
+                                    celda2.setCellStyle(styleNegra);
+                                    celda2.setCellValue("4.-TRANSPORTE:");
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 21) {
+                            // cabecera de tabla transporte
+                            for (int j = 1; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleCab);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 3));
+                                    celda2.setCellValue(cabeceraTransporte[0]);
+                                } else if (j == 4) {
+                                    celda2.setCellValue(cabeceraTransporte[1]);
+                                } else if (j == 5) {
+                                    celda2.setCellValue(cabeceraTransporte[2]);
+                                } else if (j == 6) {
+                                    celda2.setCellValue(cabeceraTransporte[3]);
+                                } else if (j == 7) {
+                                    celda2.setCellValue(cabeceraTransporte[4]);
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 22) {
+                            // datos de la tabla transporte
+                            // obtengo el tamaño de la tabla (n) rows
+                            int sizeTblEquip = dto.getTablaTransport().size();
+                            int sizeRowAux1 = i;
+                            int fin = (sizeRowAux1 + sizeTblEquip);
+                            // la tabla equipo-- veo el row y pongo posicion de for (sizeRowAux)
+                            int g = 0;
+                            for (int tbl = sizeRowAux1; tbl < fin; ++tbl) {
+                                fila = hoja.createRow(i);
+                                // i empieza en 1 para alinear el numero de dias con los datos ya que
+                                // la columna 0 se usara para el nombre del posicion
+                                // creo la celda con sus datos
+                                for (int h = 1; h < 8; h++) {
+                                    Cell celda2 = fila.createCell(h);
+                                    celda2.setCellStyle(styleAllBlanco);
+                                    if (h == 1) {
+                                        hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 3));
+                                        celda2.setCellValue(dto.getTablaTransport().get(g).get(0));
+                                    } else if (h == 4) {
+                                        celda2.setCellValue(dto.getTablaTransport().get(g).get(1));
+                                    } else if (h == 5) {
+                                        celda2.setCellValue(dto.getTablaTransport().get(g).get(2));
+                                    } else if (h == 6) {
+                                        celda2.setCellValue(dto.getTablaTransport().get(g).get(3));
+                                    } else if (h == 7) {
+                                        celda2.setCellValue(dto.getTablaTransport().get(g).get(4));
+                                    }
+                                }
+                                g++;
+                                i++; // aumento el row pricipal
+                            }
+                            i = i - 1;
+                            positionAuxVuelt++; // rompo el ciclo y pongo 23
+                        } else if (positionAuxVuelt == 23) {
+                            // valor subtotal de transporte
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 6));
+                                    celda2.setCellStyle(styleSub);
+                                    celda2.setCellValue("TRANSPORTE SUBTOTAL:");
+                                }
+                                if (j == 7) {
+                                    celda2.setCellValue(dto.getTxtSubtTransport());
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 24) { // 25 ESPACIO EN BLANCO
+                            // valor costo directo
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 6));
+                                    celda2.setCellStyle(styleSub);
+                                    celda2.setCellValue("COSTO DIRECTO:");
+                                }
+                                if (j == 7) {
+                                    celda2.setCellValue(dto.getCostDirecto());
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 26) {
+                            // valor indirecto y utilidades
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 5));
+                                    celda2.setCellStyle(styleSub);
+                                    celda2.setCellValue("INDIRECTO Y UTILIDADES");
+                                }
+                                if (j == 6) {
+                                    celda2.setCellValue(dto.getnIngrUtil());
+                                }
+                                if (j == 7) {
+                                    celda2.setCellValue(dto.getrIngrUtil());
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 27) {
+                            // valor de otros indirectos
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 5));
+                                    celda2.setCellStyle(styleSub);
+                                    celda2.setCellValue("OTROS INDIRECTOS");
+                                }
+                                if (j == 6) {
+                                    celda2.setCellValue(dto.getnOthUtil());
+                                }
+                                if (j == 7) {
+                                    celda2.setCellValue(dto.getrOthUtil());
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 29) { // 28 em blanco
+                            // valor de oferta
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 6));
+                                    celda2.setCellStyle(styleSub);
+                                    celda2.setCellValue("VALOR OFERTA");
+                                }
+                                if (j == 7) {
+                                    celda2.setCellValue(dto.getValorOfert());
+                                }
+                            }
+                            positionAuxVuelt++;
+                        } else if (positionAuxVuelt == 30) {
+                            // mensaje de no se que
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(styleAllBlanco);
+                                if (j == 1) {
+                                    celda2.setCellValue("ESTOS PRESCIOS NO INCLUYEN IVA.");
+                                }
+                            }
+                            positionAuxVuelt++; // tomo tres celdas 30 al 33
                         }
-
+                        System.out.println("sizeRowAux1-SGT " + i);// row principal
+                        System.out.println("position-p " + positionAuxVuelt);
                     }
                     //celda.setCellValue(dto.getProyecto());
                     //celda.setCellValue("");
