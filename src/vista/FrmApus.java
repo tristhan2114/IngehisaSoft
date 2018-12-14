@@ -5094,6 +5094,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
             CellStyle style = wb.createCellStyle();
             Font headerFont = wb.createFont();
             headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setFontHeightInPoints((short)10);
             // con patron solido del color indicado       
             style.setFillPattern(CellStyle.SOLID_FOREGROUND);
             style.setFillForegroundColor(IndexedColors.WHITE.getIndex());
@@ -5121,7 +5122,6 @@ public class FrmApus extends javax.swing.JInternalFrame {
             styleCab.setBorderBottom(CellStyle.BORDER_THIN);
             styleCab.setAlignment(CellStyle.ALIGN_JUSTIFY/* CellStyle.ALIGN_CENTER*/);
             styleCab.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-            
             styleCab.setFont(headerFont);
             
             // para los subtitulos valores
