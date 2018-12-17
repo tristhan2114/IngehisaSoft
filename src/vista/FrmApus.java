@@ -5,6 +5,7 @@
  */
 package vista;
 
+import java.awt.Color;
 import vistaPanelApus.panelApus;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -44,6 +45,7 @@ import util.gestionApusPaneles;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -67,7 +69,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
     final String[] cabeceraManObr = {"DESCRIPCION", "CANTIDAD\n A", "JORNAL /HR \n B", "COSTO HORA\n C=AxB", "RENDIMIENTO\n R", "COSTO\n D=CxR"};
     final String[] cabeceraMateriales = {"DESCRIPCION", "UNIDAD", "CANTIDAD\n A", "PRECIO\n B", "COSTO\n C=AxB"};
     final String[] cabeceraTransporte = {"DESCRIPCION", "UNIDAD", "CANTIDAD\n A", "PRECIO\n B", "COSTO\n C=AxB"};
-    final String[] cabeceraResumenApus = {"NO", "RUBRO", "UNIDAD", "CANTIDAD", "PRECIO UNITARIO", "PRECIO TOTAL"};
+    final String[] cabeceraResumenApus = {"NUMERACION", "DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO UNITARIO", "PRECIO TOTAL"};
 
     // instancia de gestion de paneles
     gestionApusPaneles getionPApus;
@@ -4763,7 +4765,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
         jPanel1.add(btnForComponents, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
 
         jLabel1.setText("RECUERDE PARA DECIMALES  12.34  NO 12,34");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 30, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 30, -1, -1));
 
         jButton1.setText("X");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -4775,7 +4777,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Cantidad de Apus: ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 10, 200, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 200, -1));
 
         jButton2.setText("Presupuesto Rsm");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -4839,11 +4841,11 @@ public class FrmApus extends javax.swing.JInternalFrame {
             if (list.isEmpty()) { // esta vacio
                 System.out.println("vacio");
             } else {
-                System.out.println("si dto apus " + list.toString());
+                //System.out.println("si dto apus " + list.toString());
                 List<EsquemaPresupuesto> esq = getEsquemaWithFormatApus(list);
                 // aqui tengo que enviar la lista
                 //
-                System.out.println("esquema "+esq.toString());
+                //System.out.println("esquema " + esq.toString());
                 if (activoFrmResumen == true) {
                     freResumen.setLocation(423, 23);
                     freResumen.llenarTabla(esq);// envio los datos
@@ -5137,14 +5139,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
         Sheet hoja = wb.createSheet("APUS");
         try {
-            // tamaño de la A hasta la H  [[ row-fila]  column columna
+            // tama�o de la A hasta la H  [[ row-fila]  column columna
             // columna a la derecha **** fila hacia abajo
 
-            // fuente negrita de tamaño 10
+            // fuente negrita de tama�o 10
             Font fontNeg = wb.createFont();
             fontNeg.setBoldweight(Font.BOLDWEIGHT_BOLD);
             fontNeg.setFontHeightInPoints((short) 10);
-            // fuente solo tamaño 10 sin segrita
+            // fuente solo tama�o 10 sin segrita
             Font fontGene = wb.createFont();
             fontGene.setFontHeightInPoints((short) 10);
 
@@ -5218,7 +5220,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                         + dto.getTablaManObra().size()
                         + dto.getTablaMateriales().size()
                         + dto.getTablaTransport().size();
-                //System.out.println("tamañApus  " + sizeRowApus);
+                //System.out.println("tama�Apus  " + sizeRowApus);
                 // primera ronda almacenar el sizeRowApus para saber cuanto row me van a tomar
                 // ejemplo : 1era vueltq 34 --> 34 registros
                 // segunda vuelta sumo espacios 6
@@ -5246,7 +5248,19 @@ public class FrmApus extends javax.swing.JInternalFrame {
                         }
                         positionAuxVuelt++;
                     } else if (positionAuxVuelt == 7) {
-                        celda.setCellValue("");
+                        // precio unitario = valor oferta
+                        for (int j = 0; j < 8; j++) {
+                            Cell celda2 = fila.createCell(j);
+                            if (j == 1) {
+                                celda.setCellStyle(styleTitle);
+                                celda.setCellValue("PRECIO UNITARIO");
+
+                            } else if (j == 2) {
+                                //celda2.setCellStyle(styleTitlIzq);
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                celda2.setCellValue(dto.getValorOfert());
+                            }
+                        }
                         positionAuxVuelt++;
                     } else {
                         if (positionAuxVuelt == 0) {
@@ -5373,7 +5387,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 10) {
                             //System.out.println("positionAuxVuelt " + positionAuxVuelt);
-                            // obtengo el tamaño de la tabla (n) rows
+                            // obtengo el tama�o de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaEquipo().size();
                             int sizeRowAux1 = i;
                             int fin = (sizeRowAux1 + sizeTblEquip);
@@ -5462,7 +5476,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 14) {
                             // datos de la tabla mano de obra                            
-                            // obtengo el tamaño de la tabla (n) rows
+                            // obtengo el tama�o de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaManObra().size();
                             int sizeRowAux1 = i;
                             int fin = (sizeRowAux1 + sizeTblEquip);
@@ -5542,7 +5556,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 18) {
                             // datos de la tabla materiales
-                            // obtengo el tamaño de la tabla (n) rows
+                            // obtengo el tama�o de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaMateriales().size();
                             int sizeRowAux1 = i;
                             int fin = (sizeRowAux1 + sizeTblEquip);
@@ -5620,7 +5634,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 22) {
                             // datos de la tabla transporte
-                            // obtengo el tamaño de la tabla (n) rows
+                            // obtengo el tama�o de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaTransport().size();
                             int sizeRowAux1 = i;
                             int fin = (sizeRowAux1 + sizeTblEquip);
@@ -5776,25 +5790,41 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
             // estilo de cabera REsumen APUS **********************************************************************
             Font cab = wb.createFont();
-            cab.setFontName("Calibri");
+            cab.setFontName("Times New Roman");
             cab.setBoldweight(Font.BOLDWEIGHT_BOLD);
-            cab.setUnderline(Font.U_SINGLE);
+            //cab.setUnderline(Font.U_SINGLE);
             cab.setFontHeightInPoints((short) 22);
 
             CellStyle cabecera = wb.createCellStyle();
+            //cabecera.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            //cabecera.setFillForegroundColor(IndexedColors.WHITE.getIndex());
             cabecera.setFont(cab);
             cabecera.setAlignment(CellStyle.ALIGN_CENTER);
             cabecera.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
-            cabecera.setWrapText(true);
+            //cabecera.setWrapText(true);
+
+            // cabecera de la tabla
+            Font headerCabe = wb.createFont();
+            //headerCab.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            CellStyle styleCabe = wb.createCellStyle();
+            styleCabe.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            styleCabe.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+            styleCabe.setBorderTop(CellStyle.BORDER_THIN);
+            styleCabe.setBorderBottom(CellStyle.BORDER_THIN);
+            styleCabe.setBorderRight(CellStyle.BORDER_THIN);
+            styleCabe.setBorderLeft(CellStyle.BORDER_THIN);
+            styleCabe.setAlignment(CellStyle.ALIGN_CENTER/* CellStyle.ALIGN_CENTER*/);
+            styleCabe.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
+            headerCabe.setFontHeightInPoints((short) 10);
+            styleCabe.setFont(headerCabe);
 
             // formamos la hoja del resumen PRESUPUESTO del APUS
-            int sizeResumenApus = resumen.size() + 6;
+            int sizeResumenApus = resumen.size() + 7;
+            System.out.println("sizeResumenApus " + sizeResumenApus);
             for (int re = 0; re < sizeResumenApus; ++re) {
                 Row fila = hojaResumenPresupuesto.createRow(re);
                 // creamos la cabecera
-
                 if (re == 0 || re == 4) {
-
                     for (int j = 1; j < 7; j++) {
                         Cell celda2 = fila.createCell(j);
                         if (j == 1) {
@@ -5802,57 +5832,114 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             styleDesJust.setWrapText(true);
                             celda2.setCellStyle(styleDesJust);
                             celda2.setCellValue("");
-                            hoja.setColumnWidth((short) j, 220);
-                            hoja.autoSizeColumn((short) j, true);
+                            //hoja.setColumnWidth((short) j, 620);
+                            //hoja.autoSizeColumn((short) j, true);
 
                         }
                         if (j == 2) {
                             styleDesJust.setWrapText(true);
                             celda2.setCellStyle(styleDesJust);
-                            celda2.setCellValue("------------------------------------------");
-                            hoja.setColumnWidth((short) j, 220);
-                            hoja.autoSizeColumn((short) j, true);
+                            celda2.setCellValue("");
+                            //hoja.setColumnWidth((short) j, 620);
+                            //hoja.autoSizeColumn((short) j, true);
                         }
                     }
                 }
                 if (re == 1) {
                     Cell celda = fila.createCell(1);
-                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 6));
-                    celda.setCellValue("GOBIERNO AUTONOMO DESENTRALIZADO MUNICIPAL DEL CANTON SAMBORONDÓN");
-                    celda.setCellStyle(styleDesJust);
+                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
+                    celda.setCellValue(resumen.get(0).getCabeceraTitulo()[0]);
+                    cabecera.setWrapText(true);
+                    celda.setCellStyle(cabecera);
                 }
                 if (re == 2) {
                     Cell celda = fila.createCell(1);
-                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 6));
-                    celda.setCellStyle(styleDesJust);
-                    celda.setCellValue("OBRA: CONSTRUCCION DEL PARQUE EN LA AV. LEON FEBRES CORDERO DE LA PARROQUIA SATELITE");
+                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
+                    celda.setCellStyle(cabecera);
+                    //celda.setCellValue("OBRA: CONSTRUCCION DEL PARQUE EN LA AV. LEON FEBRES CORDERO DE LA PARROQUIA SATELITE");
+                    celda.setCellValue(resumen.get(0).getCabeceraTitulo()[1]);
                 }
                 if (re == 3) {
-                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 6));
+                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
                     Cell celda = fila.createCell(1);
-                    celda.setCellStyle(styleDesJust);
-                    celda.setCellValue("LA PUNTILLA DEL CANTON SAMBORONDON");
+                    celda.setCellStyle(cabecera);
+                    //celda.setCellValue("LA PUNTILLA DEL CANTON SAMBORONDON");
+                    celda.setCellValue(resumen.get(0).getCabeceraTitulo()[2]);
                 }
                 if (re == 5) {
-                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 6));
+                    //hojaResumenPresupuesto.setColumnWidth((short) re-1, 620);
+                    //hojaResumenPresupuesto.autoSizeColumn((short) re-1, true);
+
+                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
                     Cell celda = fila.createCell(1);
-                    celda.setCellStyle(styleDesJust);
+                    celda.setCellStyle(cabecera);
                     celda.setCellValue("TABLA DE CANTIDADES Y PRECIOS UNITARIOS");
                 }
 
                 // CABECERA DE LA TABLA
                 if (re == 6) {
-                    for (int j = 1; j < 7; j++) {
+                    for (int j = 1; j < 12; j++) {
                         Cell celda = fila.createCell(j);
-                        celda.setCellStyle(styleCab);
-                        celda.setCellValue(cabeceraResumenApus[j - 1]);
-                        //hojaResumenPresupuesto.autoSizeColumn(j);
+                        celda.setCellStyle(styleCabe);
+
+                        if (j == 1) {
+                            hojaResumenPresupuesto.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraResumenApus[0]);
+                            hojaResumenPresupuesto.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 2) {
+                            hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 2, 7));
+                            celda.setCellValue(cabeceraResumenApus[1]);
+                        }
+                        if (j == 8) {
+                            celda.setCellValue(cabeceraResumenApus[2]);
+                        }
+                        if (j == 9) {
+                            celda.setCellValue(cabeceraResumenApus[3]);
+                        }
+                        if (j == 10) {
+                            hojaResumenPresupuesto.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraResumenApus[4]);
+                            hojaResumenPresupuesto.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 11) {
+                            hojaResumenPresupuesto.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraResumenApus[5]);
+                            hojaResumenPresupuesto.autoSizeColumn((short) j, true);
+                        }
                     }
                 }
 
-                //Cell celda = fila.createCell(1);
+                // body table resumen presupuesto
+                if (re == 7) {
+                    System.out.println("export resumen " + resumen.toString());
+                    int sizePresuRes = resumen.size();
+                    for (int size = 0; size < sizePresuRes; ++size) {
+                        fila = hojaResumenPresupuesto.createRow(re);
+                        for (int j = 1; j < 12; j++) {
+                            Cell celda2 = fila.createCell(j);
+                            celda2.setCellStyle(styleTitlIzqGene);
+                            if (j == 1) {
+                                celda2.setCellValue(resumen.get(size).getCodigo());
+                            } else if (j == 2) {
+                                hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 2, 7));
+                                celda2.setCellValue(resumen.get(size).getRubro());
+                            } else if (j == 8) {
+                                celda2.setCellValue(resumen.get(size).getUnidad());
+                            } else if (j == 9) {
+                                celda2.setCellValue(resumen.get(size).getCantidad());
+                            } else if (j == 10) {
+                                celda2.setCellValue(resumen.get(size).getPreUnit());
+                            } else if (j == 11) {
+                                celda2.setCellValue(resumen.get(size).getPreTotM());
+                            }
+                        }
+                        re++;
+                    }
+
+                }
+
             }
-            //hojaResumenPresupuesto.autoSizeColumn(2, true);
 
             wb.write(new FileOutputStream(archivo));
             respuesta = "Exportación exitosa.";
@@ -6055,17 +6142,19 @@ public class FrmApus extends javax.swing.JInternalFrame {
         return listApus;
     }
 
+    // me va a permitir actualizar los datos de la cabecera
+    public static String[] auxT = new String[3];
+
     // metodo para armar datos de el resumen del presupuesto
     public List<EsquemaPresupuesto> getEsquemaWithFormatApus(List<FormatoApus> apus) {
         List<EsquemaPresupuesto> aux = new ArrayList<>();
         int acumCodi = 1;
         EsquemaPresupuesto entity = null;
-        List<List<String>> auxT = new ArrayList<>();
-
         for (FormatoApus ap : apus) {
             entity = new EsquemaPresupuesto();
             entity.setCodigo(acumCodi);// auto incremento
             entity.setCabeceraTitulo(auxT);
+
             if (ap.getDetalle() == null || ap.getDetalle().equals("")
                     || ap.getUnidad() == null || ap.getUnidad().equals("")
                     || ap.getValorOfert() == null || ap.getValorOfert().equals("")) {
@@ -6120,12 +6209,12 @@ public class FrmApus extends javax.swing.JInternalFrame {
  * 0; for (int j = 1; j < 7; j++) { Cell celda2 = fila.createCell(j);
  * celda2.setCellValue(cabeceraEquipo[ac]); ac++; }
  *
- * int tamañoTblEquipo = dto.getTablaEquipo().size(); System.out.println("vvv "
- * + tamañoTblEquipo); for (List<String> str : dto.getTablaEquipo()) {
+ * int tama�oTblEquipo = dto.getTablaEquipo().size(); System.out.println("vvv "
+ * + tama�oTblEquipo); for (List<String> str : dto.getTablaEquipo()) {
  * System.out.println("Teq " + str.toString()); int v = 0; for (int j = 1; j <
  * 7; j++) { Cell celda2 = fila.createCell(j); celda2.setCellValue(str.get(v));
- * v++; } } //System.out.println("eee " + tamañoTblEquipo); //if
- * (tamañoTblEquipo != 6) { // tamañoTblEquipo = tamañoTblEquipo / 2; //} for
+ * v++; } } //System.out.println("eee " + tama�oTblEquipo); //if
+ * (tama�oTblEquipo != 6) { // tama�oTblEquipo = tama�oTblEquipo / 2; //} for
  * (int j = 1; j < 7; j++) { //Cell celda2 = fila.createCell(j); //for (String
  * str : dto.getTablaEquipo()) { //System.out.println("sss "+str);
  * //celda2.setCellValue(str); //}

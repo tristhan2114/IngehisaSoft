@@ -15,7 +15,7 @@ public class EsquemaPresupuesto {
     // cuando genera el apus hacemo uso de la clas
     // para generar el resumen de presupuesto
     // en la misma hoja donde se guenera el apus
-    private List<List<String>> cabeceraTitulo;
+    private String[] cabeceraTitulo;
     
     private int codigo;
     private String rubro;
@@ -27,7 +27,7 @@ public class EsquemaPresupuesto {
     public EsquemaPresupuesto() {
     }
 
-    public EsquemaPresupuesto(List<List<String>> cabeceraTitulo, int codigo, String rubro, String unidad, int cantidad, String preUnit, String preTotM) {
+    public EsquemaPresupuesto(String[] cabeceraTitulo, int codigo, String rubro, String unidad, int cantidad, String preUnit, String preTotM) {
         this.cabeceraTitulo = cabeceraTitulo;
         this.codigo = codigo;
         this.rubro = rubro;
@@ -37,11 +37,11 @@ public class EsquemaPresupuesto {
         this.preTotM = preTotM;
     }
 
-    public List<List<String>> getCabeceraTitulo() {
+    public String[] getCabeceraTitulo() {
         return cabeceraTitulo;
     }
 
-    public void setCabeceraTitulo(List<List<String>> cabeceraTitulo) {
+    public void setCabeceraTitulo(String[] cabeceraTitulo) {
         this.cabeceraTitulo = cabeceraTitulo;
     }
 
