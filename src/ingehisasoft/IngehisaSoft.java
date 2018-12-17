@@ -6,6 +6,7 @@
 package ingehisasoft;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -15,7 +16,10 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import vista.home;
 
 /**
@@ -29,9 +33,9 @@ public class IngehisaSoft {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new home().setVisible(true);
+       new home().setVisible(true);
         //auxEj();
-
+        //ej2();
         /*
         double n1 = 12.257767;
         double n2 = 12.236555;
@@ -125,6 +129,33 @@ public class IngehisaSoft {
 
         System.out.println("Reporte generado");
 
+    }
+
+    private static void ej2() {
+      try {
+            File archivo = new File("ejemplo.xlsx");          
+            FileOutputStream is = new FileOutputStream(archivo);
+            
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            String header = "123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789123456789";
+            HSSFSheet sheet = workbook.createSheet("Sheet1");
+            sheet.setColumnWidth(0, 18000);
+            Row row = sheet.createRow(0);
+            Cell cell = row.createCell(0);
+
+            if(header.length() > 50){ //Length of String for my test
+                sheet.setColumnWidth(0, 18000); //Set column width, you'll probably want to tweak the second int
+                HSSFCellStyle style = workbook.createCellStyle(); //Create new style
+                style.setWrapText(true); //Set wordwrap
+                cell.setCellStyle(style); //Apply style to cell
+                cell.setCellValue(header); //Write header
+            }
+
+            workbook.write(is);
+        } catch (IOException e) {
+            System.out.println("ss "+e.getMessage());
+            e.printStackTrace();
+        }   
     }
 
 }
