@@ -11,6 +11,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,16 +29,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import modelo.EsquemaPresupuesto;
 import modelo.FormatoApus;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import util.gestionApusPaneles;
@@ -45,6 +52,7 @@ import util.gestionApusPaneles;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -4803,17 +4811,17 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
     private void BtnAddBodyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAddBodyActionPerformed
         // controlamos instancia de contenedorPaneles
-
         ++i; // contiene
         apusP = new panelApus();
         jLabel2.setText("Cantidad de Apus: " + i);
         getionPApus = new gestionApusPaneles();
         getionPApus.panelCreateApus(apusP, i);
-
-        System.out.println("position " + i);
+        //System.out.println("position " + i);
     }//GEN-LAST:event_BtnAddBodyActionPerformed
 
     private void btnForComponentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForComponentsActionPerformed
+        // asigno un nombre por default
+        selecArchivo.setSelectedFile(new File("Apus-0001.xlsx"));
         if (selecArchivo.showDialog(null, "Exportar") == JFileChooser.APPROVE_OPTION) {
             archivo = selecArchivo.getSelectedFile();
             if (archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")) {
@@ -4848,13 +4856,21 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 //System.out.println("esquema " + esq.toString());
                 if (activoFrmResumen == true) {
                     freResumen.setLocation(423, 23);
+                    freResumen.setTitle("Presupuesto Resumen según APUS");
+                    freResumen.jButton4.setVisible(false);
+                    freResumen.jButton5.setVisible(false);
                     freResumen.llenarTabla(esq);// envio los datos
+                    freResumen.setClickResumenApus();
                     freResumen.moveToFront();
                     freResumen.show();
                 } else {
                     activoFrmResumen = true;
                     freResumen = new FrmApusPresupuesto();
+                    freResumen.setTitle("Presupuesto Resumen según APUS");
+                    freResumen.jButton4.setVisible(false);
+                    freResumen.jButton5.setVisible(false);
                     freResumen.llenarTabla(esq);// envio los datos
+                    freResumen.setClickResumenApus();
                     vista.home.escritorio.add(freResumen);
                     freResumen.setLocation(423, 23);
                     freResumen.show();
@@ -5818,6 +5834,27 @@ public class FrmApus extends javax.swing.JInternalFrame {
             headerCabe.setFontHeightInPoints((short) 10);
             styleCabe.setFont(headerCabe);
 
+            // inicio de insertar imagen
+            // read the image to the stream
+            final FileInputStream stream
+                    = new FileInputStream("C:\\Users\\personal1\\Pictures\\logo-ingehisa.png");
+            final CreationHelper helper = wb.getCreationHelper();
+            final Drawing drawing = hojaResumenPresupuesto.createDrawingPatriarch();
+
+            final ClientAnchor anchor = helper.createClientAnchor();
+            anchor.setAnchorType(ClientAnchor.MOVE_AND_RESIZE);
+
+            final int pictureIndex
+                    = wb.addPicture(IOUtils.toByteArray(stream), Workbook.PICTURE_TYPE_PNG);
+
+            anchor.setCol1(1); // lado
+            anchor.setCol2(0);
+            anchor.setRow1(0); // arriba
+            anchor.setRow2(0);
+            final Picture pict = drawing.createPicture(anchor, pictureIndex);
+            pict.resize(3);
+            // fin insertar imagen
+
             // formamos la hoja del resumen PRESUPUESTO del APUS
             int sizeResumenApus = resumen.size() + 7;
             System.out.println("sizeResumenApus " + sizeResumenApus);
@@ -5941,7 +5978,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
             }
 
-            wb.write(new FileOutputStream(archivo));
+            wb.write(new FileOutputStream(archivo + ".xlsx"));
             respuesta = "Exportación exitosa.";
             resumen.clear();
             datos.clear();

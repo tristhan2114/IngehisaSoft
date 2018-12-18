@@ -8,6 +8,7 @@ package vista;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import static vista.FrmApus.activoFrmResumen;
 
 /**
  *
@@ -23,13 +24,15 @@ public class home extends javax.swing.JFrame {
     FrmMano_obra frmMano_obra;
     FrmApus frmApus;
     FrmMateriales frmmateriales;
+    FrmApusPresupuesto freResumen;
     
      // imagen logo fondo
     private ImageIcon imagenFondo;
     private ImageIcon imagenFondoRedimensionado;
     
     // atributo que controla frmInternos abiertos o no
-    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales;
+    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales, activoFrmResumen;
+    
     
     public home() {
         initComponents();
@@ -80,6 +83,7 @@ public class home extends javax.swing.JFrame {
         menuIApus = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         jMenuItem4.setText("jMenuItem4");
 
@@ -177,6 +181,14 @@ public class home extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem10);
+
+        jMenuItem1.setText("MANUAL");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem1);
 
         jMenuBar1.add(jMenu4);
 
@@ -278,6 +290,28 @@ public class home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+       // TODO add your handling code here:
+        try {
+            if (activoFrmResumen == true) {
+                    freResumen.setLocation(23, 23);
+                    freResumen.setTitle("Presupuesto / Oferta");
+                    freResumen.setClickResumenApus ();
+                    freResumen.moveToFront();
+                    freResumen.show();
+                } else {
+                    activoFrmResumen = true;
+                    freResumen = new FrmApusPresupuesto();
+                    freResumen.setTitle("Presupuesto / Oferta");
+                    vista.home.escritorio.add(freResumen);
+                    freResumen.setLocation(23, 23);
+                    freResumen.show();
+                }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -321,6 +355,7 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
