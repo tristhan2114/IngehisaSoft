@@ -5808,20 +5808,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
             Font cab = wb.createFont();
             cab.setFontName("Times New Roman");
             cab.setBoldweight(Font.BOLDWEIGHT_BOLD);
-            //cab.setUnderline(Font.U_SINGLE);
             cab.setFontHeightInPoints((short) 22);
 
             CellStyle cabecera = wb.createCellStyle();
-            //cabecera.setFillPattern(CellStyle.SOLID_FOREGROUND);
-            //cabecera.setFillForegroundColor(IndexedColors.WHITE.getIndex());
             cabecera.setFont(cab);
             cabecera.setAlignment(CellStyle.ALIGN_CENTER);
-            cabecera.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
-            //cabecera.setWrapText(true);
 
             // cabecera de la tabla
             Font headerCabe = wb.createFont();
-            //headerCab.setBoldweight(Font.BOLDWEIGHT_BOLD);
             CellStyle styleCabe = wb.createCellStyle();
             styleCabe.setFillPattern(CellStyle.SOLID_FOREGROUND);
             styleCabe.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
@@ -5865,13 +5859,11 @@ public class FrmApus extends javax.swing.JInternalFrame {
                     for (int j = 1; j < 7; j++) {
                         Cell celda2 = fila.createCell(j);
                         if (j == 1) {
-
                             styleDesJust.setWrapText(true);
                             celda2.setCellStyle(styleDesJust);
                             celda2.setCellValue("");
                             //hoja.setColumnWidth((short) j, 620);
                             //hoja.autoSizeColumn((short) j, true);
-
                         }
                         if (j == 2) {
                             styleDesJust.setWrapText(true);
@@ -5883,12 +5875,16 @@ public class FrmApus extends javax.swing.JInternalFrame {
                     }
                 }
                 if (re == 1) {
-                    Cell celda = fila.createCell(1);
-                    hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
-                    celda.setCellValue(resumen.get(0).getCabeceraTitulo()[0]);
-                    cabecera.setWrapText(true);
-                    celda.setCellStyle(cabecera);
+                    for (int j = 1; j < 12; j++) {
+                        Cell celda2 = fila.createCell(j);
+                        celda2.setCellStyle(cabecera);
+                        if (j == 1) {
+                            hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
+                            celda2.setCellValue(resumen.get(0).getCabeceraTitulo()[0]);
+                        }
+                    }
                 }
+                
                 if (re == 2) {
                     Cell celda = fila.createCell(1);
                     hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
@@ -5949,7 +5945,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
                 // body table resumen presupuesto
                 if (re == 7) {
-                    System.out.println("export resumen " + resumen.toString());
+                    //System.out.println("export resumen " + resumen.toString());
                     int sizePresuRes = resumen.size();
                     for (int size = 0; size < sizePresuRes; ++size) {
                         fila = hojaResumenPresupuesto.createRow(re);

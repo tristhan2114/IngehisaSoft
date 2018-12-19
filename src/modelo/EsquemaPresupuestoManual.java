@@ -17,23 +17,24 @@ public class EsquemaPresupuestoManual {
     private String campo1;
     private String campo2;
     private String campo3;
-    
+
     private String oferta;
     private String fecha;
-    
-    private List<tableDts>listTbl = new ArrayList<>();
-    
+
+    private List<EsquemaPresupuestoManualTabla> listTbl = new ArrayList<>();
+
     private String subtotal;
     private String iva;
     private String subtotalIva;
     private String total;
 
-    private List<String[]> nota;
+    private List<String> nota = new ArrayList<>();
 
     public EsquemaPresupuestoManual() {
     }
 
-    public EsquemaPresupuestoManual(String campo1, String campo2, String campo3, String oferta, String fecha, String subtotal, String iva, String subtotalIva, String total, List<String[]> nota) {
+    public EsquemaPresupuestoManual(String campo1, String campo2, String campo3, String oferta,
+            String fecha, String subtotal, String iva, String subtotalIva, String total) {
         this.campo1 = campo1;
         this.campo2 = campo2;
         this.campo3 = campo3;
@@ -43,7 +44,6 @@ public class EsquemaPresupuestoManual {
         this.iva = iva;
         this.subtotalIva = subtotalIva;
         this.total = total;
-        this.nota = nota;
     }
 
     public String getCampo1() {
@@ -86,11 +86,11 @@ public class EsquemaPresupuestoManual {
         this.fecha = fecha;
     }
 
-    public List<tableDts> getListTbl() {
+    public List<EsquemaPresupuestoManualTabla> getListTbl() {
         return listTbl;
     }
 
-    public void setListTbl(List<tableDts> listTbl) {
+    public void setListTbl(List<EsquemaPresupuestoManualTabla> listTbl) {
         this.listTbl = listTbl;
     }
 
@@ -126,99 +126,17 @@ public class EsquemaPresupuestoManual {
         this.total = total;
     }
 
-    public List<String[]> getNota() {
+    public List<String> getNota() {
         return nota;
     }
 
-    public void setNota(List<String[]> nota) {
+    public void setNota(List<String> nota) {
         this.nota = nota;
     }
 
     @Override
     public String toString() {
         return "EsquemaPresupuestoManual{" + "campo1=" + campo1 + ", campo2=" + campo2 + ", campo3=" + campo3 + ", oferta=" + oferta + ", fecha=" + fecha + ", listTbl=" + listTbl + ", subtotal=" + subtotal + ", iva=" + iva + ", subtotalIva=" + subtotalIva + ", total=" + total + ", nota=" + nota + '}';
-    }
-
-        
-    
-    
-    // clase que sera lista contenedora de la tabla segun presupuesto / oferta de manera manual   **************************
-    public class tableDts {
-        private String numeracion;
-        private String descripcion;
-        private String unidad;
-        private String cantidad;
-        private String preUnit;
-        private String preTot;
-
-        public tableDts() {
-        }
-
-        public tableDts(String numeracion, String descripcion, String unidad, 
-                String cantidad, String preUnit, String preTot) {
-            this.numeracion = numeracion;
-            this.descripcion = descripcion;
-            this.unidad = unidad;
-            this.cantidad = cantidad;
-            this.preUnit = preUnit;
-            this.preTot = preTot;
-        }
-
-        public String getNumeracion() {
-            return numeracion;
-        }
-
-        public void setNumeracion(String numeracion) {
-            this.numeracion = numeracion;
-        }
-
-        public String getDescripcion() {
-            return descripcion;
-        }
-
-        public void setDescripcion(String descripcion) {
-            this.descripcion = descripcion;
-        }
-
-        public String getUnidad() {
-            return unidad;
-        }
-
-        public void setUnidad(String unidad) {
-            this.unidad = unidad;
-        }
-
-        public String getCantidad() {
-            return cantidad;
-        }
-
-        public void setCantidad(String cantidad) {
-            this.cantidad = cantidad;
-        }
-
-        public String getPreUnit() {
-            return preUnit;
-        }
-
-        public void setPreUnit(String preUnit) {
-            this.preUnit = preUnit;
-        }
-
-        public String getPreTot() {
-            return preTot;
-        }
-
-        public void setPreTot(String preTot) {
-            this.preTot = preTot;
-        }
-
-        @Override
-        public String toString() {
-            return "tableDts{" + "numeracion=" + numeracion + ", descripcion=" + descripcion + ", unidad=" + unidad + ", cantidad=" + cantidad + ", preUnit=" + preUnit + ", preTot=" + preTot + '}';
-        }
-        
-        
-        
     }
 
 }
