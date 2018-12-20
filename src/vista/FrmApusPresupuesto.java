@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
@@ -59,11 +60,13 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     Workbook wb;
 
     final String[] cabeceraResumenApus = {"NUMERACION", "DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO UNITARIO", "PRECIO TOTAL"};
+    final String[] insertRow = {"", "", "", "0", "0.0", "0.0"};
 
     public FrmApusPresupuesto() {
         validacion = new validaciones();
         initComponents();
         setTitle("Presupuesto / Oferta");
+        setTablesNoMoveHeader();
         setIconifiable(true);
 
     }
@@ -407,6 +410,14 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             String dto = table.getValueAt(position, 1).toString();
             table.setValueAt( dto + "<br>", position, 1);*/
         }// fin keyPress
+
+        // hacer una clase para esto y solo llamarla desde cualquier tabla del sistema
+        int suprimir = evt.getKeyCode();
+        if (suprimir == 127) {
+            int position = table.getSelectedRow();
+            int columna = table.getSelectedColumn();
+            table.setValueAt("", position, columna);
+        }
     }//GEN-LAST:event_tableKeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -416,9 +427,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         //Sección 2
         Object[] fila = new Object[6];
         //Sección 3
-        fila[0] = " ";
-        fila[1] = " ";
-        fila[2] = " ";
+        fila[0] = "";
+        fila[1] = "";
+        fila[2] = "";
         fila[3] = "0";
         fila[4] = "0.0";
         fila[5] = "0.0";
@@ -487,7 +498,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         //Sección 2
         Object[] fila = new Object[1];
         //Sección 3
-        fila[0] = " ";
+        fila[0] = "";
         //Sección 4
         modelo.addRow(fila);
         //Sección 5
@@ -519,23 +530,20 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
-        // PARA AGREGAR UNA FILA
-        // mensaaje con JOptionpanel 
+        // PARA INSERTAR UNA FILA
+        // mensaaje con JOptionpanel         
         int btn = evt.getButton();
         if (btn == 3) {
-            int confirmar = JOptionPane.showConfirmDialog(null,"Desea ingresar una fila",
-                    "Confirmación", JOptionPane.YES_NO_OPTION );
-            
+            int confirmar = JOptionPane.showConfirmDialog(null, "Desea ingresar una fila",
+                    "Confirmación", JOptionPane.YES_NO_OPTION);
+
             if (JOptionPane.OK_OPTION == confirmar) {
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                
-                
-                //Sección 7
-                JOptionPane.showMessageDialog(null, "fila agregada");
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+                int position = table.getSelectedRow();
+                model.insertRow(position, insertRow);
             }
-            
-        } 
-        
+        }
     }//GEN-LAST:event_tableMouseClicked
 
     /**
@@ -612,15 +620,6 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
             table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
-
-        // no editable        
-        /*table.setModel(new DefaultTableModel(){
-            final boolean [] tableColums = {true, true, false, false,false,false};
-            @Override
-            public boolean isCellEditable(int i, int column) {   
-                return this.tableColums[column]; 
-            }
-        });*/
     }
 
     // limpiar tabla
@@ -637,13 +636,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         if (sizeRowCountTable > 0) {
             limpiarTabla();
         }//Sección 1 
-        /*DefaultTableModel modelo1 = (DefaultTableModel) table.getModel();
-        String l[] = {"NO","DESCRIPCION","UNIDAD","CANTIDAD","PRECIO UNITARIO","PRECIO TOTAL"};
-        modelo1.addColumn(l);*/
 
         DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-        //String l[] = {"NO","DESCRIPCION","UNIDAD","CANTIDAD","PRECIO UNITARIO","PRECIO TOTAL"};
-        //modelo.addColumn(l);
 
         for (EsquemaPresupuesto esquemaPresupuesto : dto) {
             //Sección 2
@@ -749,13 +743,42 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         setDatosFrmApusWithPresupuestp();
     }
 
+    // cuando vengo de APUS update datos
+    List<EsquemaPresupuesto> aux = new ArrayList<>();
+
     private void setDatosFrmApusWithPresupuestp() {
         String[] ss = new String[3];
         ss[0] = jTextField1.getText();
         ss[1] = jTextField2.getText();
         ss[2] = jTextField3.getText();
-
         FrmApus.auxT = ss;
+
+        if (!aux.isEmpty()) {
+            aux.clear();
+        }
+        int size = table.getRowCount();
+        EsquemaPresupuesto entity = null;
+        for (int i = 0; i < size; ++i) {
+            entity = new EsquemaPresupuesto();
+            entity.setCodigo(Integer.parseInt(table.getValueAt(i, 0).toString().trim()));
+            //entity.setCabeceraTitulo(ss);
+            entity.setRubro(table.getValueAt(i, 1).toString());
+            entity.setUnidad(table.getValueAt(i, 2).toString());
+            String auxStr = table.getValueAt(i, 3).toString();
+            if (auxStr.equals("")) {
+
+            } else {
+                entity.setCantidad(Integer.parseInt(table.getValueAt(i, 3).toString()));
+            }
+            entity.setPreUnit(table.getValueAt(i, 4).toString());
+            entity.setPreTotM(table.getValueAt(i, 5).toString());
+
+            aux.add(entity);
+            entity = null;
+        }
+
+        FrmApus.auxResPresu = aux;
+
     }
 
     // ESQUEMA LISTA DEL PRESUPUESTO MAMUAL
@@ -819,7 +842,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     //       :: NO PONER VALOR EN SI ES EN SUBTITULO
 
     private String Exportar(File archivo, EsquemaPresupuestoManual datos) {
-        String respuesta = "Falla en la generación del APUS.";
+        String respuesta = "Falla en la generación del PRESUPUESTO.";
         if (archivo.getName().endsWith("xls")) {
             wb = new HSSFWorkbook();
         } else {
@@ -1025,8 +1048,13 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                             Cell celda2 = fila.createCell(j);
                             celda2.setCellStyle(styleTitlDerGene);
                             if (j == 1) {
-                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                celda2.setCellValue(Integer.parseInt(datos.getListTbl().get(size).getNumeracion().trim()));
+                                String aux = datos.getListTbl().get(size).getNumeracion().trim();
+                                if (aux.equals("")) {
+                                    celda2.setCellValue("");
+                                } else {
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellValue(Integer.parseInt(datos.getListTbl().get(size).getNumeracion().trim()));
+                                }
                             } else if (j == 2) {
                                 celda2.setCellStyle(styleTitlIzqGene);
                                 hoja.addMergedRegion(new CellRangeAddress(re, re, 2, 7));
@@ -1034,14 +1062,33 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                             } else if (j == 8) {
                                 celda2.setCellValue(datos.getListTbl().get(size).getUnidad());
                             } else if (j == 9) {
-                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                celda2.setCellValue(Integer.parseInt(datos.getListTbl().get(size).getCantidad().trim()));
+                                String aux = datos.getListTbl().get(size).getCantidad().trim();
+                                if (aux.equals("")) {
+                                    celda2.setCellValue("");
+                                } else {
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellValue(Integer.parseInt(datos.getListTbl().get(size).getCantidad().trim()));
+                                }
                             } else if (j == 10) {
-                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                celda2.setCellValue(Double.parseDouble(datos.getListTbl().get(size).getPreUnit()));
+                                String aux = datos.getListTbl().get(size).getPreUnit();
+                                if (aux.equals("")) {
+                                    celda2.setCellValue("");
+                                } else {
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellValue(Double.parseDouble(datos.getListTbl().get(size).getPreUnit()));
+                                }
+
                             } else if (j == 11) {
-                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                celda2.setCellValue(Double.parseDouble(datos.getListTbl().get(size).getPreTot()));
+                                String aux = datos.getListTbl().get(size).getPreTot();
+                                if (aux.equals("")) {
+                                    celda2.setCellValue("");
+                                } else {
+                                    //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    String strFormula = "SUM(J" + (re + 1) + "*K" + (re + 1) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellValue(Double.parseDouble(datos.getListTbl().get(size).getPreTot()));
+                                }
                             }
                         }
                         re++;
@@ -1177,14 +1224,47 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
 
             } // FIN FOR
             wb.write(new FileOutputStream(archivo));
+
             respuesta = "Exportación exitosa.";
-            //resumen.clear();
-            //datos.clear();
-        } catch (Exception e) {
+
+            // vacio la instancia de datos.
+            datos = null;
+        } catch (IOException | NumberFormatException e) {
             e.getMessage();
-            System.out.println("err- " + e.getMessage());
+            System.out.println("err-FrmApusPresupuesto " + e.getMessage());
         }
         return respuesta;
     }
 
 }
+
+/*  para pensar como meter todo los datos en un string y para llenar el formulario hacer el proceso de iterar
+https://stackoverflow.com/questions/25771822/how-to-convert-arraylist-to-json-in-java
+
+agregar un boton que diga nueva oferta
+ese boton hara el proceso de consultar a la base de datos el numero de oferta y pondra el numero de oferta sgt
+y llenara el jtxtfield oferta con el nuevo codigo
+
+
+logica para controlar las versiones
+boton Revisar :: abre un popup y lista todo los presupuestos con sus versiones
+campos ::  oferta   |   oferta versiones 
+
+el usuario debera colocar la ultima version si la tiene y si no pondra la oferta como tal para crear una version nueva
+
+el llenado de los datos sera mediate el jtxtfield oferta tipo busqueda con el evento keypress
+
+en evento keypress hacer una variable global y sobreescribir el id de la oferta o presupuesto
+para que luego ese id pase al presupuesto version
+si se realiza el proceso de update, pondre un identificador para controlar la insercion y saber a que tabla voy a 
+almacenar 
+
+si btn nueva oferta identificador : new :  metodo insertPresupuesto
+
+si es con evento jtxtfield identificador : update : metodo insertPresupuestoVersion
+
+
+      ******************************************************
+NOTA:  no olvidar hacer la copia del archivo que se exporta a una ruta la cual sera el url_file 
+
+ */

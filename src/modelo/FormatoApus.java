@@ -288,6 +288,5 @@ public class FormatoApus {
         return "FormatoApus{" + "empresa=" + empresa + ", proyecto=" + proyecto + ", analisis=" + analisis + ", rubro=" + rubro + ", unidad=" + unidad + ", detalle=" + detalle + ", txtIdEquipo=" + txtIdEquipo + ", tablaEquipo=" + tablaEquipo + ", txtIdManObr=" + txtIdManObr + ", txtSubtEquipo=" + txtSubtEquipo + ", tablaManObra=" + tablaManObra + ", txtIdMateriales=" + txtIdMateriales + ", txtSubtManObra=" + txtSubtManObra + ", tablaMateriales=" + tablaMateriales + ", txtIdTransport=" + txtIdTransport + ", txtSubtMateriales=" + txtSubtMateriales + ", tablaTransport=" + tablaTransport + ", txtSubtTransport=" + txtSubtTransport + ", costDirecto=" + costDirecto + ", costTotRubro=" + costTotRubro + ", valorOfert=" + valorOfert + ", nIngrUtil=" + nIngrUtil + ", nOthUtil=" + nOthUtil + ", rIngrUtil=" + rIngrUtil + ", rOthUtil=" + rOthUtil + '}';
     }
    
-   
 
 }

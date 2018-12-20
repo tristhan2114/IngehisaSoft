@@ -39,8 +39,7 @@ public class home extends javax.swing.JFrame {
         
         // escritorio
         setLocationRelativeTo(null);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-                
+        setExtendedState(JFrame.MAXIMIZED_BOTH);     
 
         // agregro el desktop al formulario padre
         //escritorio.setSize(1050, 650);
@@ -51,10 +50,7 @@ public class home extends javax.swing.JFrame {
         
         
         //imagen
-        imagenFondo();
-        
-        
-       
+        imagenFondo();       
     }
 
     /**
@@ -296,7 +292,6 @@ public class home extends javax.swing.JFrame {
             if (activoFrmResumen == true) {
                     freResumen.setLocation(23, 23);
                     freResumen.setTitle("Presupuesto / Oferta");
-                    freResumen.setClickResumenApus ();
                     freResumen.moveToFront();
                     freResumen.show();
                 } else {

@@ -15,7 +15,7 @@ public class EsquemaPresupuesto {
     // cuando genera el apus hacemo uso de la clas
     // para generar el resumen de presupuesto
     // en la misma hoja donde se guenera el apus
-    private String[] cabeceraTitulo;
+    private String[] cabeceraTitulo =  new String [3];
     
     private int codigo;
     private String rubro;

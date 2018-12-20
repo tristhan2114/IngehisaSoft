@@ -5150,7 +5150,6 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
         // hoja para el resumen de los apus
         Sheet hojaResumenPresupuesto = wb.createSheet("PRESUPUESTO");
-        List<EsquemaPresupuesto> resumen = getEsquemaWithFormatApus(datos);
         // fin 
 
         Sheet hoja = wb.createSheet("APUS");
@@ -5804,7 +5803,10 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 acumCodRubro++;
             }
 
-            // estilo de cabera REsumen APUS **********************************************************************
+            // estilo de cabera Resumen APUS **********************************************************************
+            List<EsquemaPresupuesto> resumen = getEsquemaWithFormatApus(datos);
+            System.out.println("datos news "+auxResPresu.toString());
+            
             Font cab = wb.createFont();
             cab.setFontName("Times New Roman");
             cab.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -5851,7 +5853,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
             // formamos la hoja del resumen PRESUPUESTO del APUS
             int sizeResumenApus = resumen.size() + 7;
-            System.out.println("sizeResumenApus " + sizeResumenApus);
+            //System.out.println("sizeResumenApus " + sizeResumenApus);
             for (int re = 0; re < sizeResumenApus; ++re) {
                 Row fila = hojaResumenPresupuesto.createRow(re);
                 // creamos la cabecera
@@ -5862,15 +5864,11 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             styleDesJust.setWrapText(true);
                             celda2.setCellStyle(styleDesJust);
                             celda2.setCellValue("");
-                            //hoja.setColumnWidth((short) j, 620);
-                            //hoja.autoSizeColumn((short) j, true);
                         }
                         if (j == 2) {
                             styleDesJust.setWrapText(true);
                             celda2.setCellStyle(styleDesJust);
                             celda2.setCellValue("");
-                            //hoja.setColumnWidth((short) j, 620);
-                            //hoja.autoSizeColumn((short) j, true);
                         }
                     }
                 }
@@ -5879,30 +5877,26 @@ public class FrmApus extends javax.swing.JInternalFrame {
                         Cell celda2 = fila.createCell(j);
                         celda2.setCellStyle(cabecera);
                         if (j == 1) {
-                            hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
                             celda2.setCellValue(resumen.get(0).getCabeceraTitulo()[0]);
+                        }else if(j == 10){
+                            hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
                         }
                     }
                 }
-                
+
                 if (re == 2) {
                     Cell celda = fila.createCell(1);
                     hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
                     celda.setCellStyle(cabecera);
-                    //celda.setCellValue("OBRA: CONSTRUCCION DEL PARQUE EN LA AV. LEON FEBRES CORDERO DE LA PARROQUIA SATELITE");
                     celda.setCellValue(resumen.get(0).getCabeceraTitulo()[1]);
                 }
                 if (re == 3) {
                     hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
                     Cell celda = fila.createCell(1);
                     celda.setCellStyle(cabecera);
-                    //celda.setCellValue("LA PUNTILLA DEL CANTON SAMBORONDON");
                     celda.setCellValue(resumen.get(0).getCabeceraTitulo()[2]);
                 }
                 if (re == 5) {
-                    //hojaResumenPresupuesto.setColumnWidth((short) re-1, 620);
-                    //hojaResumenPresupuesto.autoSizeColumn((short) re-1, true);
-
                     hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
                     Cell celda = fila.createCell(1);
                     celda.setCellStyle(cabecera);
@@ -5944,51 +5938,71 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 }
 
                 // body table resumen presupuesto
+                int auxPosition = 0;
                 if (re == 7) {
+                    auxPosition = re;
                     //System.out.println("export resumen " + resumen.toString());
                     int sizePresuRes = resumen.size();
+                    int acumTot = 0;
                     for (int size = 0; size < sizePresuRes; ++size) {
                         fila = hojaResumenPresupuesto.createRow(re);
                         for (int j = 1; j < 12; j++) {
                             Cell celda2 = fila.createCell(j);
                             celda2.setCellStyle(styleTitlIzqGene);
+                            acumTot += Double.parseDouble(resumen.get(size).getPreUnit())
+                                    * Double.parseDouble(resumen.get(size).getPreTotM());
                             if (j == 1) {
-                                celda2.setCellValue(resumen.get(size).getCodigo());
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                celda2.setCellValue(auxResPresu.get(size).getCodigo());
                             } else if (j == 2) {
                                 hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 2, 7));
-                                celda2.setCellValue(resumen.get(size).getRubro());
+                                celda2.setCellValue(auxResPresu.get(size).getRubro());
                             } else if (j == 8) {
-                                celda2.setCellValue(resumen.get(size).getUnidad());
+                                celda2.setCellValue(auxResPresu.get(size).getUnidad());
                             } else if (j == 9) {
-                                celda2.setCellValue(resumen.get(size).getCantidad());
+                                celda2.setCellValue(auxResPresu.get(size).getCantidad());
                             } else if (j == 10) {
-                                celda2.setCellValue(resumen.get(size).getPreUnit());
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                celda2.setCellValue(Double.parseDouble(auxResPresu.get(size).getPreUnit()));
                             } else if (j == 11) {
-                                celda2.setCellValue(resumen.get(size).getPreTotM());
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                celda2.setCellValue(Double.parseDouble(auxResPresu.get(size).getPreTotM()));
                             }
                         }
                         re++;
                     }
-
+                    // Ingreso el total
+                    fila = hojaResumenPresupuesto.createRow(re);
+                    for (int j = 1; j < 12; j++) {
+                        Cell celda = fila.createCell(j);
+                        celda.setCellStyle(styleCabe);
+                        if (j == 1) {
+                            hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 10));
+                            celda.setCellValue("Total");
+                        } else if (j == 11) {
+                            String strFormula = "SUM(L" + (auxPosition + 1) + ":L" + (re) + ")";
+                            celda.setCellType(Cell.CELL_TYPE_FORMULA);
+                            celda.setCellFormula(strFormula);
+                        }
+                    }
                 }
-
             }
 
-            wb.write(new FileOutputStream(archivo + ".xlsx"));
+            wb.write(new FileOutputStream(archivo));
             respuesta = "Exportación exitosa.";
             resumen.clear();
             datos.clear();
             // ponemos abrir el archivo exportado::: solo para costos indirectos, apus
             String path = "";
-        } catch (Exception e) {
-            System.out.println("aaa " + e.getMessage());
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("err-FrmApus " + e.getMessage());
         }
         return respuesta;
     }
+
     // SIEMPRE EL IMPORT DEL COMPONENTE que vamos a recorrer
     //  import javax.swing.JTextField;
     // almacenamos toda la informacion en un array de string
-
     public List<FormatoApus> getSquemaExport() {
         List<FormatoApus> listApus = new ArrayList<>();
 
@@ -6177,6 +6191,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
     // me va a permitir actualizar los datos de la cabecera
     public static String[] auxT = new String[3];
+    // update datos de cantidad y precio total :: resumen presupuesto
+    public static List<EsquemaPresupuesto> auxResPresu = new ArrayList<>();
+    
 
     // metodo para armar datos de el resumen del presupuesto
     public List<EsquemaPresupuesto> getEsquemaWithFormatApus(List<FormatoApus> apus) {

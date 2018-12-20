@@ -1112,7 +1112,7 @@ public class panelApus extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddTActionPerformed
 
     private void cboDecimalesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboDecimalesMouseClicked
-        
+
 
     }//GEN-LAST:event_cboDecimalesMouseClicked
 
@@ -1204,8 +1204,7 @@ public class panelApus extends javax.swing.JPanel {
                 double cost = getCostHora(cantAux, tarifa); // metodo control de decimales
                 tableE.setValueAt(String.valueOf(cost), position, 3); // pongo el valor 
                 tableE.setValueAt(String.valueOf(cantAux), position, 1); // pongo el valor de validaciones
-                
-                
+
                 // espera a que columna rendimiento este diferente de nula
                 String rendimiento = tableE.getValueAt(position, 4).toString();
                 //System.out.println("rend " +rendimiento);
@@ -1261,12 +1260,11 @@ public class panelApus extends javax.swing.JPanel {
                         tableM.setValueAt(String.valueOf(rendi), position, 4); // pongo el valor de validaciones
 
                         //**************************************
-                        //***************************************
                         double aux = getCostUnit(costHor, rendi);// metodo control de decimales
                         // lleno el [5]
                         tableM.setValueAt(aux, position, 5); // pongo el valor 
                         // SubTotal de mano de obra
-                        calManoObra();
+
                     }
                 }// verificacion de columna rendimiento no nula
             }// verificacion de columna cantidad no nula
@@ -1324,20 +1322,20 @@ public class panelApus extends javax.swing.JPanel {
         tableM.getTableHeader().setReorderingAllowed(false);
         tableMa.getTableHeader().setReorderingAllowed(false);
         tableT.getTableHeader().setReorderingAllowed(false);
-        
+
         DefaultTableCellRenderer cellRenderer = new DefaultTableCellHeaderRenderer();
         cellRenderer.setHorizontalAlignment(jLabel1.RIGHT);
         // tableE y TableM 1 al 5 other  1 al 4
-        for(int i=1; i<6;++i){
-         tableE.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
-         tableM.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+        for (int i = 1; i < 6; ++i) {
+            tableE.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+            tableM.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
-        
-        for(int i=1; i<5;++i){
-         tableMa.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
-         tableT.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+
+        for (int i = 1; i < 5; ++i) {
+            tableMa.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+            tableT.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
-        
+
     }
 
     // hacer textfield no editable y alineado a la derecha
@@ -1352,7 +1350,7 @@ public class panelApus extends javax.swing.JPanel {
         jTextField15.setEditable(false);
         jTextField16.setEditable(false);
         jTextField17.setEditable(false);
-        
+
         txtSubEq.setHorizontalAlignment(SwingConstants.RIGHT);
         jTextField8.setHorizontalAlignment(SwingConstants.RIGHT);
         jTextField9.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -1564,8 +1562,6 @@ public class panelApus extends javax.swing.JPanel {
 
         for (int i = 0; i < tablaSize; i++) {
             String Saux = "";
-            //System.out.println("tableDat "+tableM.getValueAt(i, 1).toString());
-            //aux.add(tableM.getValueAt(i, 1).toString());
             Saux = tableM.getValueAt(i, 1).toString();
             aux.add(Saux);
         }
