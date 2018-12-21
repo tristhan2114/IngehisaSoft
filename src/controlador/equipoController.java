@@ -57,9 +57,6 @@ public class equipoController {
     }
     
     
-    
-    
-    
     public boolean actualizar(Equipo datos){
         con = null;
         pst = null;
@@ -87,9 +84,6 @@ public class equipoController {
             return false;
         }
     }
-    
-    
-    
     
     
     public List<Equipo> getEquipoAll(){

@@ -20,7 +20,7 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
     public FrmMano_obra() {
         initComponents();
         // color de fondo
-        getContentPane().setBackground(new java.awt.Color(237,179,88));
+        //getContentPane().setBackground(new java.awt.Color(237,179,88));
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,8 +73,7 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
         lblTot = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(237, 179, 88));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Gestión  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
@@ -220,7 +219,7 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
                 btnCloseActionPerformed(evt);
             }
         });
-        getContentPane().add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 0, -1, 40));
+        getContentPane().add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 0, -1, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

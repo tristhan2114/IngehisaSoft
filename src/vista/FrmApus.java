@@ -5806,6 +5806,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
             // estilo de cabera Resumen APUS **********************************************************************
             List<EsquemaPresupuesto> resumen = getEsquemaWithFormatApus(datos);
             System.out.println("datos news "+auxResPresu.toString());
+            System.out.println("string[] "+auxT[0]);
             
             Font cab = wb.createFont();
             cab.setFontName("Times New Roman");
@@ -5943,14 +5944,11 @@ public class FrmApus extends javax.swing.JInternalFrame {
                     auxPosition = re;
                     //System.out.println("export resumen " + resumen.toString());
                     int sizePresuRes = resumen.size();
-                    int acumTot = 0;
                     for (int size = 0; size < sizePresuRes; ++size) {
                         fila = hojaResumenPresupuesto.createRow(re);
                         for (int j = 1; j < 12; j++) {
                             Cell celda2 = fila.createCell(j);
                             celda2.setCellStyle(styleTitlIzqGene);
-                            acumTot += Double.parseDouble(resumen.get(size).getPreUnit())
-                                    * Double.parseDouble(resumen.get(size).getPreTotM());
                             if (j == 1) {
                                 celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 celda2.setCellValue(auxResPresu.get(size).getCodigo());
@@ -6030,7 +6028,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 JTextField textField = (JTextField) panelaux.getComponent(y);
                                 if (!textField.getText().equals("")) {
                                     // verifico que haiga contenido (texto)
-                                    //System.out.println("TetFi " + textField.getText());
+                                    System.out.println("position text  " + (position)+"  --- " + textField.getText());
                                     //System.out.println("position text  " + (position++));
                                     switch (position) {
                                         case 0:
@@ -6067,22 +6065,22 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                             entFormtApus.setCostDirecto(textField.getText());
                                             break;
                                         case 19:
-                                            entFormtApus.setCostTotRubro(textField.getText());
-                                            break;
-                                        case 20:
-                                            entFormtApus.setValorOfert(textField.getText());
-                                            break;
-                                        case 21:
                                             entFormtApus.setnIngrUtil(textField.getText());
                                             break;
-                                        case 22:
-                                            entFormtApus.setnOthUtil(textField.getText());
-                                            break;
-                                        case 23:
+                                        case 20:
                                             entFormtApus.setrIngrUtil(textField.getText());
                                             break;
-                                        case 24:
+                                        case 21:
+                                            entFormtApus.setnOthUtil(textField.getText());
+                                            break;
+                                        case 22:
                                             entFormtApus.setrOthUtil(textField.getText());
+                                            break;
+                                        case 23:
+                                            entFormtApus.setCostTotRubro(textField.getText());
+                                            break;
+                                        case 24:
+                                            entFormtApus.setValorOfert(textField.getText());
                                             break;
                                         default:
                                             break;
