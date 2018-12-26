@@ -8,7 +8,9 @@ package vistaPanelApusDialog;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import sun.swing.table.DefaultTableCellHeaderRenderer;
 import vistaPanelApus.panelApus;
 
 /**
@@ -21,13 +23,12 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
      * Creates new form dialogEquipo
      */
     private Character kpress;
-    public static Object [] fila;
-    
-    
+    public static Object[] fila;
+
     public dialogRendimiento() {
-        initComponents();     
+        initComponents();
         setTitle("Cálculo de rendimiento APUS");
-        jTextField1.setEditable(false);
+        setComponent();
     }
 
     /**
@@ -54,21 +55,21 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
         jTextField4 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jTextField9 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setText("Total tarifa de equipo y mano de obra: ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 17, 230, -1));
+        jLabel2.setText("Total tarifa de equipo y jornal real mano de obra (T): ");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 17, 330, -1));
 
         jTextField1.setText("a");
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 42, 79, -1));
@@ -79,7 +80,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
                 btnClosedActionPerformed(evt);
             }
         });
-        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, -1, -1));
+        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
 
         jLabel3.setText("Mano de obra sueldo");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 73, 209, -1));
@@ -89,14 +90,14 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Cantidad", "Sueldo", "Total"
+                "<html><center>Cantidad<br><b>A</b></center></html>", "<html><center>Sueldo<br><b>B</b></center></html>", "<html><center>Total<br><b>C = (A*B)/26</b></center></html>"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, false
+                false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -114,60 +115,83 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(table);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 93, -1, 92));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 93, -1, 150));
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("SubTotal 1");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(282, 200, 60, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250, 60, -1));
 
-        jTextField2.setText("b = tblTOT");
+        jTextField2.setText("0.0");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 191, 106, -1));
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 250, 106, -1));
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Adicional");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, 60, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, 60, -1));
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Variable");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(282, 220, 70, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 70, -1));
 
-        jTextField3.setText("6");
+        jTextField3.setText("0.0");
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField3KeyPressed(evt);
             }
         });
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 216, 106, -1));
+        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 275, 50, -1));
 
-        jTextField4.setText("b / adicional");
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 242, 106, -1));
+        jTextField4.setText("0.0");
+        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 275, 106, -1));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Rendimiento");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 360, -1, -1));
 
-        jTextField5.setText("total / b");
-        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, 106, -1));
+        jTextField5.setText("0.0");
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField5KeyPressed(evt);
+            }
+        });
+        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 300, 106, -1));
 
-        jLabel7.setText("%");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 320, -1, -1));
+        jTextField6.setText("0.0");
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField6KeyPressed(evt);
+            }
+        });
+        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 325, 50, -1));
 
-        jTextField6.setText("1.55");
-        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 300, 106, -1));
+        jTextField7.setText("0.0");
+        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 325, 106, -1));
 
-        jTextField7.setText("jTextField7");
-        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 325, 106, -1));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setText("Rendimiento Total");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 390, -1, -1));
 
-        jLabel8.setText("Rendimiento + %");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 350, -1, -1));
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setText("Subtotal 2 (Arriba / T)");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 302, -1, -1));
 
-        jLabel9.setText("Subtotal 2");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, -1, -1));
-
-        jTextField8.setText("jTextField8");
+        jTextField8.setText("0.0");
         jTextField8.setPreferredSize(new java.awt.Dimension(62, 20));
-        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, 100, -1));
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField8KeyPressed(evt);
+            }
+        });
+        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, 50, -1));
 
         jButton1.setText("Calcular SubTotal 1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -177,15 +201,18 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, -1, -1));
 
+        jTextField9.setText("0.0");
+        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 106, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
         );
 
         pack();
@@ -205,28 +232,45 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         calTotTbl("");
-        
-        calSubTot1();
-        
+        calSubTot1(); // metodo subtotal 1
+        calVariable(); // metodo variable y llama a calSubTot 2
+        calAdicional(); // metodo adicional
+        calRendimiento(); // metodo rendimiento
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jTextField3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyPressed
-         kpress = evt.getKeyChar();
+        // calculo con n variable  jTextField4 = jTextField2 / jTextField3;
+        kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
-            String val = jTextField3.getText();
-            if(!val.equals("")){
-                double adicio = Double.parseDouble(val);
-                double subTot1 = Double.parseDouble(jTextField2.getText());
-                // llenamos subTotal 2   solo 2 decimales
-                 jTextField4.setText(String.valueOf((double)Math.round((subTot1 / adicio ) * 100d) / 100d));   
-            }
-            
+            calVariable();
         }
     }//GEN-LAST:event_jTextField3KeyPressed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
+
+    }//GEN-LAST:event_jTextField5KeyPressed
+
+    private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calAdicional();
+        }
+    }//GEN-LAST:event_jTextField6KeyPressed
+
+    private void jTextField8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calRendimiento();
+        }
+    }//GEN-LAST:event_jTextField8KeyPressed
 
     /**
      * @param args the command line arguments
@@ -273,7 +317,6 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -286,103 +329,188 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     public static javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 
+    // noEdit compo, no move column table, align derecha
+    private void setComponent() {
+        table.getTableHeader().setReorderingAllowed(false);
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellHeaderRenderer();
+        cellRenderer.setHorizontalAlignment(jLabel1.RIGHT);
+        for (int i = 0; i < 3; ++i) {
+            table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+        }
+
+        jTextField1.setEditable(false);
+        jTextField4.setEditable(false);
+        jTextField5.setEditable(false);
+        jTextField7.setEditable(false);
+        jTextField9.setEditable(false);
+
+        jTextField1.setHorizontalAlignment(jLabel1.RIGHT);
+        jTextField2.setHorizontalAlignment(jLabel1.RIGHT);
+        jTextField3.setHorizontalAlignment(jLabel1.RIGHT);
+        jTextField4.setHorizontalAlignment(jLabel1.RIGHT);
+        jTextField5.setHorizontalAlignment(jLabel1.RIGHT);
+        jTextField6.setHorizontalAlignment(jLabel1.RIGHT);
+        jTextField7.setHorizontalAlignment(jLabel1.RIGHT);
+        jTextField8.setHorizontalAlignment(jLabel1.RIGHT);
+        jTextField9.setHorizontalAlignment(jLabel1.RIGHT);
+    }
 
     // llenar tabla con cantidad de mano de obra
-    public static void setTableCant(List<String> list){
+    public static void setTableCant(List<String> list) {
         limpiarTabla();
-        DefaultTableModel modelo=(DefaultTableModel) table.getModel(); 
-        Object [] fila=new Object[3]; 
+        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+        Object[] fila = new Object[3];
         //Sección 3
-        for(int i = 0; i<list.size();++i){
-            fila[0]=list.get(i); // cantidad
-            fila[1]=""; // 
-            fila[2]=""; // 
+        for (int i = 0; i < list.size(); ++i) {
+            fila[0] = list.get(i); // cantidad
+            fila[1] = ""; // 
+            fila[2] = ""; // 
             //Sección 4
             modelo.addRow(fila);
         }
         //Sección 5
-        table.setModel(modelo); 
-
+        table.setModel(modelo);
     }
-    
+
     // llenar tabla con cantidad de mano de obra modo update cantidad
-    public static void setTableCantUpdate(List<String> list){        
+    public static void setTableCantUpdate(List<String> list) {
         int size = table.getRowCount();
-        for(int i = 0; i<list.size();++i){
-            if(i<size){
+        for (int i = 0; i < list.size(); ++i) {
+            if (i < size) {
                 table.setValueAt(list.get(i), i, 0); // pongo el valor     
-            }else{
-                DefaultTableModel modelo=(DefaultTableModel) table.getModel();
-                Object [] fila=new Object[3]; 
-                fila[0]=list.get(i); // cantidad
-                fila[1]=""; // 
-                fila[2]=""; // 
+            } else {
+                DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+                Object[] fila = new Object[3];
+                fila[0] = list.get(i); // cantidad
+                fila[1] = ""; // 
+                fila[2] = ""; // 
                 modelo.addRow(fila);
                 //Sección 5
-                table.setModel(modelo); 
+                table.setModel(modelo);
             }
         }
-        
 
     }
-    
+
     private static void limpiarTabla() {
         DefaultTableModel model1 = (DefaultTableModel) table.getModel();
         model1.setRowCount(0);
     }
-    
+
     // calculo de total = cant[0] * sueldo[1] / 26  ** en table
-    private void calTotTbl (String dto){
-        if(dto.equals("keyPress")){
+    private void calTotTbl(String dto) {
+        if (dto.equals("keyPress")) {
             int position = table.getSelectedRow();
             double cant = Double.parseDouble(table.getValueAt(position, 0).toString());
             String val = table.getValueAt(position, 1).toString();
-            if(!val.equals("")){
+            if (!val.equals("")) {
                 double suel = Double.parseDouble(table.getValueAt(position, 1).toString());
-                double aux = (double) Math.round(((cant*suel)/26) * 100d) / 100d; // solo 2 decimales   
+                double aux = (double) Math.round(((cant * suel) / 26) * 100d) / 100d; // solo 2 decimales   
                 table.setValueAt(aux, position, 2); // pongo el valor    
-            }else{
+            } else {
                 table.setValueAt("", position, 2); // pongo el valor  
             }
-        }else{
+        } else {
             int size = table.getRowCount();
             for (int i = 0; i < size; i++) {
                 double cant = Double.parseDouble(table.getValueAt(i, 0).toString());
                 String val = table.getValueAt(i, 1).toString();
                 //System.out.println("aaa "+val);
-                if(!val.equals("")){
+                if (!val.equals("")) {
                     double suel = Double.parseDouble(table.getValueAt(i, 1).toString());
-                    double aux = (double) Math.round(((cant*suel)/26) * 100d) / 100d; // solo 2 decimales
+                    double aux = (double) Math.round(((cant * suel) / 26) * 100d) / 100d; // solo 2 decimales
                     table.setValueAt(aux, i, 2); // pongo el valor 
-                }else{
+                } else {
                     table.setValueAt("", i, 2); // pongo el valor 
                 }
             }
+            //  ************************                          *************************
         }
+        calSubTot1(); // metodo subtotal 1
     }
 
     // click btn calcular sub Tot 1
     private void calSubTot1() {
-        String valTblTot = table.getValueAt(0, 2).toString();
-        //System.out.println("calSubT 1  "+valTblTot);
-        if(!valTblTot.equals("")){
-            int size = table.getRowCount();
-            //System.out.println("calSubT size  "+size);
-            double acum = 0;
-            for(int i=0; i<size; ++i){
-                String valTbl = table.getValueAt(i, 2).toString();
-                //System.out.println("calSubT for  "+valTbl);
-                if(!valTbl.equals("")){
-                    double tot = Double.parseDouble(valTbl);
-                    acum += tot; 
+        int sizeRows = table.getRowCount();
+        if (sizeRows > 0) {
+            String valTblTot = table.getValueAt(0, 2).toString();
+            //System.out.println("calSubT 1  "+valTblTot);
+            if (!valTblTot.equals("")) {
+                int size = table.getRowCount();
+                //System.out.println("calSubT size  "+size);
+                double acum = 0;
+                for (int i = 0; i < size; ++i) {
+                    String valTbl = table.getValueAt(i, 2).toString();
+                    //System.out.println("calSubT for  "+valTbl);
+                    if (!valTbl.equals("")) {
+                        double tot = Double.parseDouble(valTbl);
+                        acum += tot;
+                    }
                 }
+                acum = (double) Math.round((acum) * 100d) / 100d; // solo 2 decimales   
+                jTextField2.setText(String.valueOf(acum)); // en txtField SubTot 1   
             }
-            acum = (double) Math.round((acum) * 100d) / 100d; // solo 2 decimales   
-            jTextField2.setText(String.valueOf(acum)); // en txtField SubTot 1   
         }
     }
-    
+
+    // calculo variable
+    private void calVariable() {
+        // (R) jTextField4 = (Subt 1)jTextField2 / (Vari )jTextField3
+        String var = jTextField3.getText().trim();
+        if (var.equals("0") | var.equals("0.0") | var.equals("")) {
+            jTextField4.setText("0.0");
+        } else {
+            double subtot1 = Double.parseDouble(jTextField2.getText());
+            double variable = Double.parseDouble(var);
+            jTextField4.setText(String.valueOf((double) Math.round((subtot1 / variable) * 100d) / 100d));
+            calSubTot2();
+        }
+    }
+
+    // cal subtotal 2
+    private void calSubTot2() {
+        // (Subtot 2) jTextField5 = (RVariable)jTextField4 / (T) jTextField1
+        double RVariable = Double.parseDouble(jTextField4.getText());
+        double T = Double.parseDouble(jTextField1.getText());
+        jTextField5.setText(String.valueOf((double) Math.round((RVariable / T) * 100d) / 100d));
+    }
+
+    // calculo de adicional
+    private void calAdicional() {
+        //   jTextField7 = jTextField5 + jTextField6
+        String rendi = jTextField6.getText().trim();
+        if (rendi.equals("0") | rendi.equals("0.0") | rendi.equals("")) {
+            jTextField7.setText("0.0");
+        } else {
+            double valor1 = Double.parseDouble(jTextField5.getText());
+            double valor2 = Double.parseDouble(jTextField6.getText());
+            jTextField7.setText(String.valueOf((double) Math.round((valor1 + valor2) * 100d) / 100d));
+
+            calRendimiento();// rendimiento
+        }
+    }
+
+    // calculo de rendimiento
+    private void calRendimiento() {
+        // (Val Rendi) jTextField9  =  (Rendi) jTextField8 * (jTextField7 + jTextField5)
+        String rendi = jTextField8.getText().trim();
+        if (rendi.equals("0") | rendi.equals("0.0") | rendi.equals("")) {
+            jTextField9.setText("0.0");
+        } else {
+            double valRend = Double.parseDouble(rendi);
+            double valor1 = Double.parseDouble(jTextField5.getText()); // subtot 2
+
+            String val = jTextField7.getText().trim();
+            if (val.equals("0") | val.equals("0.0") | val.equals("")) {
+                jTextField9.setText(String.valueOf((double) Math.round(( (valRend*valor1)/100 ) * 100d) / 100d ));
+            } else {
+                double valor2 = Double.parseDouble(jTextField7.getText()); // val adicional
+                jTextField9.setText(String.valueOf((double) Math.round(( (valRend*valor2)/100 ) * 100d) / 100d));
+            }
+        }
+    }
 }

@@ -5,6 +5,7 @@
  */
 package vista;
 
+import com.google.gson.Gson;
 import java.awt.Color;
 import vistaPanelApus.panelApus;
 import java.awt.GridBagConstraints;
@@ -5805,13 +5806,13 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
             // estilo de cabera Resumen APUS **********************************************************************
             List<EsquemaPresupuesto> resumen = getEsquemaWithFormatApus(datos);
-            System.out.println("datos news "+auxResPresu.toString());
-            System.out.println("string[] "+auxT[0]);
-            
+            System.out.println("datos news " + auxResPresu.toString());
+            System.out.println("string[] " + auxT[0]);
+
             Font cab = wb.createFont();
             cab.setFontName("Times New Roman");
             cab.setBoldweight(Font.BOLDWEIGHT_BOLD);
-            cab.setFontHeightInPoints((short) 22);
+            cab.setFontHeightInPoints((short) 18);
 
             CellStyle cabecera = wb.createCellStyle();
             cabecera.setFont(cab);
@@ -5833,8 +5834,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
             // inicio de insertar imagen
             // read the image to the stream
+            String url_imagen = System.getProperty("user.dir") +"\\resource\\img\\ingehisa.png";
             final FileInputStream stream
-                    = new FileInputStream("C:\\Users\\personal1\\Pictures\\logo-ingehisa.png");
+                    = new FileInputStream(url_imagen);
             final CreationHelper helper = wb.getCreationHelper();
             final Drawing drawing = hojaResumenPresupuesto.createDrawingPatriarch();
 
@@ -5879,7 +5881,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                         celda2.setCellStyle(cabecera);
                         if (j == 1) {
                             celda2.setCellValue(resumen.get(0).getCabeceraTitulo()[0]);
-                        }else if(j == 10){
+                        } else if (j == 10) {
                             hojaResumenPresupuesto.addMergedRegion(new CellRangeAddress(re, re, 1, 11));
                         }
                     }
@@ -5986,12 +5988,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 }
             }
 
+            // save a base de datos y el file a un folder del sistema *********
+            saveDbFile(datos, resumen, wb);
+
             wb.write(new FileOutputStream(archivo));
             respuesta = "Exportación exitosa.";
             resumen.clear();
             datos.clear();
-            // ponemos abrir el archivo exportado::: solo para costos indirectos, apus
-            String path = "";
+
         } catch (IOException | NumberFormatException e) {
             System.out.println("err-FrmApus " + e.getMessage());
         }
@@ -6028,7 +6032,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 JTextField textField = (JTextField) panelaux.getComponent(y);
                                 if (!textField.getText().equals("")) {
                                     // verifico que haiga contenido (texto)
-                                    System.out.println("position text  " + (position)+"  --- " + textField.getText());
+                                    //System.out.println("position text  " + (position) + "  --- " + textField.getText());
                                     //System.out.println("position text  " + (position++));
                                     switch (position) {
                                         case 0:
@@ -6191,7 +6195,6 @@ public class FrmApus extends javax.swing.JInternalFrame {
     public static String[] auxT = new String[3];
     // update datos de cantidad y precio total :: resumen presupuesto
     public static List<EsquemaPresupuesto> auxResPresu = new ArrayList<>();
-    
 
     // metodo para armar datos de el resumen del presupuesto
     public List<EsquemaPresupuesto> getEsquemaWithFormatApus(List<FormatoApus> apus) {
@@ -6224,6 +6227,30 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
         return aux;
     }
+
+    private void saveDbFile(List<FormatoApus> apus, List<EsquemaPresupuesto> resumen, Workbook workbook) {
+        final String pathFile = System.getProperty("user.dir") + "/resource/fileApus/";
+        // las listas en la base de datos
+        try {
+            // convertimos las listas en json
+            Gson gson =new Gson();
+            String formatoJSONApus = gson.toJson(apus);
+            String formatoJSONResumen = gson.toJson(resumen);
+            //imprimimos en consola el texto con formato JSON
+            System.out.println("Texto en Formato JSON de los apus agregados:n" + formatoJSONApus);
+            System.out.println("Texto en Formato JSON de los resumen agregados:n" + formatoJSONResumen);
+
+            // ultimo necesito el id de apus
+            File archivo = new File(pathFile + "ApusPresResumen00.xlsx");
+            FileOutputStream out = new FileOutputStream(archivo);
+            workbook.write(out);
+            out.close();
+        } catch (IOException e) {
+            System.err.println("ERROR AL CREAR EL ARCHIVO!");
+            e.printStackTrace();
+        }
+    }
+
 }
 
 /**
@@ -6276,3 +6303,15 @@ public class FrmApus extends javax.swing.JInternalFrame {
  *
  *
  */
+
+/*
+leer gson
+Type tipoObjeto = new TypeToken<list <Alumno>>(){}.getType();
+ArrayList<alumno> alumnos2=gson.fromJson(formatoJSON, tipoObjeto);
+System.out.println("nJSON A JAVA");
+for(int i=0;i<alumnos2 .size();i++){
+	Alumno al=alumnos2.get(i);
+	System.out.println(al.nombre+":"+al.grado+":"+al.grupo+":"+al.calificacion);
+}
+
+*/

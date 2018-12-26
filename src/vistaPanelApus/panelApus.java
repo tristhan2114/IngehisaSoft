@@ -517,13 +517,12 @@ public class panelApus extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("N° decimales");
 
-        cboDecimales.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5", "6", "7" }));
-	cboDecimales.addMouseListener(new java.awt.event.MouseAdapter() {
+        cboDecimales.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5" }));
+        cboDecimales.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cboDecimalesMouseClicked(evt);
             }
         });
-        
         cboDecimales.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboDecimalesActionPerformed(evt);
@@ -883,7 +882,7 @@ public class panelApus extends javax.swing.JPanel {
                 dialogRendimiento.jTextField1.setText(dato);
                 dialogRendimiento.setTableCantUpdate(getCantTableM());
 
-                dlgrendimiento.setLocation(23, 23);
+                dlgrendimiento.setLocation(800, 100);
                 dlgrendimiento.moveToFront();
                 dlgrendimiento.show();
             } else {
@@ -895,7 +894,7 @@ public class panelApus extends javax.swing.JPanel {
                 dialogRendimiento.jTextField1.setText(dato);
                 dialogRendimiento.setTableCant(getCantTableM());
 
-                dlgrendimiento.setLocation(23, 23);
+                dlgrendimiento.setLocation(800, 100);
                 dlgrendimiento.show();
             }
         } catch (Exception e) {
@@ -1122,7 +1121,9 @@ public class panelApus extends javax.swing.JPanel {
         setEventTableMateriales();
         setEventTableTransporte();
         calCostoDirecto();
-        System.out.println("cbo...");
+        calIndiUtili();
+        calOtherIndi();
+        calCostTotRubro();
     }//GEN-LAST:event_cboDecimalesActionPerformed
 
 
@@ -1282,7 +1283,9 @@ public class panelApus extends javax.swing.JPanel {
                 int cantAux = validacion.soloNumero(cant);
                 // R:[4]  = [2] * [3]
                 double precUnit = Double.parseDouble(tableMa.getValueAt(position, 3).toString());
-                double cost = (double) Math.round((cantAux * precUnit) * 100d) / 100d; // solo 2 decimales
+                
+                double cost =  getCostUnit(cantAux, precUnit);  // metodo n decimales
+                
                 tableMa.setValueAt(String.valueOf(cost), position, 4); //R: pongo el valor 
                 tableMa.setValueAt(String.valueOf(cantAux), position, 2); // pongo el valor de validaciones
 
@@ -1303,7 +1306,9 @@ public class panelApus extends javax.swing.JPanel {
                 int cantAux = validacion.soloNumero(cant);
                 // R:[4]  = [2] * [3]
                 double tari = validacion.solomoney(tableT.getValueAt(position, 3).toString());
-                double cost = (double) Math.round((cantAux * tari) * 100d) / 100d; // solo 2 decimales
+                
+                double cost =  getCostUnit(cantAux, tari);  // metodo n decimales
+                
                 tableT.setValueAt(String.valueOf(cost), position, 4); //R: pongo el valor 
                 tableT.setValueAt(String.valueOf(cantAux), position, 2); // pongo el valor de validaciones
                 tableT.setValueAt(String.valueOf(tari), position, 3); // pongo el valor de validaciones
@@ -1378,7 +1383,7 @@ public class panelApus extends javax.swing.JPanel {
                     subtotal += Double.parseDouble(model.getValueAt(i, 5).toString());
                 }
             }
-            subtotal = getCalEMaMT(subtotal);
+            subtotal = getCalEMaMT(subtotal); // metodo n decimales
             txtSubEq.setText(String.valueOf(subtotal));
         } else {
             txtSubEq.setText("0.0");
@@ -1401,7 +1406,7 @@ public class panelApus extends javax.swing.JPanel {
                     subtotal += Double.parseDouble(model.getValueAt(i, 5).toString());
                 }
             }
-            subtotal = getCalEMaMT(subtotal);
+            subtotal = getCalEMaMT(subtotal); // metodo n decimales
             jTextField8.setText(String.valueOf(subtotal));
             calCostoDirecto();
         } else {
@@ -1426,7 +1431,7 @@ public class panelApus extends javax.swing.JPanel {
                     subtotal += Double.parseDouble(model.getValueAt(i, 4).toString());
                 }
             }
-            subtotal = getCalEMaMT(subtotal);
+            subtotal = getCalEMaMT(subtotal);// metodo n decimales
             jTextField9.setText(String.valueOf(subtotal));
             calCostoDirecto();
         } else {
@@ -1448,7 +1453,7 @@ public class panelApus extends javax.swing.JPanel {
                     subtotal += Double.parseDouble(model.getValueAt(i, 4).toString());
                 }
             }
-            subtotal = getCalEMaMT(subtotal);
+            subtotal = getCalEMaMT(subtotal);// metodo n decimales
             jTextField10.setText(String.valueOf(subtotal));
             calCostoDirecto();
         } else {
@@ -1606,6 +1611,7 @@ public class panelApus extends javax.swing.JPanel {
         }
     }
 
+        
     // metodo para controlar n decimales de metodos de calculo equi, mano, mate, trans
     private Double getCalEMaMT(double subtotal) {
         //int decim = Integer.parseInt(cboDecimales.getSelectedItem().toString());

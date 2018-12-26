@@ -14,12 +14,12 @@ import java.sql.SQLException;
  * @author personal
  */
 public class conexion {
-    
-     String url = "jdbc:postgresql://localhost:5432/inventario";
-    String user = "postgres";
-    String pass = "123";
-    Connection conn = null;
-    
+
+    private final String url = "jdbc:postgresql://localhost:5432/inventario";
+    private final String user = "postgres";
+    private final String pass = "1234";
+    private Connection conn = null;
+
     public Connection conn() {
         try {
             conn = DriverManager.getConnection(url, user, pass);
@@ -28,27 +28,23 @@ public class conexion {
         }
         return conn;
     }
-    
-    public void close() throws SQLException{
-        if(conn!= null)
+
+    public void close() throws SQLException {
+        if (conn != null) {
             conn.close();
+        }
     }
-    
-    
-    
-    
-    /*
-    public static void main(String[] args) {
+
+    /*public static void main(String[] args) {
         try {
             String url = "jdbc:postgresql://localhost:5432/inventario";
-    String user = "postgres";
-    String pass = "123";
-    Connection conn = null;
+            String user = "postgres";
+            String pass = "123";
+            Connection conn = null;
             conn = DriverManager.getConnection(url, user, pass);
             System.out.println("ok");
         } catch (Exception es) {
             System.out.println("ERROR AL OBTENER LA CONEXION+ " + es);
         }
     }*/
-    
 }
