@@ -6229,7 +6229,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
     }
 
     private void saveDbFile(List<FormatoApus> apus, List<EsquemaPresupuesto> resumen, Workbook workbook) {
-        final String pathFile = System.getProperty("user.dir") + "/resource/fileApus/";
+        final String pathFile = System.getProperty("user.dir") + "\\resource\\fileApus\\";
         // las listas en la base de datos
         try {
             // convertimos las listas en json

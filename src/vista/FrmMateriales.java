@@ -5,6 +5,14 @@
  */
 package vista;
 
+import controlador.clasificacionController;
+import controlador.proveedorController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import modelo.Clasificacion;
+import modelo.Proveedor;
+
 /**
  *
  * @author personal
@@ -14,10 +22,16 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     /**
      * Creates new form materiales
      */
+    private final String path_imagen = System.getProperty("user.dir")+"\\resourse\\img\\materiales\\";
     public FrmMateriales() {
         initComponents();
         txtdescripcion.setLineWrap(true);
         txtdescripcion.setWrapStyleWord(true);
+
+        //  llenamos cbo por default
+        llenarCboClasificacion();
+        llenarCboProveedor();
+
     }
 
     /**
@@ -175,7 +189,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         this.dispose();
+        this.dispose();
         home.activoMateriales = false;
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -237,8 +251,30 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextArea txtdescripcion;
     // End of variables declaration//GEN-END:variables
-}
 
+    // llenamos el cbo de clasificacion
+    private void llenarCboClasificacion() {
+        // jComboBox2
+        clasificacionController ctrClasi = new clasificacionController();
+        List<Clasificacion> clasificaciones = (ArrayList<Clasificacion>) ctrClasi.getClasificacionAll();
+        DefaultComboBoxModel cboModel = new DefaultComboBoxModel();
+        for (Clasificacion clasificacione : clasificaciones) {
+            cboModel.addElement(clasificacione);
+        }
+        jComboBox2.setModel(cboModel);
+    }
+    // llenamos el cbo de proveedor
+    private void llenarCboProveedor() {
+        // jComboBox1
+        proveedorController ctrProvee = new proveedorController();
+        List<Proveedor> proveedores = (ArrayList<Proveedor>) ctrProvee.getProveedoresAll();
+        DefaultComboBoxModel cboModel = new DefaultComboBoxModel();
+        for (Proveedor proveedor : proveedores) {
+            cboModel.addElement(proveedor);
+        }
+        jComboBox1.setModel(cboModel);
+    }
+}
 
 /*
 
@@ -256,4 +292,4 @@ apus/
 presupuesto/
 
 
-*/
+ */

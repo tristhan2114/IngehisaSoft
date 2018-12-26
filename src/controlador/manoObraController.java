@@ -35,6 +35,7 @@ public class manoObraController {
         pst = null;
         sql = "INSERT INTO equippo (descripcion, sueldo, fsr, diario, hora,  cpc, "
                 + "np_nd_ep, vae) values (?,?,?,?,?,?,?,?)";
+        conPg = new conexion();
         try {
             con = conPg.conn();
             pst = con.prepareStatement(sql);
@@ -50,7 +51,7 @@ public class manoObraController {
             pst.execute();
             pst.close();
             con.close();
-            
+            conPg = null;
             return true;
         } catch (Exception e) {
             e.getMessage();
@@ -66,6 +67,7 @@ public class manoObraController {
         sql = "UPDATE equipo SET descripcion=?, sueldo=?, fsr=?, diario=?, hora=?, cpc=?, "
                 + "np_nd_ep=?, vae=? "
                 + " where id=?";
+        conPg = new conexion();
         try {
             con = conPg.conn();
             pst.setString(1, datos.getDescripcion());
@@ -81,7 +83,7 @@ public class manoObraController {
             pst.execute();
             pst.close();
             con.close();
-            
+            conPg = null;
             return true;
         } catch (Exception e) {
             e.getMessage();
@@ -91,11 +93,12 @@ public class manoObraController {
     
     
     
-    public List<ManoObra> getEquipoAll(){
+    public List<ManoObra> getManoObraoAll(){
         con = null;
         pst = null;
         sql = "select * from manoObra";
         List<ManoObra> manoObras = new ArrayList<>();
+        conPg = new conexion();
         try {
             con = conPg.conn();
             stm = con.createStatement();
@@ -119,7 +122,7 @@ public class manoObraController {
             stm.close();
             rs.close();
             con.close();
-            
+            conPg = null;
         } catch (Exception e) {
             e.getMessage();
         }
@@ -127,11 +130,12 @@ public class manoObraController {
     }
     
     
-    public List<ManoObra> getEquipoByID(int id){
+    public List<ManoObra> getManoObraByID(int id){
         con = null;
         pst = null;
         sql = "select * from manoObra where id="+id;
         List<ManoObra> manoObras = new ArrayList<>();
+        conPg = new conexion();
         try {
             con = conPg.conn();
             stm = con.createStatement();
@@ -155,7 +159,7 @@ public class manoObraController {
             stm.close();
             rs.close();
             con.close();
-            
+            conPg = null;
         } catch (Exception e) {
             e.getMessage();
         }
@@ -163,11 +167,12 @@ public class manoObraController {
     }
 
 
-    public List<ManoObra> getEquipoByDescripcion(String descrip){
+    public List<ManoObra> getManoObraByDescripcion(String descrip){
         con = null;
         pst = null;
         sql = "select * from manoObra where descripcion like '%"+descrip+"%'";;
         List<ManoObra> manoObras = new ArrayList<>();
+        conPg = new conexion();
         try {
             con = conPg.conn();
             stm = con.createStatement();
@@ -191,10 +196,35 @@ public class manoObraController {
             stm.close();
             rs.close();
             con.close();
-            
+            conPg = null;
         } catch (Exception e) {
             e.getMessage();
         }
         return manoObras; 
+    }
+    
+        // traemos el id sgt para hacer la insercion
+    public int getIDSgt() {
+        int id = 0;
+        con = null;
+        stm = null;
+        sql = "select count(id) from manoObra";
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                id+=rs.getInt(1);
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return (id+ 1);
     }
 }

@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public class conexion {
 
-    private final String url = "jdbc:postgresql://localhost:5432/inventario";
+    private String url = "jdbc:postgresql://localhost:5432/ingehisaSoft";
     private final String user = "postgres";
     private final String pass = "1234";
     private Connection conn = null;
@@ -35,16 +35,16 @@ public class conexion {
         }
     }
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         try {
-            String url = "jdbc:postgresql://localhost:5432/inventario";
+            String url = "jdbc:postgresql://localhost:5432/ingehisaSoft";
             String user = "postgres";
-            String pass = "123";
+            String pass = "1234";
             Connection conn = null;
             conn = DriverManager.getConnection(url, user, pass);
             System.out.println("ok");
         } catch (Exception es) {
             System.out.println("ERROR AL OBTENER LA CONEXION+ " + es);
         }
-    }*/
+    }
 }
