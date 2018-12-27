@@ -5,6 +5,11 @@
  */
 package vistaPanelApusDialog;
 
+import controlador.manoObraController;
+import java.awt.event.KeyEvent;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import modelo.ManoObra;
 import vistaPanelApus.panelApus;
 import static vistaPanelApus.panelApus.activoDlgManoObra;
 
@@ -17,9 +22,21 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
     /**
      * Creates new form dialogEquipo
      */
+    
+     // instancias
+    manoObraController ctrManObra = new manoObraController();
+    ManoObra datos = null;
+    
+     // variable para caracter
+    private Character kpress;
+    
     public dialogManoObra() {
         initComponents();
         setTitle("Consulta de datos de Mano de Obra");
+        
+        // Default
+        setEsquemaTable();
+        setTableEquipoAll();
     }
 
     /**
@@ -32,40 +49,65 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         btnClosed = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Búscar Mano de obra");
-
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Descripción: ");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 17, 90, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Descripción", "Sueldo", "Diario", "Hora"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(50);
+            table.getColumnModel().getColumn(1).setPreferredWidth(240);
+        }
 
-        jTextField1.setText("jTextField1");
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 470, 160));
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 12, 280, -1));
 
         btnClosed.setText("X");
         btnClosed.addActionListener(new java.awt.event.ActionListener() {
@@ -73,53 +115,13 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
                 btnClosedActionPerformed(evt);
             }
         });
+        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 13, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnClosed)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnClosed)
-                    .addComponent(jLabel1))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Total de registros");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, 220, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 230));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -135,6 +137,13 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
         //frmIntFactura.txtCliente.setText(table.getValueAt(fila, 1).toString() + " "+ 
           //      table.getValueAt(fila, 2).toString());  
     }//GEN-LAST:event_tableMouseClicked
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+         kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            getFiltoByCodAndDescrip();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
 
     /**
      * @param args the command line arguments
@@ -181,4 +190,89 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
+
+    // no move columnTable y hide 
+    private void setEsquemaTable() {
+        // table
+        table.getTableHeader().setReorderingAllowed(false);
+    }
+
+    // metodo para limpiar tabla
+    private void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+    }
+
+    // metodo para traer todos los datos de equipo
+    private void setTableEquipoAll() {
+        // jTable1
+        int sizeRows = table.getRowCount();
+        if (sizeRows > 0) {
+            clearTable();
+        }
+        List<ManoObra> list = ctrManObra.getManoObraoAll();
+
+        if (list.isEmpty()) {
+            // jLabel1
+            jLabel1.setText("No hay registros");
+        } else {
+            jLabel1.setText("Total de registros: " + list.size());
+        }
+
+        addRowTable(list);
+    }
+    
+     // lleno el cuerpo de la tabla
+    private void addRowTable(List<ManoObra> list) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        Object[] row;
+        for (ManoObra mano : list) {
+            row = new Object[5];
+            row[0] = mano.getId();
+            row[1] = mano.getDescripcion();
+            row[2] = mano.getSueldo();
+            row[3] = mano.getDiario();
+            row[4] = mano.getHora();
+            
+            model.addRow(row);
+            row = null;
+        }
+        table.setModel(model);
+    }
+
+     // metodo para filtar
+    private void getFiltoByCodAndDescrip() {
+        // jTextField1 == la caja de busqueda
+        // jRadioButton1 = codigo :::: jRadioButton2 = descripcion
+        String fill = jTextField1.getText().trim();
+        if (!fill.equals("")) {
+            List<ManoObra> listFill = null;
+            // codigo
+           // if (jRadioButton1.isSelected()) {
+             //   int id = vali.soloNumero(fill);
+               // listFill = ctrEquip.getEquipoByID(id);
+            //} else if (jRadioButton2.isSelected()) {
+                // descripcion
+                listFill = ctrManObra.getManoObraByDescripcion(fill);
+            //}
+
+            int sizeRows = table.getRowCount();
+            if (sizeRows > 0) {
+                clearTable();
+            }
+
+            if (listFill.isEmpty()) {
+                // jLabel1
+                jLabel1.setText("No se encontrarón resultados");
+                clearTable();
+            } else {
+
+                addRowTable(listFill);
+                jLabel1.setText("Total de registros: " + listFill.size());
+            }
+            listFill.clear();
+        }
+    }
+
+    
 }

@@ -1,6 +1,7 @@
-
 package vistaPanelApus;
 
+import controlador.equipoController;
+import controlador.manoObraController;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.math.RoundingMode;
@@ -22,6 +23,8 @@ import vistaPanelApusDialog.dialogTransporte;
 import java.text.DecimalFormat;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import modelo.Equipo;
+import modelo.ManoObra;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 /**
@@ -52,6 +55,9 @@ public class panelApus extends javax.swing.JPanel {
     // control de numero de decimales
     final String squema[] = {"#.##", "#.###", "#.####", "#.#####", "#.######", "#.#####"};
     DecimalFormat df;
+
+    private equipoController ctrEquip = new equipoController();
+    manoObraController ctrManObra = new manoObraController();
 
     public panelApus() {
         validacion = new validaciones();
@@ -474,7 +480,7 @@ public class panelApus extends javax.swing.JPanel {
 
         jTextField17.setText("0.0");
 
-        jTextField7.setText("jTextField7");
+        jTextField7.setText("0");
         jTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField7ActionPerformed(evt);
@@ -493,7 +499,7 @@ public class panelApus extends javax.swing.JPanel {
             }
         });
 
-        jTextField18.setText("jTextField18");
+        jTextField18.setText("0");
         jTextField18.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField18KeyPressed(evt);
@@ -836,20 +842,32 @@ public class panelApus extends javax.swing.JPanel {
         // addEquipo
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
-            // aqui la consulta
+            // aqui la consulta txtFiltro ::::: jTextField7
+            String fill = jTextField7.getText().trim();
+            int id = validacion.soloNumero(fill);
+            List<Equipo> listFill = ctrEquip.getEquipoByID(id);
+
             //Sección 1 
             DefaultTableModel modelo = (DefaultTableModel) tableE.getModel();
-            //Sección 2
-            Object[] fila = new Object[6];
-            //Sección 3
-            fila[0] = jTextField7.getText(); // descripcion
-            fila[1] = ""; // cantidad (vacio)
-            fila[2] = jTextField7.getText(); // tarifa
-            fila[3] = ""; // costo hora (vacio)
-            fila[4] = ""; // rendimiento (vacio)
-            fila[5] = ""; // costo unitario (vacio)
-            //Sección 4
-            modelo.addRow(fila);
+            for (Equipo equipo : listFill) {
+                //Sección 2
+                Object[] fila = new Object[6];
+                //Sección 3
+                fila[0] = equipo.getDescripcion(); // descripcion
+                fila[1] = ""; // cantidad (vacio)
+                fila[2] = equipo.getDiario(); // diario
+                fila[3] = ""; // costo hora (vacio)
+                fila[4] = ""; // rendimiento (vacio)
+                fila[5] = ""; // costo unitario (vacio)
+                //Sección 4
+                modelo.addRow(fila);
+            }
+
+            // mensaje de error
+            if(listFill.isEmpty()){
+                jTextField7.setText("No Ítem "+id);
+            }
+            
             //Sección 5
             tableE.setModel(modelo);
         }
@@ -911,20 +929,32 @@ public class panelApus extends javax.swing.JPanel {
         // addMano
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
-            // aqui la consulta
+            // aqui la consulta  txtCodManoObra ::: jTextField18
+            String fill = jTextField18.getText().trim();
+            int id = validacion.soloNumero(fill);
+            List<ManoObra> listFill = ctrManObra.getManoObraByID(id);
+
             //Sección 1 
             DefaultTableModel modelo = (DefaultTableModel) tableM.getModel();
-            //Sección 2
-            Object[] fila = new Object[6];
-            //Sección 3
-            fila[0] = jTextField18.getText(); // descripcion
-            fila[1] = ""; // cantidad (vacio)
-            fila[2] = jTextField18.getText(); // tarifa
-            fila[3] = ""; // costo hora (vacio)
-            fila[4] = ""; // rendimiento (vacio)
-            fila[5] = ""; // costo unitario (vacio)
-            //Sección 4
-            modelo.addRow(fila);
+            for (ManoObra manoObra : listFill) {
+                //Sección 2
+                Object[] fila = new Object[6];
+                //Sección 3
+                fila[0] = manoObra.getDescripcion(); // descripcion
+                fila[1] = ""; // cantidad (vacio)
+                fila[2] = manoObra.getDiario(); // tarifa
+                fila[3] = ""; // costo hora (vacio)
+                fila[4] = ""; // rendimiento (vacio)
+                fila[5] = ""; // costo unitario (vacio)
+                //Sección 4
+                modelo.addRow(fila);
+            }
+            
+            // mensaje de error
+            if(listFill.isEmpty()){
+                jTextField18.setText("No Ítem "+id);
+            }
+
             //Sección 5
             tableM.setModel(modelo);
         }
@@ -1108,7 +1138,7 @@ public class panelApus extends javax.swing.JPanel {
             //System.out.println("err-  "+e.getMessage());
         }
     }//GEN-LAST:event_btnAddTActionPerformed
-	
+
      private void cboDecimalesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboDecimalesMouseClicked
 
 
@@ -1283,9 +1313,9 @@ public class panelApus extends javax.swing.JPanel {
                 int cantAux = validacion.soloNumero(cant);
                 // R:[4]  = [2] * [3]
                 double precUnit = Double.parseDouble(tableMa.getValueAt(position, 3).toString());
-                
-                double cost =  getCostUnit(cantAux, precUnit);  // metodo n decimales
-                
+
+                double cost = getCostUnit(cantAux, precUnit);  // metodo n decimales
+
                 tableMa.setValueAt(String.valueOf(cost), position, 4); //R: pongo el valor 
                 tableMa.setValueAt(String.valueOf(cantAux), position, 2); // pongo el valor de validaciones
 
@@ -1306,9 +1336,9 @@ public class panelApus extends javax.swing.JPanel {
                 int cantAux = validacion.soloNumero(cant);
                 // R:[4]  = [2] * [3]
                 double tari = validacion.solomoney(tableT.getValueAt(position, 3).toString());
-                
-                double cost =  getCostUnit(cantAux, tari);  // metodo n decimales
-                
+
+                double cost = getCostUnit(cantAux, tari);  // metodo n decimales
+
                 tableT.setValueAt(String.valueOf(cost), position, 4); //R: pongo el valor 
                 tableT.setValueAt(String.valueOf(cantAux), position, 2); // pongo el valor de validaciones
                 tableT.setValueAt(String.valueOf(tari), position, 3); // pongo el valor de validaciones
@@ -1477,7 +1507,7 @@ public class panelApus extends javax.swing.JPanel {
     private void calIndiUtili() {
         double costDire = Double.parseDouble(jTextField11.getText());
         double indiUtil = Double.parseDouble(jTextField12.getText());
-        double tot = (costDire * indiUtil) /100;
+        double tot = (costDire * indiUtil) / 100;
         double aux = getCalEMaMT(tot);
 
         jTextField13.setText(String.valueOf(aux));
@@ -1488,7 +1518,7 @@ public class panelApus extends javax.swing.JPanel {
     private void calOtherIndi() {
         double costDire = Double.parseDouble(jTextField11.getText());
         double othIndir = Double.parseDouble(jTextField14.getText());
-        double tot = (costDire * othIndir ) /100;
+        double tot = (costDire * othIndir) / 100;
         double aux = getCalEMaMT(tot);
 
         jTextField15.setText(String.valueOf(aux));
@@ -1611,7 +1641,6 @@ public class panelApus extends javax.swing.JPanel {
         }
     }
 
-        
     // metodo para controlar n decimales de metodos de calculo equi, mano, mate, trans
     private Double getCalEMaMT(double subtotal) {
         //int decim = Integer.parseInt(cboDecimales.getSelectedItem().toString());

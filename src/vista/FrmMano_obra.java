@@ -5,8 +5,14 @@
  */
 package vista;
 
-
+import controlador.manoObraController;
+import java.awt.event.KeyEvent;
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.ManoObra;
+import util.validaciones;
 
 /**
  *
@@ -17,6 +23,14 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
     /**
      * Creates new form mano_obra
      */
+    // instancias
+    manoObraController ctrManObra = new manoObraController();
+    ManoObra datos = null;
+    private validaciones vali = new validaciones();
+    
+    // variable para caracter
+    private Character kpress;
+
     public FrmMano_obra() {
         initComponents();
         // color de fondo
@@ -24,7 +38,15 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
+        // no move colum table
+        setEsquemaTable();
+        setTableManObraAll();
+        // default
+        getIdSgt();
+        rbCod.setSelected(true);
+        btnEditar.setEnabled(false);
+
         txtCod.setEditable(false);
         txtDescrip.setLineWrap(true);
         txtDescrip.setWrapStyleWord(true);
@@ -62,6 +84,7 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
         txtVae = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
@@ -88,8 +111,6 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Descripción:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
-
-        txtCod.setText("jTextField1");
         jPanel1.add(txtCod, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 190, -1));
 
         txtDescrip.setColumns(20);
@@ -102,35 +123,50 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
         jLabel4.setText("Sueldo:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
-        txtSueldo.setText("jTextField1");
+        txtSueldo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSueldoKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtSueldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 190, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("FSR:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
 
-        txtFsr.setText("jTextField1");
+        txtFsr.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFsrKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtFsr, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 190, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Diario:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, -1, -1));
 
-        jTextField1.setText("jTextField1");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 190, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Horario:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
 
-        txtHora.setText("jTextField2");
+        txtHora.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtHoraKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, 190, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("CPC:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, -1, -1));
 
-        txtCPC.setText("jTextField2");
         txtCPC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCPCActionPerformed(evt);
@@ -141,15 +177,11 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("NP/ND/EP:");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, -1, -1));
-
-        txtNP.setText("jTextField2");
         jPanel1.add(txtNP, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, 190, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("VAE:");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, -1, -1));
-
-        txtVae.setText("jTextField2");
         jPanel1.add(txtVae, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 190, -1));
 
         btnGuardar.setText("Guardar");
@@ -158,10 +190,23 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
+        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, -1, -1));
 
         btnEditar.setText("Editar");
-        jPanel1.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 340, -1, -1));
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, -1, -1));
+
+        jButton1.setText("Nuevo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 300, 380));
 
@@ -194,6 +239,11 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(table);
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setMinWidth(50);
@@ -210,10 +260,19 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
         jLabel11.setText("Filtro:");
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
 
-        jTextField2.setText("jTextField2");
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
         jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 280, -1));
 
         btnTodos.setText("Todos");
+        btnTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTodosActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 30, -1, -1));
 
         buttonGroup1.add(rbCod);
@@ -275,7 +334,8 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCPCActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+        // btn grabar
+        setSaveManObra();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void rbCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodActionPerformed
@@ -286,6 +346,64 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
         this.dispose();
         home.activoManoObra = false;
     }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // btn editar
+        setEditManObra();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+         // filtro por codigo y descripcion
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            getFiltoByCodAndDescrip();
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void txtSueldoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSueldoKeyTyped
+        vali.soloNumeroEvent(evt);
+    }//GEN-LAST:event_txtSueldoKeyTyped
+
+    private void txtFsrKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFsrKeyTyped
+        vali.soloNumeroEvent(evt);
+    }//GEN-LAST:event_txtFsrKeyTyped
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        vali.soloNumeroEvent(evt);
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void txtHoraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHoraKeyTyped
+        vali.soloNumeroEvent(evt);
+    }//GEN-LAST:event_txtHoraKeyTyped
+
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        // btnGuardar  ::: 
+        // txtDescrip, txtSueldo, txtFsr, jTextField1, txtHora, 
+        // txtCPC, txtNP, txtVae, txtCod
+        btnGuardar.setEnabled(false);
+        btnEditar.setEnabled(true);
+        int fila = table.rowAtPoint(evt.getPoint());
+        txtCod.setText(table.getValueAt(fila, 0).toString());
+        txtDescrip.setText(table.getValueAt(fila, 1).toString());
+        txtSueldo.setText(table.getValueAt(fila, 2).toString());
+        txtFsr.setText(table.getValueAt(fila, 3).toString());
+        jTextField1.setText(table.getValueAt(fila, 4).toString());
+        txtHora.setText(table.getValueAt(fila, 5).toString());
+        txtCPC.setText(table.getValueAt(fila, 6).toString());
+        txtNP.setText(table.getValueAt(fila, 7).toString());
+        txtVae.setText(table.getValueAt(fila, 8).toString());
+        
+    }//GEN-LAST:event_tableMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        btnEditar.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        getIdSgt();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTodosActionPerformed
+        setTableManObraAll();
+    }//GEN-LAST:event_btnTodosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -329,6 +447,7 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnTodos;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -360,4 +479,170 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtSueldo;
     private javax.swing.JTextField txtVae;
     // End of variables declaration//GEN-END:variables
+
+    // no move columnTable y hide 
+    private void setEsquemaTable() {
+        // table
+        table.getTableHeader().setReorderingAllowed(false);
+    }
+
+    // metodo para limpiar tabla
+    private void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+    }
+
+    // datos de carga default de la tabla Equipo
+    private void setTableManObraAll() {
+        // jTable1
+        int sizeRows = table.getRowCount();
+        if (sizeRows > 0) {
+            clearTable();
+        }
+        List<ManoObra> listEq = ctrManObra.getManoObraoAll();
+
+        if (listEq.isEmpty()) {
+            // lblTot
+            lblTot.setText("No hay registros");
+        } else {
+            lblTot.setText("Total de registros: " + listEq.size());
+        }
+        addRowTable(listEq);
+    }
+
+    // lleno el cuerpo de la tabla
+    private void addRowTable(List<ManoObra> listEq) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        Object[] row;
+        for (ManoObra mano : listEq) {
+            row = new Object[9];
+            row[0] = mano.getId();
+            row[1] = mano.getDescripcion();
+            row[2] = mano.getSueldo();
+            row[3] = mano.getFsr();
+            row[4] = mano.getDiario();
+            row[5] = mano.getHora();
+            row[6] = mano.getCpc();
+            row[7] = mano.getNp_nd_ep();
+            row[8] = mano.getVae();
+
+            model.addRow(row);
+            row = null;
+        }
+        table.setModel(model);
+    }
+
+    //metodo que trae el idSgt
+    private void getIdSgt() {
+        // txtCod
+        int idSgt = ctrManObra.getIDSgt();
+        txtCod.setText("" + idSgt);
+    }
+    
+     // metodo para guardar mano de obra nuevo
+    private void setSaveManObra() {
+        // txtDescrip, txtSueldo, txtFsr, jTextField1, txtHora, 
+        // txtCPC, txtNP, txtVae
+        if (txtDescrip.getText().length() > 0
+                && txtSueldo.getText().length() > 0
+                && txtFsr.getText().length() > 0
+                && jTextField1.getText().length() > 0
+                && txtHora.getText().length() > 0) {
+            try {
+                datos = new ManoObra();
+                datos.setDescripcion(txtDescrip.getText());
+                datos.setSueldo(Double.parseDouble(txtSueldo.getText()));
+                datos.setFsr(Double.parseDouble(txtFsr.getText()));
+                datos.setDiario(Double.parseDouble(jTextField1.getText()));
+                datos.setHora(Double.parseDouble(txtHora.getText()));
+                datos.setCpc(txtCPC.getText());
+                datos.setNp_nd_ep(txtNP.getText());
+                datos.setVae(txtVae.getText());
+
+                if (ctrManObra.ingresar(datos)) {
+                    JOptionPane.showConfirmDialog(this, "Registro grabado con exito", "Confirmación", 2);
+                    setTableManObraAll();
+                } else {
+                    JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
+                }
+                datos = null;
+            } catch (Exception e) {
+                System.out.println("err-saveEq " + e.getMessage());
+                e.getMessage();
+            }
+        } else {
+            JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
+        }
+    }
+    
+    // metodo para actualizar registro de mano de obra
+     private void setEditManObra() {
+        // txtDescrip, txtSueldo, txtFsr, jTextField1, txtHora, 
+        // txtCPC, txtNP, txtVae, txtCod
+        if (txtDescrip.getText().length() > 0
+                && txtSueldo.getText().length() > 0
+                && txtFsr.getText().length() > 0
+                && jTextField1.getText().length() > 0
+                && txtHora.getText().length() > 0) {
+            try {
+                datos = new ManoObra();
+                datos.setDescripcion(txtDescrip.getText());
+                datos.setSueldo(Double.parseDouble(txtSueldo.getText()));
+                datos.setFsr(Double.parseDouble(txtFsr.getText()));
+                datos.setDiario(Double.parseDouble(jTextField1.getText()));
+                datos.setHora(Double.parseDouble(txtHora.getText()));
+                datos.setCpc(txtCPC.getText());
+                datos.setNp_nd_ep(txtNP.getText());
+                datos.setVae(txtVae.getText());
+                datos.setId(Integer.parseInt(txtCod.getText()));
+
+                if (ctrManObra.actualizar(datos)) {
+                    JOptionPane.showConfirmDialog(this, "Registro actualizado con exito", "Confirmación", 2);
+                    setTableManObraAll();
+                } else {
+                    JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
+                }
+                datos = null;
+            } catch (Exception e) {
+                System.out.println("err-saveEq " + e.getMessage());
+                e.getMessage();
+            }
+        } else {
+            JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
+        }
+    }
+    
+     // metodo para filtar
+     private void getFiltoByCodAndDescrip() {
+        // jTextField2 == la caja de busqueda
+        // rbCod = codigo :::: rbDescrip = descripcion
+        String fill = jTextField2.getText().trim();
+        if (!fill.equals("")) {
+            List<ManoObra> listFill = null;
+            // codigo
+            if (rbCod.isSelected()) {
+                int id = vali.soloNumero(fill);
+                listFill = ctrManObra.getManoObraByID(id);
+            } else if (rbDescrip.isSelected()) {
+                // descripcion
+                listFill = ctrManObra.getManoObraByDescripcion(fill);
+            }
+
+            int sizeRows = table.getRowCount();
+            if (sizeRows > 0) {
+                clearTable();
+            }
+
+            if (listFill.isEmpty()) {
+                // lblTot
+                lblTot.setText("No se encontrarón resultados");
+                clearTable();
+            } else {
+
+                addRowTable(listFill);
+                lblTot.setText("Total de registros: " + listFill.size());
+            }
+            listFill.clear();
+        }
+    }
 }

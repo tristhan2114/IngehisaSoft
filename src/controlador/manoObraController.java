@@ -15,7 +15,6 @@ import modelo.ManoObra;
 import util.conexion;
 
 /**
- *
  * @author personal1
  */
 public class manoObraController {
@@ -33,8 +32,8 @@ public class manoObraController {
     public boolean ingresar(ManoObra datos){
         con = null;
         pst = null;
-        sql = "INSERT INTO equippo (descripcion, sueldo, fsr, diario, hora,  cpc, "
-                + "np_nd_ep, vae) values (?,?,?,?,?,?,?,?)";
+        sql = "INSERT INTO manobra (descripcion, sueldo, fsr, diario, hora, "
+                + "cpc, np_nd_ep, vae) values (?,?,?,?,?,?,?,?)";
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -54,7 +53,9 @@ public class manoObraController {
             conPg = null;
             return true;
         } catch (Exception e) {
+            System.out.println("err- "+e.getMessage());
             e.getMessage();
+            conPg = null;
             return false;
         }
     }
@@ -64,12 +65,13 @@ public class manoObraController {
     public boolean actualizar(ManoObra datos){
         con = null;
         pst = null;
-        sql = "UPDATE equipo SET descripcion=?, sueldo=?, fsr=?, diario=?, hora=?, cpc=?, "
+        sql = "UPDATE manobra SET descripcion=?, sueldo=?, fsr=?, diario=?, hora=?, cpc=?, "
                 + "np_nd_ep=?, vae=? "
                 + " where id=?";
         conPg = new conexion();
         try {
             con = conPg.conn();
+            pst = con.prepareStatement(sql);
             pst.setString(1, datos.getDescripcion());
             pst.setDouble(2, datos.getSueldo());
             pst.setDouble(3, datos.getFsr());
@@ -96,7 +98,7 @@ public class manoObraController {
     public List<ManoObra> getManoObraoAll(){
         con = null;
         pst = null;
-        sql = "select * from manoObra";
+        sql = "select * from manobra order by id asc";
         List<ManoObra> manoObras = new ArrayList<>();
         conPg = new conexion();
         try {
@@ -133,7 +135,7 @@ public class manoObraController {
     public List<ManoObra> getManoObraByID(int id){
         con = null;
         pst = null;
-        sql = "select * from manoObra where id="+id;
+        sql = "select * from manobra where id="+id;
         List<ManoObra> manoObras = new ArrayList<>();
         conPg = new conexion();
         try {
@@ -170,7 +172,7 @@ public class manoObraController {
     public List<ManoObra> getManoObraByDescripcion(String descrip){
         con = null;
         pst = null;
-        sql = "select * from manoObra where descripcion like '%"+descrip+"%'";;
+        sql = "select * from manobra where descripcion ilike '%"+descrip+"%' order by id asc";
         List<ManoObra> manoObras = new ArrayList<>();
         conPg = new conexion();
         try {
@@ -208,7 +210,7 @@ public class manoObraController {
         int id = 0;
         con = null;
         stm = null;
-        sql = "select count(id) from manoObra";
+        sql = "select count(id) from manobra";
         conPg = new conexion();
         try {
             con = conPg.conn();

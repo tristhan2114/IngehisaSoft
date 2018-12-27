@@ -512,7 +512,6 @@ public class FrmEquipo extends javax.swing.JInternalFrame {
     private void setEsquemaTable() {
         // jTable1
         jTable1.getTableHeader().setReorderingAllowed(false);
-
     }
 
     // metodo para limpiar tabla

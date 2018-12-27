@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 
 
 /**
- *
  * @author personal
  */
 public class Login extends javax.swing.JFrame {
