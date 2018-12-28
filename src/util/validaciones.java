@@ -51,4 +51,15 @@ public class validaciones {
         
     }
     
+    public void soloNumeroEnteroEvent(KeyEvent event) {
+        s = event.getKeyChar();
+        if(s<'0' || s>'9'){
+            if(s!=KeyEvent.VK_SPACE){
+                if(s!=KeyEvent.VK_BACK_SPACE){
+                    if(s!=KeyEvent.VK_DELETE){
+             event.consume();
+        }}}}
+        
+    }
+    
 }
