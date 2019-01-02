@@ -59,7 +59,16 @@ public class validaciones {
                     if(s!=KeyEvent.VK_DELETE){
              event.consume();
         }}}}
-        
     }
     
+    public void soloLetra(KeyEvent event){
+        s = event.getKeyChar();
+        if(s<'a' || s>'z'){
+            if(s<'A' || s>'Z'){
+                if(s!=KeyEvent.VK_SPACE){
+                    if(s!=KeyEvent.VK_BACK_SPACE){
+                        if(s!=KeyEvent.VK_DELETE){
+                            event.consume();
+        }}}}}
+    }
 }

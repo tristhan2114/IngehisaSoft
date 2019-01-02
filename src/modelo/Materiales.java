@@ -10,21 +10,24 @@ package modelo;
  * @author personal1
  */
 public class Materiales {
+
     private int id;
     private int id_clasificacion;
     private int id_proveedor;
     private String descripcion;
+    private String unidad;
     private double precio;
     private String url_imagen;
 
     public Materiales() {
     }
 
-    public Materiales(int id, int id_clasificacion, int id_proveedor, String descripcion, double precio, String url_imagen) {
+    public Materiales(int id, int id_clasificacion, int id_proveedor, String descripcion, String unidad, double precio, String url_imagen) {
         this.id = id;
         this.id_clasificacion = id_clasificacion;
         this.id_proveedor = id_proveedor;
         this.descripcion = descripcion;
+        this.unidad = unidad;
         this.precio = precio;
         this.url_imagen = url_imagen;
     }
@@ -61,6 +64,14 @@ public class Materiales {
         this.descripcion = descripcion;
     }
 
+    public String getUnidad() {
+        return unidad;
+    }
+
+    public void setUnidad(String unidad) {
+        this.unidad = unidad;
+    }
+
     public double getPrecio() {
         return precio;
     }
@@ -79,8 +90,7 @@ public class Materiales {
 
     @Override
     public String toString() {
-        return "Materiales{" + "id=" + id + ", id_clasificacion=" + id_clasificacion + ", id_proveedor=" + id_proveedor + ", descripcion=" + descripcion + ", precio=" + precio + ", url_imagen=" + url_imagen + '}';
+        return "Materiales{" + "id=" + id + ", id_clasificacion=" + id_clasificacion + ", id_proveedor=" + id_proveedor + ", descripcion=" + descripcion + ", unidad=" + unidad + ", precio=" + precio + ", url_imagen=" + url_imagen + '}';
     }
-    
-   
+
 }

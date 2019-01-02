@@ -6,12 +6,25 @@
 package vista;
 
 import controlador.clasificacionController;
+import controlador.materialesController;
 import controlador.proveedorController;
+import java.awt.Image;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.paint.Material;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import modelo.Clasificacion;
+import modelo.Materiales;
 import modelo.Proveedor;
+import util.validaciones;
 
 /**
  *
@@ -22,15 +35,37 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     /**
      * Creates new form materiales
      */
-    private final String path_imagen = System.getProperty("user.dir")+"\\resourse\\img\\materiales\\";
+    private final String path_imagen = System.getProperty("user.dir") + "\\resourse\\img\\materiales\\";
+    private String name = "material00";
+
+    private materialesController ctrMaterial = new materialesController();
+    private validaciones vali = new validaciones();
+    private Materiales datos = null;
+
+    // variable para caracter
+    private Character kpress;
+
+    JFileChooser file = null;
+    private JPanel contentPane;
+    File fichero = null;
+    String imagen = "";
+
     public FrmMateriales() {
         initComponents();
+
+        jTextField1.setEditable(false);
+        jButton5.setEnabled(false);
         txtdescripcion.setLineWrap(true);
         txtdescripcion.setWrapStyleWord(true);
 
         //  llenamos cbo por default
         llenarCboClasificacion();
         llenarCboProveedor();
+
+        // carga de datos default en la tabla
+        setEsquemaTable();
+        setTableMaterialesAll();
+        getIdSgt();
 
     }
 
@@ -54,14 +89,20 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtdescripcion = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox();
+        jComboBox2 = new javax.swing.JComboBox();
         jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -101,7 +142,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Descripción");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Proveedor");
@@ -116,66 +157,102 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
         jTextField1.setText("jTextField1");
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 160, -1));
 
         txtdescripcion.setColumns(20);
         txtdescripcion.setRows(5);
         jScrollPane1.setViewportView(txtdescripcion);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 340, 80));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 340, 80));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 160, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 160, -1));
 
         jTextField2.setText("jTextField2");
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 90, -1));
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 160, -1));
+
+        jTextField3.setText("jTextField3");
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
+        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 160, -1));
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jButton1.setText("Buscar Imagen");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 145, -1, -1));
 
         jLabel8.setText("Imagen");
         jLabel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 140, 120));
 
+        jButton3.setText("Nuevo");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, -1, -1));
+
+        jButton4.setText("Guardar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, -1, -1));
+
+        jButton5.setText("Editar");
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setText("Unidad");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 810, 180));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Consulta  / ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 0, 255))); // NOI18N
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 778, 152));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 810, 210));
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setText("jLabel7");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 210, 280, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 810, 230));
 
         jButton2.setText("X");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -192,6 +269,59 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         this.dispose();
         home.activoMateriales = false;
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // jButton2 = btnEdit
+        jButton5.setEnabled(false);
+        jButton4.setEnabled(true);
+        getIdSgt();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        vali.soloLetra(evt);
+    }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // BtnSave
+        setSaveMaterial();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        // precio
+        vali.soloNumeroEvent(evt);
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Buscamos y cargamos imagen
+        file = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter(
+                "Formatos de Archivo JPEG(*.JPG;*.JPEG;*.PNG;*.GIF)", "png", "jpg", "jpeg", "gif");
+        file.addChoosableFileFilter(filtro);
+        file.setFileFilter(filtro);
+        int seleccion = file.showOpenDialog(contentPane);
+        
+        //Si el usuario, pincha en aceptar
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            if (file.getSelectedFile().getName().endsWith(".jpg")
+                    || file.getSelectedFile().getName().endsWith(".png")
+                    || file.getSelectedFile().getName().endsWith(".jpeg")
+                    || file.getSelectedFile().getName().endsWith(".gif")) {
+                
+                //Seleccionamos el fichero
+                fichero = file.getSelectedFile();
+                //Devuelve la ruta hasta llegar a la carpeta imagenes
+                String ruta = file.getSelectedFile().getAbsolutePath();
+                System.out.println("" + ruta);
+                //La imagen seleccionada se muestra en el lbfoto
+                ImageIcon icon = new ImageIcon(ruta);
+                Icon icono = new ImageIcon(icon.getImage().getScaledInstance(jLabel8.getWidth(), jLabel8.getHeight(), Image.SCALE_DEFAULT));
+                jLabel8.setText(null);
+                jLabel8.setIcon(icono);
+            }else{
+                JOptionPane.showConfirmDialog(null, "No es una imagen ","Información", 2);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,15 +362,20 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -249,6 +384,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextArea txtdescripcion;
     // End of variables declaration//GEN-END:variables
 
@@ -263,6 +399,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         }
         jComboBox2.setModel(cboModel);
     }
+
     // llenamos el cbo de proveedor
     private void llenarCboProveedor() {
         // jComboBox1
@@ -274,6 +411,110 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         }
         jComboBox1.setModel(cboModel);
     }
+
+    // no move columnTable y hide 
+    private void setEsquemaTable() {
+        // jTable1
+        jTable1.getTableHeader().setReorderingAllowed(false);
+    }
+
+    // metodo para limpiar tabla
+    private void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+    }
+
+    // datos de carga default de la tabla Materiales
+    private void setTableMaterialesAll() {
+        // jTable1
+        int sizeRows = jTable1.getRowCount();
+        if (sizeRows > 0) {
+            clearTable();
+        }
+        List<Materiales> list = ctrMaterial.getMaterialAll();
+
+        if (list.isEmpty()) {
+            // jLabel7
+            jLabel7.setText("No hay registros");
+        } else {
+            jLabel7.setText("Total de registros: " + list.size());
+        }
+
+        addRowTable(list);
+    }
+
+    // lleno el cuerpo de la tabla
+    private void addRowTable(List<Materiales> list) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        Object[] row;
+        for (Materiales item : list) {
+            row = new Object[7];
+            row[0] = item.getId();
+            row[1] = item.getId_clasificacion();
+            row[2] = item.getId_proveedor();
+            row[3] = item.getDescripcion();
+            row[4] = item.getUnidad();
+            row[5] = item.getPrecio();
+            row[6] = item.getUrl_imagen();
+
+            model.addRow(row);
+            row = null;
+        }
+        jTable1.setModel(model);
+    }
+
+    //metodo que trae el idSgt
+    private void getIdSgt() {
+        // jTextField1
+        int idSgt = ctrMaterial.getIDSgt();
+        jTextField1.setText("" + idSgt);
+    }
+
+    private void setSaveMaterial() {
+        //jComboBox1, jComboBox2, txtdescripcion, jTextField3, jTextField2, la urlFile
+        if (txtdescripcion.getText().length() > 0
+                && jTextField3.getText().length() > 0
+                && fichero!=null) {
+            try {
+                datos = new Materiales();
+                int pk = ctrMaterial.getIDSgt();
+                Proveedor pro = (Proveedor) jComboBox1.getSelectedItem();
+                Clasificacion cla = (Clasificacion) jComboBox2.getSelectedItem();
+                datos.setId_clasificacion(cla.getId());
+                datos.setId_proveedor(pro.getId());
+                datos.setDescripcion(txtdescripcion.getText());
+                datos.setUnidad(jTextField3.getText());
+                datos.setPrecio(Double.parseDouble(jTextField2.getText()));
+                datos.setUrl_imagen(name + "" + pk);
+
+                System.out.println("dto " + datos.toString());
+                if(ctrMaterial.ingresar(datos)){
+                    
+                }
+                
+                // de nuevo fichero null o vacio y modelo
+                fichero = null;
+                datos = null;
+            } catch (Exception e) {
+                System.out.println("");
+                e.getMessage();
+            }
+        } else {
+            JOptionPane.showConfirmDialog(this, "Campos vacios \ny/o no ha seleccionado una imagen", "Alerta", 2);
+        }
+
+    }
+
+    private void setEditMaterial() {
+        //jComboBox1, jComboBox2, txtdescripcion, jTextField3, jTextField2, la urlFile, jTextField1
+        try {
+
+        } catch (Exception e) {
+            System.out.println("");
+            e.getMessage();
+        }
+    }
+
 }
 
 /*

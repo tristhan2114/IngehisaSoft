@@ -6,6 +6,7 @@
 package vista;
 
 import com.google.gson.Gson;
+import controlador.apusController;
 import java.awt.Color;
 import vistaPanelApus.panelApus;
 import java.awt.GridBagConstraints;
@@ -33,6 +34,7 @@ import javax.swing.JViewport;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import modelo.Apus;
 import modelo.EsquemaPresupuesto;
 import modelo.FormatoApus;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -86,6 +88,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
     // instancia de presupuesto resumen
     FrmApusPresupuesto freResumen;
     public static boolean activoFrmResumen;
+    
+    apusController ctrApus = new apusController();
+    Apus apus = null;
 
     public FrmApus() {
         initComponents();
@@ -6228,23 +6233,42 @@ public class FrmApus extends javax.swing.JInternalFrame {
         return aux;
     }
 
-    private void saveDbFile(List<FormatoApus> apus, List<EsquemaPresupuesto> resumen, Workbook workbook) {
+    private void saveDbFile(List<FormatoApus> listApus, List<EsquemaPresupuesto> resumen, Workbook workbook) {
+        int id_pk = 0;
         final String pathFile = System.getProperty("user.dir") + "\\resource\\fileApus\\";
+        String name = "";
         // las listas en la base de datos
         try {
             // convertimos las listas en json
             Gson gson =new Gson();
-            String formatoJSONApus = gson.toJson(apus);
+            String formatoJSONApus = gson.toJson(listApus);
             String formatoJSONResumen = gson.toJson(resumen);
-            //imprimimos en consola el texto con formato JSON
-            System.out.println("Texto en Formato JSON de los apus agregados:n" + formatoJSONApus);
-            System.out.println("Texto en Formato JSON de los resumen agregados:n" + formatoJSONResumen);
-
+            
+            apus = new Apus();
+            apus.setEmpresa(listApus.get(0).getEmpresa());
+            apus.setProyecto(listApus.get(0).getProyecto());
+            apus.setDatosApus(formatoJSONApus);
+            apus.setDatosPresResu(formatoJSONResumen);
+            
+            id_pk = ctrApus.ingresar(apus);
+            
+            // actualizamos el url_file ::: name  
+            name = "ApusPresResumen00"+id_pk+".xlsx";
+            apus.setId(id_pk);
+            apus.setUrl_file(name);
+            ctrApus.actualizarUrlFile(apus);
+            
             // ultimo necesito el id de apus
-            File archivo = new File(pathFile + "ApusPresResumen00.xlsx");
+            File archivo = new File(pathFile + name);
             FileOutputStream out = new FileOutputStream(archivo);
             workbook.write(out);
             out.close();
+            
+            apus = null;           
+            
+            //imprimimos en consola el texto con formato JSON
+            //System.out.println("Texto en Formato JSON de los apus agregados:n" + formatoJSONApus);
+            //System.out.println("Texto en Formato JSON de los resumen agregados:n" + formatoJSONResumen);
         } catch (IOException e) {
             System.err.println("ERROR AL CREAR EL ARCHIVO!");
             e.printStackTrace();

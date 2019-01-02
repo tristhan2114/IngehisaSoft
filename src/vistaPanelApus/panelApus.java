@@ -2,6 +2,7 @@ package vistaPanelApus;
 
 import controlador.equipoController;
 import controlador.manoObraController;
+import controlador.transporteController;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.math.RoundingMode;
@@ -25,6 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import modelo.Equipo;
 import modelo.ManoObra;
+import modelo.Transporte;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 /**
@@ -57,7 +59,8 @@ public class panelApus extends javax.swing.JPanel {
     DecimalFormat df;
 
     private equipoController ctrEquip = new equipoController();
-    manoObraController ctrManObra = new manoObraController();
+    private manoObraController ctrManObra = new manoObraController();
+    private transporteController ctrTransport = new transporteController();
 
     public panelApus() {
         validacion = new validaciones();
@@ -864,10 +867,10 @@ public class panelApus extends javax.swing.JPanel {
             }
 
             // mensaje de error
-            if(listFill.isEmpty()){
-                jTextField7.setText("No Ítem "+id);
+            if (listFill.isEmpty()) {
+                jTextField7.setText("No Ítem " + id);
             }
-            
+
             //Sección 5
             tableE.setModel(modelo);
         }
@@ -949,10 +952,10 @@ public class panelApus extends javax.swing.JPanel {
                 //Sección 4
                 modelo.addRow(fila);
             }
-            
+
             // mensaje de error
-            if(listFill.isEmpty()){
-                jTextField18.setText("No Ítem "+id);
+            if (listFill.isEmpty()) {
+                jTextField18.setText("No Ítem " + id);
             }
 
             //Sección 5
@@ -987,18 +990,26 @@ public class panelApus extends javax.swing.JPanel {
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
             // aqui la consulta
+            String fill = jTextField20.getText().trim();
+            int id = validacion.soloNumero(fill);
+            List<Transporte> listFill = ctrTransport.getTransporteByID(id);
+
             //Sección 1 
             DefaultTableModel modelo = (DefaultTableModel) tableT.getModel();
-            //Sección 2
-            Object[] fila = new Object[5];
-            //Sección 3
-            fila[0] = jTextField20.getText(); // descripcion
-            fila[1] = jTextField20.getText(); // unidad
-            fila[2] = ""; // cantidad
-            fila[3] = jTextField20.getText(); // tarifa (vacio)
-            fila[4] = ""; // cost unit (vacio)
-            //Sección 4
-            modelo.addRow(fila);
+            for (Transporte item : listFill) {
+                //Sección 2
+                Object[] fila = new Object[6];
+                //Sección 3
+                fila[0] = item.getDescripcion(); // descripcion
+                fila[1] = ""; // cantidad (vacio)
+                fila[2] = item.getTarifa(); // diario
+                fila[3] = ""; // costo hora (vacio)
+                fila[4] = ""; // rendimiento (vacio)
+                fila[5] = ""; // costo unitario (vacio)
+                //Sección 4
+                modelo.addRow(fila);
+            }
+
             //Sección 5
             tableT.setModel(modelo);
         }
