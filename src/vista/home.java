@@ -29,13 +29,14 @@ public class home extends javax.swing.JFrame {
     FrmApusPresupuesto freResumen;
     FrmOferta frmOferta;
     FrmUsuarios frmUsuarios;
+    FrmIndirectos frmIndirectos;
 
     // imagen logo fondo
     private ImageIcon imagenFondo;
     private ImageIcon imagenFondoRedimensionado;
 
     // atributo que controla frmInternos abiertos o no
-    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales, activoFrmResumen, activoTransporte, activoOferta, activoUsuarios;
+    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales, activoFrmResumen, activoTransporte, activoOferta, activoUsuarios, activoIndirecto;
 
     public home() {
         initComponents();
@@ -167,6 +168,11 @@ public class home extends javax.swing.JFrame {
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/presupuesto.png"))); // NOI18N
         jMenuItem9.setText("INDIRECTOS");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu12.add(jMenuItem9);
 
         jMenuBar1.add(jMenu12);
@@ -414,6 +420,26 @@ public class home extends javax.swing.JFrame {
             //System.out.println("err-  "+e.getMessage());
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // FrmIndirectos
+        try {
+            if (activoIndirecto == true) {
+                frmIndirectos.setLocation(10, 10);
+                frmIndirectos.moveToFront();
+                frmIndirectos.show();
+            } else {
+                activoIndirecto = true;
+                frmIndirectos = new FrmIndirectos();
+                escritorio.add(frmIndirectos);
+                frmIndirectos.setLocation(10, 10);
+                frmIndirectos.show();
+            }
+        } catch (Exception e) {
+            e.getMessage();
+            //System.out.println("err-  "+e.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     /**
      * @param args the command line arguments

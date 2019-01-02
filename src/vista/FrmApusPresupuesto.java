@@ -5,6 +5,8 @@
  */
 package vista;
 
+import com.google.gson.Gson;
+import controlador.presupuestoController;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +23,7 @@ import modelo.EsquemaPresupuesto;
 import modelo.EsquemaPresupuestoManual;
 import modelo.EsquemaPresupuestoManualTabla;
 import modelo.FormatoApus;
+import modelo.Presupuesto;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -61,6 +64,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
 
     final String[] cabeceraResumenApus = {"NUMERACION", "DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO UNITARIO", "PRECIO TOTAL"};
     final String[] insertRow = {"", "", "", "0", "0.0", "0.0"};
+
+    private Presupuesto dtos;
+    private presupuestoController ctrPres = new presupuestoController();
 
     public FrmApusPresupuesto() {
         validacion = new validaciones();
@@ -341,7 +347,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                         .addComponent(jButton1)
                         .addGap(35, 35, 35))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -375,19 +381,19 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jButton2)
-                                .addComponent(jButton5))
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jButton5))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -760,7 +766,10 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         EsquemaPresupuesto entity = null;
         for (int i = 0; i < size; ++i) {
             entity = new EsquemaPresupuesto();
-            entity.setCodigo(Integer.parseInt(table.getValueAt(i, 0).toString().trim()));
+            String codigo = table.getValueAt(i, 0).toString().trim();
+            if (codigo.length()>0) {
+                entity.setCodigo(Integer.parseInt(table.getValueAt(i, 0).toString().trim()));
+            }
             //entity.setCabeceraTitulo(ss);
             entity.setRubro(table.getValueAt(i, 1).toString());
             entity.setUnidad(table.getValueAt(i, 2).toString());
@@ -1225,6 +1234,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             } // FIN FOR
             wb.write(new FileOutputStream(archivo));
 
+            // save a la base de datos
+            saveDbFile(datos, wb);
+
             respuesta = "Exportación exitosa.";
 
             // vacio la instancia de datos.
@@ -1234,6 +1246,42 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             System.out.println("err-FrmApusPresupuesto " + e.getMessage());
         }
         return respuesta;
+    }
+
+    private void saveDbFile(EsquemaPresupuestoManual datos, Workbook wb) {
+        int id_pk = 0;
+        final String pathFile = System.getProperty("user.dir") + "\\resource\\filePresupuesto\\";
+        String name = "";
+        // la entidad que sera guardada en la base de datos
+        try {
+            // convertimos las listas en json
+            Gson gson = new Gson();
+            String formatoJSONPresupuesto = gson.toJson(datos);
+            dtos = new Presupuesto();
+            dtos.setEmpresa(jTextField1.getText());
+            dtos.setProyecto(jTextField2.getText());
+            dtos.setOferta(jTextField4.getText());
+            dtos.setDatosPrespuesto(formatoJSONPresupuesto);
+
+            id_pk = ctrPres.ingresar(dtos);
+            // update el url_file ::: name
+            name = "Presupuesto00" + id_pk + ".xlsx";
+            dtos.setId(id_pk);
+            dtos.setUrl_file(name);
+            ctrPres.actualizarUrlFile(dtos);
+
+            // ultimo necesito el id de presupúesto
+            File archivo = new File(pathFile + name);
+            FileOutputStream out = new FileOutputStream(archivo);
+            wb.write(out);
+            out.close();
+
+            dtos = null;
+
+        } catch (Exception e) {
+            System.err.println("ERROR AL CREAR EL ARCHIVO!");
+            e.printStackTrace();
+        }
     }
 
 }
@@ -1267,4 +1315,6 @@ si es con evento jtxtfield identificador : update : metodo insertPresupuestoVers
       ******************************************************
 NOTA:  no olvidar hacer la copia del archivo que se exporta a una ruta la cual sera el url_file 
 
+
+OFERTA: INGEHISA:001 - V:000
  */

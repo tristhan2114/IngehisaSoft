@@ -51,7 +51,6 @@ public class apusController {
                 resultado = rs.getInt(1);
             }
             rs.close();
-            System.out.println("rs "+resultado);
             
             pst.close();
             con.close();
@@ -128,7 +127,7 @@ public class apusController {
         con = null;
         rs = null;
         stm = null;
-        sql = "select * from apus where empresa ilike '%" + dto + "%'";
+        sql = "select * from apus where empresa ='" + dto + "'";
         conPg = new conexion();
         
         try {
@@ -164,7 +163,7 @@ public class apusController {
         con = null;
         rs = null;
         stm = null;
-        sql = "select * from apus where proyecto ilike '%" + dto + "%'";
+        sql = "select * from apus where proyecto ='" + dto + "'";
         conPg = new conexion();
         
         try {

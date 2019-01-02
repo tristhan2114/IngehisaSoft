@@ -5,6 +5,10 @@
  */
 package vista;
 
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
+import sun.swing.table.DefaultTableCellHeaderRenderer;
+
 /**
  *
  * @author personal
@@ -17,6 +21,9 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     public FrmOferta() {
         initComponents();
         setTitle("Ofertas");
+        
+        // default componentes
+        setTablesNoMoveHeader() ;
     }
 
     /**
@@ -158,6 +165,20 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    // hacer que cabecera se quede fija y columnas alineadas a la derecha
+    private void setTablesNoMoveHeader() {
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        /*
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellHeaderRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        // table 2 al 5
+        for (int i = 2; i < 6; ++i) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+        }*/
+    }
+
 }
 
 

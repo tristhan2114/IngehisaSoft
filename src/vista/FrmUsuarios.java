@@ -16,7 +16,7 @@ import util.validaciones;
 /**
  * @author personal1
  */
-public class FrmUsuarios extends javax.swing.JInternalFrame{
+public class FrmUsuarios extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form FrmUsuarios
@@ -27,13 +27,14 @@ public class FrmUsuarios extends javax.swing.JInternalFrame{
 
     // variable para caracter
     private Character kpress;
-    
+
     public FrmUsuarios() {
         initComponents();
-        
+
         jRadioButton1.setSelected(true);
         txtCodigo.setEditable(false);
-       
+        jButton3.setEnabled(false);
+
         // carga de datos default en la tabla
         setEsquemaTable();
         setTableUsuariosAll();
@@ -79,7 +80,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame{
         jTextField1 = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -140,32 +141,37 @@ public class FrmUsuarios extends javax.swing.JInternalFrame{
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Responsable:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 187, -1, -1));
-
-        txtCodigo.setText("jTextField1");
         jPanel1.add(txtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 30, 210, -1));
-
-        txtNombres.setText("jTextField2");
         jPanel1.add(txtNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 60, 210, -1));
-
-        txtApellidos.setText("jTextField3");
         jPanel1.add(txtApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 90, 210, -1));
-
-        txtUsername.setText("jTextField4");
         jPanel1.add(txtUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 120, 210, -1));
 
         txtPass.setText("ingehisa*temp*2019");
         jPanel1.add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 150, 210, -1));
-
-        txtResponsable.setText("jTextField6");
         jPanel1.add(txtResponsable, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 180, 210, -1));
 
         jButton1.setText("Nuevo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 240, -1, -1));
 
         jButton2.setText("Guardar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, -1, -1));
 
         jButton3.setText("Editar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 320, 340));
@@ -195,6 +201,11 @@ public class FrmUsuarios extends javax.swing.JInternalFrame{
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(60);
@@ -217,7 +228,11 @@ public class FrmUsuarios extends javax.swing.JInternalFrame{
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Apellidos");
 
-        jTextField1.setText("jTextField7");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
 
         jButton5.setText("Todos");
 
@@ -278,6 +293,42 @@ public class FrmUsuarios extends javax.swing.JInternalFrame{
         this.dispose();
         home.activoUsuarios = false;
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // BtnSave
+        setSaveEquip();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // BtnEditar
+        setEditEquipo();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // txtFilttro
+        getFiltoByCodAndDescrip();
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // 
+        txtPass.setText("ingehisa*temp*2019");
+        jButton2.setEnabled(true);
+        jButton3.setEnabled(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // jButton2: btnSave;  jButton3 : btnEdit
+        jButton3.setEnabled(true);
+        jButton2.setEnabled(false);
+        int fila = jTable1.rowAtPoint(evt.getPoint());
+        // txtCodigo, txtNombres, txtApellidos, txtUsername, txtPass, txtResponsable
+        txtCodigo.setText(jTable1.getValueAt(fila, 0).toString());
+        txtNombres.setText(jTable1.getValueAt(fila, 1).toString());
+        txtApellidos.setText(jTable1.getValueAt(fila, 2).toString());
+        txtUsername.setText(jTable1.getValueAt(fila, 3).toString());
+        txtPass.setText(jTable1.getValueAt(fila, 4).toString());
+        txtResponsable.setText(jTable1.getValueAt(fila, 5).toString());
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -346,8 +397,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame{
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-
-      // no move columnTable y hide 
+    // no move columnTable y hide 
     private void setEsquemaTable() {
         // jTable1
         jTable1.getTableHeader().setReorderingAllowed(false);
@@ -397,65 +447,73 @@ public class FrmUsuarios extends javax.swing.JInternalFrame{
         jTable1.setModel(model);
     }
 
-     //metodo que trae el idSgt
+    //metodo que trae el idSgt
     private void getIdSgt() {
         // txtcodigo
         int idSgt = ctrUser.getIDSgt();
         txtCodigo.setText("" + idSgt);
     }
-    
+
     // metodo para guardar un equipo nuevo
     private void setSaveEquip() {
-        // txtdescripcion, txtdiario, txthora, txtcpc, txtnpndep, txtvae
-        /*if (txtdescripcion.getText().length() > 0
-                && txtdiario.getText().length() > 0
-                && txthora.getText().length() > 0) {
+        // txtCodigo, txtNombres, txtApellidos, txtUsername, txtPass, txtResponsable
+        if (txtNombres.getText().length() > 0
+                && txtApellidos.getText().length() > 0
+                && txtUsername.getText().length() > 0
+                && txtPass.getText().length() > 0) {
             try {
-                equipo = new Equipo();
-                equipo.setDescripcion(txtdescripcion.getText());
-                equipo.setDiario(Double.parseDouble(txtdiario.getText()));
-                equipo.setHora(Double.parseDouble(txthora.getText()));
-                equipo.setCpc(txtcpc.getText());
-                equipo.setNp_nd_ep(txtnpndep.getText());
-                equipo.setVae(txtvae.getText());
+                usuario = new Usuarios();
+                usuario.setNombres(txtNombres.getText());
+                usuario.setApellidos(txtApellidos.getText());
+                usuario.setUsername(txtUsername.getText());
+                usuario.setContrasenia(txtPass.getText());
+                usuario.setResponsable(Integer.parseInt(txtResponsable.getText()));// cambiar componente por rButtom
 
-                if (ctrEquip.ingresar(equipo)) {
-                    JOptionPane.showConfirmDialog(this, "Equipo grabado con exito", "Confirmación", 2);
-                    setTableEquipoAll();
+                if (ctrUser.ingresar(usuario)) {
+                    JOptionPane.showConfirmDialog(this, "Usuario grabado con exito", "Confirmación", 2);
+                    setTableUsuariosAll();
                 } else {
                     JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
                 }
-                equipo = null;
+                usuario = null;
             } catch (Exception e) {
                 System.out.println("err-saveEq " + e.getMessage());
                 e.getMessage();
             }
         } else {
             JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
-        }*/
+        }
     }
 
     private void setEditEquipo() {
-        //txtcodigo, txtdescripcion, txtdiario, txthora, txtcpc, txtnpndep, txtvae
-        try {
-          /*  usuario = new Usuarios();
-            usuario.setNombres(txtNombres.getText());
-            usuario.setApellidos((txtApellidos.getText()));
-            usuario.setUsername((txtUsername.getText()));
-            usuario.setContrasenia(txtPass.getText());
-            usuario.setResponsable(txtResponsable.getText());
-            usuario.setId(Integer.parseInt(txtCodigo.getText()));
+        // txtCodigo, txtNombres, txtApellidos, txtUsername, txtPass, txtResponsable
+        if (txtNombres.getText().length() > 0
+                && txtApellidos.getText().length() > 0
+                && txtUsername.getText().length() > 0
+                && txtPass.getText().length() > 0) {
+            try {
 
-            if (ctrEquip.actualizar(equipo)) {
-                JOptionPane.showConfirmDialog(this, "Equipo actualizado con exito", "Confirmación", 2);
-                setTableEquipoAll();
-            } else {
-                JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
+                usuario = new Usuarios();
+                usuario.setNombres(txtNombres.getText());
+                usuario.setApellidos((txtApellidos.getText()));
+                usuario.setUsername((txtUsername.getText()));
+                usuario.setContrasenia(txtPass.getText());
+                usuario.setResponsable(Integer.parseInt(txtResponsable.getText()));
+                usuario.setId(Integer.parseInt(txtCodigo.getText()));
+
+                if (ctrUser.actualizar(usuario)) {
+                    JOptionPane.showConfirmDialog(this, "Usuario actualizado con exito", "Confirmación", 2);
+                    setTableUsuariosAll();
+                } else {
+                    JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
+                }
+                usuario = null;
+            } catch (Exception e) {
+                System.out.println("err-editEq " + e.getMessage());
+                e.getMessage();
             }
-            equipo = null;*/
-        } catch (Exception e) {
-            System.out.println("err-editEq " + e.getMessage());
-            e.getMessage();
+        } else {
+            JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
         }
 
     }

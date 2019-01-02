@@ -521,6 +521,9 @@ public class panelApus extends javax.swing.JPanel {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField20KeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField20KeyReleased(evt);
+            }
         });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -998,14 +1001,13 @@ public class panelApus extends javax.swing.JPanel {
             DefaultTableModel modelo = (DefaultTableModel) tableT.getModel();
             for (Transporte item : listFill) {
                 //Sección 2
-                Object[] fila = new Object[6];
+                Object[] fila = new Object[5];
                 //Sección 3
                 fila[0] = item.getDescripcion(); // descripcion
-                fila[1] = ""; // cantidad (vacio)
-                fila[2] = item.getTarifa(); // diario
-                fila[3] = ""; // costo hora (vacio)
-                fila[4] = ""; // rendimiento (vacio)
-                fila[5] = ""; // costo unitario (vacio)
+                fila[1] = item.getUnidad(); // unidad 
+                fila[2] = ""; // cantidad
+                fila[3] = item.getTarifa(); // tarifa
+                fila[4] = ""; // costo unitario
                 //Sección 4
                 modelo.addRow(fila);
             }
@@ -1166,6 +1168,10 @@ public class panelApus extends javax.swing.JPanel {
         calOtherIndi();
         calCostTotRubro();
     }//GEN-LAST:event_cboDecimalesActionPerformed
+
+    private void jTextField20KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField20KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField20KeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1426,6 +1432,7 @@ public class panelApus extends javax.swing.JPanel {
             }
             subtotal = getCalEMaMT(subtotal); // metodo n decimales
             txtSubEq.setText(String.valueOf(subtotal));
+            calCostoDirecto();
         } else {
             txtSubEq.setText("0.0");
         }
