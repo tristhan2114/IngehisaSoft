@@ -5,29 +5,40 @@
  */
 package vista;
 
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import util.validaciones;
 
 /**
  *
  * @author personal
  */
 public class FrmIndirectos extends javax.swing.JInternalFrame {
-    
 
-    /**   MEDITAR
-     * Creates new form indirectos
+    /**
+     * MEDITAR Creates new form indirectos
      */
+    validaciones vali = new validaciones();
+    // variable para caracter
+    private Character kpress;
+
     public FrmIndirectos() {
         initComponents();
-         //getContentPane().setBackground(new java.awt.Color(237,179,88));
-         // default componentes
-         setEsquemaTable();
+        //getContentPane().setBackground(new java.awt.Color(237,179,88));
+        // default componentes
+        setEsquemaTable();
+        setTablsLlenar();
+
+        calCostSemMens();
     }
+
     //hacer calculo de tabla Costo Indirecto
-      private void calIndirectos () {
-          /*
+    private void calIndirectos() {
+        /*
           [2] costo semanal --> llena Calculo [5]= ([2]*4)
           [0] cantidad [2]costo semanal [3] semanas --->  llena [5]= [0]*[2]*[3]
           [6]Parcial = suma de todo el subtotal[6]
@@ -37,10 +48,8 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
            Utilidad = el llena 
            total = Indirecto + Imprevisto + Utilidad
 
-        */
- }
-          
-    
+         */
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,7 +110,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -129,6 +138,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             }
         });
         jTable1.setPreferredSize(new java.awt.Dimension(585, 144));
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable1KeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(60);
@@ -181,6 +195,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable3KeyPressed(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTable3);
         if (jTable3.getColumnModel().getColumnCount() > 0) {
             jTable3.getColumnModel().getColumn(0).setPreferredWidth(60);
@@ -220,6 +239,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             }
         });
         jTable2.setPreferredSize(new java.awt.Dimension(585, 112));
+        jTable2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable2KeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
             jTable2.getColumnModel().getColumn(0).setPreferredWidth(60);
@@ -256,6 +280,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable4KeyPressed(evt);
             }
         });
         jScrollPane4.setViewportView(jTable4);
@@ -296,6 +325,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTable5KeyPressed(evt);
+            }
+        });
         jScrollPane5.setViewportView(jTable5);
         if (jTable5.getColumnModel().getColumnCount() > 0) {
             jTable5.getColumnModel().getColumn(0).setPreferredWidth(60);
@@ -305,7 +339,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         }
 
         jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 810, 80));
+
+        jTextField1.setText("0.0");
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, 130, -1));
+
+        jTextField2.setText("0.0");
         jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 30, 70, -1));
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
@@ -322,13 +360,18 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jLabel9.setText("TOTALES");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 570, 113, -1));
 
+        jTextField3.setText("0.0");
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
             }
         });
         jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 580, 81, -1));
+
+        jTextField4.setText("0.0");
         jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 580, 80, -1));
+
+        jTextField5.setText("0.0");
         jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 580, 94, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -389,13 +432,13 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jLabel16.setText("Total");
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 610, -1, -1));
 
-        jTextField6.setText("jTextField6");
+        jTextField6.setText("0.0");
         jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 625, 81, -1));
 
-        jTextField7.setText("jTextField7");
+        jTextField7.setText("0.0");
         jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 625, 81, -1));
 
-        jTextField8.setText("jTextField8");
+        jTextField8.setText("0.0");
         jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 625, 81, -1));
 
         jButton4.setText("+");
@@ -540,7 +583,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-         // eliminar row de tabla Personal soporte
+        // eliminar row de tabla Personal soporte
         deleteRow(jTable2);
     }//GEN-LAST:event_jButton11ActionPerformed
 
@@ -553,6 +596,49 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         // eliminar row de tabla Campamento
         deleteRow(jTable4);
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calCostSemMens();
+            calParcialAndPorcent(jTable1);
+            calSubTotTbls();
+        }// fin keyPress
+    }//GEN-LAST:event_jTable1KeyPressed
+
+    private void jTable2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable2KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calSubTot(jTable2);
+            calParcialAndPorcent(jTable2);
+            calSubTotTbls();
+        }// fin keyPress
+    }//GEN-LAST:event_jTable2KeyPressed
+
+    private void jTable3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calSubTot(jTable3);
+            calParcialAndPorcent(jTable3);
+            calSubTotTbls();
+        }// fin keyPress
+    }//GEN-LAST:event_jTable3KeyPressed
+
+    private void jTable4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable4KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calSubTot(jTable4);
+            calParcialAndPorcent(jTable4);
+            calSubTotTbls();
+        }// fin keyPress
+    }//GEN-LAST:event_jTable4KeyPressed
+
+    private void jTable5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable5KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calParcialTbl5();
+        }// fin keyPress
+    }//GEN-LAST:event_jTable5KeyPressed
 
     /**
      * @param args the command line arguments
@@ -589,7 +675,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             }
         });
     }
-  
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -649,37 +735,37 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jTable3.getTableHeader().setReorderingAllowed(false);
         jTable4.getTableHeader().setReorderingAllowed(false);
         jTable5.getTableHeader().setReorderingAllowed(false);
-        
-        jTable1.getTableHeader().setPreferredSize(new java.awt.Dimension(0,29));
-        jTable2.getTableHeader().setPreferredSize(new java.awt.Dimension(0,29));
-        jTable3.getTableHeader().setPreferredSize(new java.awt.Dimension(0,29));
-        jTable4.getTableHeader().setPreferredSize(new java.awt.Dimension(0,29));
-        jTable5.getTableHeader().setPreferredSize(new java.awt.Dimension(0,29));
+
+        jTable1.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 29));
+        jTable2.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 29));
+        jTable3.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 29));
+        jTable4.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 29));
+        jTable5.getTableHeader().setPreferredSize(new java.awt.Dimension(0, 29));
     }
-    
+
     // agregar fila en jtable dinamico para las 5 tablas
-    private void addRow(JTable tbl){
+    private void addRow(JTable tbl) {
         //Sección 1 
-            DefaultTableModel modelo = (DefaultTableModel) tbl.getModel();
-            //Sección 2
-            Object[] fila = new Object[8];
-            for(int i=0; i<fila.length ; ++i){
-                //Sección 3
-                fila[i] = ""; // descripcion
-            }
-            //Sección 4
-            modelo.addRow(fila);
-            //Sección 5
-            tbl.setModel(modelo);
+        DefaultTableModel modelo = (DefaultTableModel) tbl.getModel();
+        //Sección 2
+        Object[] fila = new Object[8];
+        for (int i = 0; i < fila.length; ++i) {
+            //Sección 3
+            fila[i] = ""; // descripcion
+        }
+        //Sección 4
+        modelo.addRow(fila);
+        //Sección 5
+        tbl.setModel(modelo);
     }
-    
+
     // eliminar fila de tabla seleccionada dinamica de las 5 tablas
-    private void deleteRow(JTable tbl){
+    private void deleteRow(JTable tbl) {
         //Sección 1
         DefaultTableModel model = (DefaultTableModel) tbl.getModel();
         //Sección 2
         int size = tbl.getSelectedRow();
-        
+
         //Sección 3
         if (size < 0) {
             JOptionPane.showMessageDialog(null,
@@ -696,8 +782,396 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Registro Eliminado");
             }
         }
+
+    }
+
+    // neurobion  --> checar
+    private void setTablsLlenar() {
+        DefaultTableModel modelo1 = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel modelo2 = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel modelo3 = (DefaultTableModel) jTable3.getModel();
+        DefaultTableModel modelo4 = (DefaultTableModel) jTable4.getModel();
+        DefaultTableModel modelo5 = (DefaultTableModel) jTable5.getModel();
+
+        int size = 0;
+        size = getGrupTecnic().size();
+        changeDtaTbls(modelo1, jTable1, size, getGrupTecnic());
+
+        size = getPersoSoport().size();
+        changeDtaTbls(modelo2, jTable2, size, getPersoSoport());
+
+        size = getCostSemanal().size();
+        changeDtaTbls(modelo3, jTable3, size, getCostSemanal());
+
+        size = getCamp().size();
+        changeDtaTbls(modelo4, jTable4, size, getCamp());
+
+        size = getSeguros().size();
+        changeDtaTbls(modelo5, jTable5, size, getSeguros());
+
+    }
+
+    private void changeDtaTbls(DefaultTableModel modelo1, JTable tbl, int size, List<List<String>> lista) {
+        //Sección 2
+        for (int i = 0; i < size; ++i) {
+            Object[] fila = new Object[8];
+            //System.out.println("fff " + getGrupTecnic().get(i).get(i));
+            //Sección 3
+            if (i < lista.size()) {
+                fila[0] = lista.get(i).get(0);
+                fila[1] = lista.get(i).get(1);
+                fila[2] = lista.get(i).get(2);
+                fila[3] = lista.get(i).get(3);
+
+            } if (i == 0) {
+                fila[4] = "";
+                fila[5] = "";
+                fila[6] = "0.0";
+                fila[7] = "0";
+            }
+
+            //Sección 4
+            modelo1.addRow(fila);
+        }
+        //Sección 5
+        tbl.setModel(modelo1);
+    }
+
+    // calculo costoSemanal * 4 :: solo tbl GrupoTecnic
+    final int SEMANAS = 4;
+
+    // metodo 1
+    private void calCostSemMens() {
+        int sizeRowCount = jTable1.getRowCount();
+        if (sizeRowCount > 0) {
+            for (int i = 0; i < sizeRowCount; ++i) {
+                double costSema = vali.solomoney(jTable1.getValueAt(i, 2).toString());
+                jTable1.setValueAt(String.valueOf(costSema), i, 2);
+                double tot = costSema * SEMANAS;
+                jTable1.setValueAt(String.valueOf(tot), i, 4);
+            }
+            calSubTot(jTable1);
+        }
+    }
+
+    // metodo 1.1
+    private void calSubTot(JTable tbl) {
+        // tbl Grupo  0  2  3
+        int sizeRowCount = tbl.getRowCount();
+        if (sizeRowCount > 0) {
+            for (int i = 0; i < sizeRowCount; ++i) {
+                int cant = vali.soloNumero(tbl.getValueAt(i, 0).toString());
+                tbl.setValueAt(String.valueOf(cant), i, 0);
+                double costSema = vali.solomoney(tbl.getValueAt(i, 2).toString());
+                double semanas = vali.solomoney(tbl.getValueAt(i, 3).toString());
+                double subTot = cant * costSema * semanas;
+                subTot = (double) Math.round(subTot * 100d) / 100d;
+                tbl.setValueAt(String.valueOf(subTot), i, 5);
+            }
+        }
+    }
+
+    // metodo 2
+    private void calParcialAndPorcent(JTable tbl) {
+        //  [6] acum    [5] valor
+        int sizeRowCount = tbl.getRowCount();
+        if (sizeRowCount > 0) {
+            double parcial = 0.0;
+            for (int i = 0; i < sizeRowCount; ++i) {
+                parcial += vali.solomoney(tbl.getValueAt(i, 5).toString());
+            }
+            parcial = (double) Math.round(parcial * 100d) / 100d;
+            tbl.setValueAt(String.valueOf(parcial), 0, 6);
+            
+            // calculamos el porcentaje
+            // table position 7  / jTextField1
+            String txt = jTextField1.getText().trim();
+            if(!(txt.equals("0.0") || txt.equals("0") || txt.equals(""))){
+                double par = vali.solomoney(tbl.getValueAt(0, 6).toString());
+                double tot = par / (vali.solomoney(txt));
+                tot = (double) Math.round(tot * 100d) / 100d;
+                tbl.setValueAt(String.valueOf(tot), 0, 7);
+            }
+        }
+    }
+    // calculo de parcial tabla 5
+    private void calParcialTbl5(){
+        // calculamos parcial de la tabla 5
+            // valor costo directo :: jTextField1
+            final double porc = 0.05;
+            double costDirecTxt = vali.solomoney(jTextField1.getText());
+            double tot = costDirecTxt * porc ;
+            tot = (double) Math.round(tot * 100d) / 100d;
+            jTable5.setValueAt(String.valueOf(tot), 0, 6);
+            
+            // calculamos el porcentaje 
+            String txt = jTextField1.getText().trim();
+            if(!(txt.equals("0.0") || txt.equals("0") || txt.equals(""))){
+                double par = vali.solomoney(jTable5.getValueAt(0, 6).toString());
+                double tot1 = par / (vali.solomoney(txt));
+                tot1 = (double) Math.round(tot1 * 100d) / 100d;
+                jTable5.setValueAt(String.valueOf(tot1), 0, 7);
+            }
+    }
+
+    // metodo 3 acum subtotal de todas las tablas
+    private void calSubTotTbls() {
+        double acum = 0.0;
+        double porcenCI = vali.solomoney(jTextField2.getText());
+        jTextField2.setText(String.valueOf(porcenCI));
+        // traigo acum de tbl 1
+        double totTbl1 = vali.solomoney(jTable1.getValueAt(0, 6).toString());
+        double totTbl2 = vali.solomoney(jTable2.getValueAt(0, 6).toString());
+        double totTbl3 = vali.solomoney(jTable3.getValueAt(0, 6).toString());
+        double totTbl4 = vali.solomoney(jTable4.getValueAt(0, 6).toString());
+        double totTbl5 = vali.solomoney(jTable5.getValueAt(0, 6).toString());
+        // poner la tbl 5 pilas 
+        acum = totTbl1 + totTbl2 + totTbl3 + totTbl4 + totTbl5;
+        jTextField3.setText(String.valueOf(acum));
+        
+        // calculo de parciales de todas las tbls
         
     }
-    
-    // neurobion  --> checar
+
+    // Listas con datos de cada tabla
+    private List<List<String>> getGrupTecnic() {
+        List<List<String>> aux = new ArrayList<>(); // 7
+        List<String> data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("SUPERINTENDENTE DE OBRA"); // personal
+        data.add("0"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("RESIDENTE DE OBRA"); // personal
+        data.add("200"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("PLANILLADOR"); // personal
+        data.add("175"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("AYUDANTE DE OBRA"); // personal
+        data.add("150"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("TOPOGRAFOS"); // personal
+        data.add("150"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("PROGRAMADOR DE OBRA Y ADQUISICIONES"); // personal
+        data.add("0"); // costo semanal  
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        return aux;
+    }
+
+    private List<List<String>> getPersoSoport() {
+        List<List<String>> aux = new ArrayList<>(); // 7
+        List<String> data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("BODEGUERO"); // personal
+        data.add("140"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("GUARDIANIA"); // personal
+        data.add("200"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("CADENERO"); // personal
+        data.add("125"); // costo semanal
+        data.add("6.50"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("CHOFER"); // personal
+        data.add("125"); // costo semanal
+        data.add("6.50"); // semanas
+        aux.add(data);
+        data = null;
+
+        return aux;
+    }
+
+    private List<List<String>> getCostSemanal() {
+        List<List<String>> aux = new ArrayList<>(); // 7
+        List<String> data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("VIATICOS"); // personal
+        data.add("9"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("BONOS"); // personal
+        data.add("25"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("CAMION"); // personal
+        data.add("75"); // costo semanal
+        data.add("6.50"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("CAMIONETA"); // personal
+        data.add("40"); // costo semanal
+        data.add("6.50"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("COMUNICACIÓN"); // personal
+        data.add("7"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("PLANOS ASBUILT"); // personal
+        data.add("200"); // costo semanal
+        data.add("1"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("PAPELERIA"); // personal
+        data.add("20"); // costo semanal
+        data.add("15"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("IMPLEMENTOS DE SEGURIDAD POR PERSONA"); // personal
+        data.add("100"); // costo semanal
+        data.add("1"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("COSTO DE OFICINA (ADMINISTRATIVO)"); // personal
+        data.add("50"); // costo semanal
+        data.add("15"); // semanas
+        aux.add(data);
+        data = null;
+
+        return aux;
+    }
+
+    private List<List<String>> getCamp() {
+        List<List<String>> aux = new ArrayList<>(); // 7
+        List<String> data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("DEPARTAMENTO"); // personal
+        data.add("100"); // costo semanal
+        data.add("17"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("PAGOS ELECTRICOS Y AGUA POTABLE"); // personal
+        data.add("16"); // costo semanal
+        data.add("300"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("ALIMENTACION PERSONAL LOCAL"); // personal
+        data.add("2.50"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("ALIMENTACION PERSONAL"); // personal
+        data.add("60"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("COMBUSTIBLE BUS"); // personal
+        data.add("50"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("VIAJES EN AVION Y HOTEL"); // personal
+        data.add("300"); // costo semanal
+        data.add("10"); // semanas
+        aux.add(data);
+        data = null;
+        return aux;
+    }
+
+    private List<List<String>> getSeguros() {
+        List<List<String>> aux = new ArrayList<>(); // 7
+        List<String> data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("GARANTIA BUEN USO ANTICIPO POR 20%"); // personal
+        data.add(""); // costo semanal
+        data.add(""); // semanas
+        aux.add(data);
+        data = null;
+
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("GARANTIA FIEL CUMPLIMIENTO"); // personal
+        data.add(""); // costo semanal
+        data.add(""); // semanas
+        aux.add(data);
+        data = null;
+
+        return aux;
+    }
+
 }

@@ -6,12 +6,14 @@
 package vista;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import controlador.presupuestoController;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
@@ -111,6 +113,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
+        jTextField10 = new javax.swing.JTextField();
 
         jMenu1.setText("jMenu1");
 
@@ -329,6 +332,13 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             }
         });
 
+        jTextField10.setText("Id...");
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField10KeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -337,7 +347,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextField3)
@@ -375,7 +387,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(3, 3, 3)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -393,7 +407,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -552,6 +566,17 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tableMouseClicked
 
+    private void jTextField10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyPressed
+        // buscar presupuesto en bd y llenar con datos
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            String txt = jTextField10.getText();
+            if (txt.length() > 0) {
+                importDtsPresup(txt);
+            }
+        }
+    }//GEN-LAST:event_jTextField10KeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -604,6 +629,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -767,7 +793,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         for (int i = 0; i < size; ++i) {
             entity = new EsquemaPresupuesto();
             String codigo = table.getValueAt(i, 0).toString().trim();
-            if (codigo.length()>0) {
+            if (codigo.length() > 0) {
                 entity.setCodigo(Integer.parseInt(table.getValueAt(i, 0).toString().trim()));
             }
             //entity.setCabeceraTitulo(ss);
@@ -1282,6 +1308,88 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             System.err.println("ERROR AL CREAR EL ARCHIVO!");
             e.printStackTrace();
         }
+    }
+
+    private void importDtsPresup(String txt) {
+        // vaciamos las tablas
+        int sizeTblBody = table.getRowCount();
+        int sizeTblNot = jTable1.getRowCount();
+        clearCompImport(sizeTblBody, sizeTblNot);
+
+        List<Presupuesto> aux = ctrPres.getPresupuestoByID(txt);
+        Gson gson = null;
+        if (!aux.isEmpty()) {
+            gson = new Gson();
+            Type tipoObjeto = new TypeToken<EsquemaPresupuestoManual>() {
+            }.getType();
+
+            EsquemaPresupuestoManual dto = gson.fromJson(convertString(aux), tipoObjeto);
+            jTextField1.setText(dto.getCampo1());
+            jTextField2.setText(dto.getCampo2());
+            jTextField3.setText(dto.getCampo3());
+
+            jTextField4.setText(dto.getOferta());
+            jTextField5.setText(dto.getFecha());
+
+            jTextField6.setText(dto.getSubtotal());
+            jTextField7.setText(dto.getSubtotalIva());
+            jTextField8.setText(dto.getTotal());
+            jTextField9.setText(dto.getIva());
+
+            List<EsquemaPresupuestoManualTabla> listTbl = dto.getListTbl();
+            DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+            Object[] fila = null;
+            for (EsquemaPresupuestoManualTabla list : listTbl) {
+                //Sección 2
+                fila = new Object[6];
+                //Sección 3
+                fila[0] = list.getNumeracion();
+                fila[1] = list.getDescripcion();
+                fila[2] = list.getUnidad();
+                fila[3] = list.getCantidad();
+                fila[4] = list.getPreUnit();
+                fila[5] = list.getPreTot();
+                //Sección 4
+                modelo.addRow(fila);
+                fila = null;
+            }
+            //Sección 5
+            table.setModel(modelo);
+
+            // 
+            DefaultTableModel modelo1 = (DefaultTableModel) jTable1.getModel();
+            List<String> nota = dto.getNota();
+            for (String string : nota) {
+                fila = new Object[1];
+                fila[0] = string;
+                //Sección 4
+                modelo1.addRow(fila);
+                fila = null;
+            }
+            //Sección 5
+            jTable1.setModel(modelo1);
+
+        }
+
+    }
+
+    private void clearCompImport(int sizeTblBody, int sizeTblNot) {
+        if (sizeTblBody > 0) {
+            DefaultTableModel model1 = (DefaultTableModel) table.getModel();
+            model1.setRowCount(0);
+        }
+        if (sizeTblNot > 0) {
+            DefaultTableModel model1 = (DefaultTableModel) jTable1.getModel();
+            model1.setRowCount(0);
+        }
+    }
+
+    private String convertString(List<Presupuesto> aux) {
+        String listAux = "";
+        for (Presupuesto item : aux) {
+            listAux = item.getDatosPrespuesto();
+        }
+        return listAux;
     }
 
 }

@@ -230,4 +230,40 @@ public class presupuestoController {
         return aux;
     }
      
+      public List<Presupuesto> getPresupuestoByID(String dto) {
+        List<Presupuesto> aux = new ArrayList<>();
+        con = null;
+        rs = null;
+        stm = null;
+        sql = "select * from presupuesto where id =" + dto + "";
+        conPg = new conexion();
+        
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+            
+            while (rs.next()) {
+                datos = new Presupuesto();
+                datos.setId(rs.getInt(1));
+                datos.setEmpresa(rs.getString(2));
+                datos.setProyecto(rs.getString(3));
+                datos.setOferta(rs.getString(4));
+                datos.setDatosPrespuesto(rs.getString(5));
+                datos.setUrl_file(rs.getString(6));
+               
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            System.out.println("ErrorPresuController " + e.getMessage());
+            e.getMessage();
+        }
+        return aux;
+    }
+     
 }

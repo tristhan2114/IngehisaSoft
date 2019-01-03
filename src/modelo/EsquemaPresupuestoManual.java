@@ -33,18 +33,21 @@ public class EsquemaPresupuestoManual {
     public EsquemaPresupuestoManual() {
     }
 
-    public EsquemaPresupuestoManual(String campo1, String campo2, String campo3, String oferta,
-            String fecha, String subtotal, String iva, String subtotalIva, String total) {
+    public EsquemaPresupuestoManual(String campo1, String campo2, String campo3, String oferta, String fecha, List<EsquemaPresupuestoManualTabla> listTbl, String subtotal, String iva, String subtotalIva, String total, List<String> nota) {
         this.campo1 = campo1;
         this.campo2 = campo2;
         this.campo3 = campo3;
         this.oferta = oferta;
         this.fecha = fecha;
+        this.listTbl = listTbl;
         this.subtotal = subtotal;
         this.iva = iva;
         this.subtotalIva = subtotalIva;
         this.total = total;
+        this.nota = nota;
     }
+
+    
 
     public String getCampo1() {
         return campo1;
@@ -136,7 +139,7 @@ public class EsquemaPresupuestoManual {
 
     @Override
     public String toString() {
-        return "EsquemaPresupuestoManual{" + "campo1=" + campo1 + ", campo2=" + campo2 + ", campo3=" + campo3 + ", oferta=" + oferta + ", fecha=" + fecha + ", listTbl=" + listTbl + ", subtotal=" + subtotal + ", iva=" + iva + ", subtotalIva=" + subtotalIva + ", total=" + total + ", nota=" + nota + '}';
+        return "EsquemaPresupuestoManual{" + "campo1=" + campo1 + ", campo2=" + campo2 + ", campo3=" + campo3 + ", oferta=" + oferta + ", fecha=" + fecha + ", listTbl=" + listTbl.toString() + ", subtotal=" + subtotal + ", iva=" + iva + ", subtotalIva=" + subtotalIva + ", total=" + total + ", nota=" + nota + '}';
     }
 
 }

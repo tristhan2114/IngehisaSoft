@@ -81,7 +81,7 @@ public class EsquemaPresupuestoManualTabla {
 
     @Override
     public String toString() {
-        return "tableDts{" + "numeracion=" + numeracion + ", descripcion=" + descripcion + ", unidad=" + unidad + ", cantidad=" + cantidad + ", preUnit=" + preUnit + ", preTot=" + preTot + '}';
+        return "listTbl{" + "numeracion=" + numeracion + ", descripcion=" + descripcion + ", unidad=" + unidad + ", cantidad=" + cantidad + ", preUnit=" + preUnit + ", preTot=" + preTot + '}';
     }
 
 }

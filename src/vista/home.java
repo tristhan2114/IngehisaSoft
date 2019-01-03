@@ -437,7 +437,7 @@ public class home extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             e.getMessage();
-            //System.out.println("err-  "+e.getMessage());
+            System.out.println("err-  "+e.getMessage());
         }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
