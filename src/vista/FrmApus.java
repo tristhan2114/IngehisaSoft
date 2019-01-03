@@ -12,6 +12,7 @@ import vistaPanelApus.panelApus;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -58,6 +59,7 @@ import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import util.gestionImportApusBD;
 
 /**
  *
@@ -91,6 +93,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
     
     apusController ctrApus = new apusController();
     Apus apus = null;
+    
+    // variable para caracter
+    private Character kpress;
 
     public FrmApus() {
         initComponents();
@@ -319,6 +324,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -4801,6 +4807,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
 
+        jTextField1.setText("Ingrese el ID del APUS");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 14, 200, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -4847,6 +4861,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
         apusP = null;
         gestionApusPaneles.listPaneles.clear();
         getionPApus = null;
+        gestionImportApusBD.listPaneles.clear();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -4887,6 +4902,17 @@ public class FrmApus extends javax.swing.JInternalFrame {
             System.out.println("err-  " + e.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // txtBuscarApus&Llenar
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            String txt = jTextField1.getText().trim();
+            if(txt.length()>0){
+                importAPUS(txt);
+            }
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
 
     /**
      * @param args the command line arguments
@@ -4930,8 +4956,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    public static javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextField1;
     public static javax.swing.JPanel panel1;
     public static javax.swing.JPanel panel10;
     public static javax.swing.JPanel panel100;
@@ -6275,6 +6302,15 @@ public class FrmApus extends javax.swing.JInternalFrame {
         }
     }
 
+    // metodo de busqueda APUS
+    private void importAPUS(String txt){
+        List<Apus> aux = ctrApus.getApusByID(txt);
+        if(!aux.isEmpty()){
+            gestionImportApusBD gt = new gestionImportApusBD();
+            gt.importarDtos(aux);
+        }
+    }
+    
 }
 
 /**

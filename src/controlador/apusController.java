@@ -193,4 +193,41 @@ public class apusController {
         }
         return aux;
     }
+
+     public List<Apus> getApusByID(String dto) {
+        List<Apus> aux = new ArrayList<>();
+        con = null;
+        rs = null;
+        stm = null;
+        sql = "select * from apus where id =" + dto + "";
+        conPg = new conexion();
+        
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+            
+            while (rs.next()) {
+                datos = new Apus();
+                datos.setId(rs.getInt(1));
+                datos.setEmpresa(rs.getString(2));
+                datos.setProyecto(rs.getString(3));
+                datos.setDatosApus(rs.getString(4));
+                datos.setDatosPresResu(rs.getString(5));
+                datos.setUrl_file(rs.getString(6));
+               
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            System.out.println("Error clasifiController " + e.getMessage());
+            e.getMessage();
+        }
+        return aux;
+    }
+
 }

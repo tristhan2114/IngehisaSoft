@@ -508,6 +508,12 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private void setEditMaterial() {
         //jComboBox1, jComboBox2, txtdescripcion, jTextField3, jTextField2, la urlFile, jTextField1
         try {
+            if (txtdescripcion.getText().length() > 0
+                && jTextField3.getText().length() > 0) {
+                
+            }else {
+            JOptionPane.showConfirmDialog(this, "Campos vacios \ny/o no ha seleccionado una imagen", "Alerta", 2);
+        }
 
         } catch (Exception e) {
             System.out.println("");
