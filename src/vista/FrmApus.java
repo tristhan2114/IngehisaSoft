@@ -85,8 +85,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
     final String[] cabeceraResumenApus = {"NUMERACION", "DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO UNITARIO", "PRECIO TOTAL"};
 
     // instancia de gestion de paneles
-    gestionApusPaneles getionPApus;
-
+    public static gestionApusPaneles getionPApus;
+    private gestionImportApusBD gt;
+    
     // instancia de presupuesto resumen
     FrmApusPresupuesto freResumen;
     public static boolean activoFrmResumen;
@@ -96,6 +97,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
     
     // variable para caracter
     private Character kpress;
+    
+    /// desde import
+    public static List<JPanel> listPanelesAux = new ArrayList<>();
 
     public FrmApus() {
         initComponents();
@@ -4832,10 +4836,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
     private void BtnAddBodyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAddBodyActionPerformed
         // controlamos instancia de contenedorPaneles
         ++i; // contiene
-        apusP = new panelApus();
-        jLabel2.setText("Cantidad de Apus: " + i);
-        getionPApus = new gestionApusPaneles();
-        getionPApus.panelCreateApus(apusP, i);
+        addAPUS(apusP, i);
+        
+        
         //System.out.println("position " + i);
     }//GEN-LAST:event_BtnAddBodyActionPerformed
 
@@ -4868,7 +4871,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
         try {
             List<FormatoApus> list = getSquemaExport();
             if (list.isEmpty()) { // esta vacio
-                System.out.println("vacio");
+                //System.out.println("vacio");
+                // cuando import desde base de datos
+                
             } else {
                 //System.out.println("si dto apus " + list.toString());
                 List<EsquemaPresupuesto> esq = getEsquemaWithFormatApus(list);
@@ -5457,14 +5462,19 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                         hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
                                         celda2.setCellValue(dto.getTablaEquipo().get(g).get(0));
                                     } else if (h == 3) {
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellValue(dto.getTablaEquipo().get(g).get(1));
                                     } else if (h == 4) {
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellValue(dto.getTablaEquipo().get(g).get(2));
                                     } else if (h == 5) {
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellValue(dto.getTablaEquipo().get(g).get(3));
                                     } else if (h == 6) {
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellValue(dto.getTablaEquipo().get(g).get(4));
                                     } else if (h == 7) {
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellValue(dto.getTablaEquipo().get(g).get(5));
                                     }
                                 }
@@ -6043,6 +6053,10 @@ public class FrmApus extends javax.swing.JInternalFrame {
         FormatoApus entFormtApus;
         // variable i de cuantos veces voy a recorrer :::: i=1; i<=200;++i
         List<JPanel> listPaneles = gestionApusPaneles.listPaneles;
+        if(listPaneles.isEmpty()){
+            //System.out.println("vacio.. ");
+            listPaneles = gestionImportApusBD.listPaneles;
+        }
         int acum = 1; // para controlar vueltas que voy a dar
         for (JPanel panel1 : listPaneles) {
             int position = 0;
@@ -6306,9 +6320,16 @@ public class FrmApus extends javax.swing.JInternalFrame {
     private void importAPUS(String txt){
         List<Apus> aux = ctrApus.getApusByID(txt);
         if(!aux.isEmpty()){
-            gestionImportApusBD gt = new gestionImportApusBD();
+            gt = new gestionImportApusBD();
             gt.importarDtos(aux);
         }
+    }
+
+    public static void addAPUS(panelApus apusP, int i) {
+        apusP = new panelApus();
+        jLabel2.setText("Cantidad de Apus: " + i);
+        getionPApus = new gestionApusPaneles();
+        getionPApus.panelCreateApus(apusP, i);
     }
     
 }
@@ -6365,6 +6386,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
  */
 
 /*
+
+incluir el add para generar usando opcion de llenado con bd
+
 leer gson
 Type tipoObjeto = new TypeToken<list <Alumno>>(){}.getType();
 ArrayList<alumno> alumnos2=gson.fromJson(formatoJSON, tipoObjeto);

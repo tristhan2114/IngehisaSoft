@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import util.validaciones;
+import static vista.home.escritorio;
 
 /**
  *
@@ -25,7 +26,13 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
     validaciones vali = new validaciones();
     // variable para caracter
     private Character kpress;
+    
+    // control de costo de poliza
+    public static boolean activoFrmIndirectoPoliza ;
 
+    // FrmIndirecto
+    private FrmIndirectoPoliza frmIndirectoPoliza;
+    
     public FrmIndirectos() {
         initComponents();
         //getContentPane().setBackground(new java.awt.Color(237,179,88));
@@ -110,6 +117,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jTextField9 = new javax.swing.JTextField();
+        jButton14 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -445,6 +453,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 625, 81, -1));
 
         jTextField8.setText("0.0");
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField8KeyPressed(evt);
+            }
+        });
         jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 625, 81, -1));
 
         jButton4.setText("+");
@@ -529,6 +542,14 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         jTextField9.setText("0.0");
         jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 625, 94, -1));
+
+        jButton14.setText("Costo Poliza");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 625, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -657,6 +678,36 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField7KeyPressed
 
+    private void jTextField8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyPressed
+        // utilidad
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calTotWithIndirectImprevUtil();
+        }
+    }//GEN-LAST:event_jTextField8KeyPressed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // FrmIndirectoPoliza
+        try {
+            if (activoFrmIndirectoPoliza == true) {
+                frmIndirectoPoliza.setLocation(500, 300);
+                frmIndirectoPoliza.table.setValueAt(jTextField1.getText(), 0, 2);
+                frmIndirectoPoliza.moveToFront();
+                frmIndirectoPoliza.show();
+            } else {
+                activoFrmIndirectoPoliza = true;
+                frmIndirectoPoliza = new FrmIndirectoPoliza();
+                frmIndirectoPoliza.table.setValueAt(jTextField1.getText(), 0, 2);
+                escritorio.add(frmIndirectoPoliza);
+                frmIndirectoPoliza.setLocation(500, 300);
+                frmIndirectoPoliza.show();
+            }
+        } catch (Exception e) {
+            e.getMessage();
+            //System.out.println("err-  "+e.getMessage());
+        }
+    }//GEN-LAST:event_jButton14ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -699,6 +750,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1232,4 +1284,5 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         return aux;
     }   
 
+    
 }

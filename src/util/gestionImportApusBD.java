@@ -223,6 +223,7 @@ import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 import modelo.Apus;
 import modelo.FormatoApus;
+import vista.FrmApus;
 import static vista.FrmApus.i;
 import static vista.FrmApus.jLabel2;
 import static vista.FrmApus.panel1;
@@ -248,17 +249,17 @@ public class gestionImportApusBD {
         }.getType();
         ArrayList<FormatoApus> dto = gson.fromJson(convertString(aux), tipoObjeto);
         //System.out.println("nJSON A JAVA");
-        for (int i = 0; i < dto.size(); i++) {
-            jLabel2.setText("Cantidad de Apus: " + (i + 1));
+        for (int ii = 0; ii < dto.size(); ii++) {
+            jLabel2.setText("Cantidad de Apus: " + (ii + 1));
             layout = new GridBagLayout();
             ap = new panelApus();
 
             // convert
-            FormatoApus Fapus = dto.get(i);
+            FormatoApus Fapus = dto.get(ii);
             //System.out.println(Fapus.getEmpresa());
 
             // voy al panel
-            JPanel pl = listPaneles.get(i);
+            JPanel pl = listPaneles.get(ii);
             //System.out.println("JPanel "+listPaneles.get(i));
             pl.setLayout(layout);
             c = new GridBagConstraints();
@@ -269,8 +270,16 @@ public class gestionImportApusBD {
 
             pl.setVisible(true);
             pl.add(ap, c);
-
+            
+            FrmApus.listPanelesAux.add(panel1);
+            
+            //gestionApusPaneles.listPaneles.add(pl);
+            //gestionApusPaneles ionPApus = new gestionApusPaneles();
+            //FrmApus.addAPUS(ap, ionPApus, acum);
+            FrmApus.i ++;
         }
+        
+        
     }
 
     private String convertString(List<Apus> aux) {
@@ -283,7 +292,8 @@ public class gestionImportApusBD {
 
     /// paneles
     public static List<JPanel> listPaneles = new ArrayList<>();
-
+    
+    
     public void allPaneles() {
         listPaneles.add(panel1);
         listPaneles.add(panel2);

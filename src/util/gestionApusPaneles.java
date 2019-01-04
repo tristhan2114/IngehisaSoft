@@ -227,6 +227,7 @@ public class gestionApusPaneles {
 
     public void panelCreateApus(panelApus apusP, int position) {
         // [1]  tamaño total es 122
+        
         if (position == 1) {
             panel1.setLayout(layout);
             GridBagConstraints c = new GridBagConstraints();
@@ -2043,7 +2044,7 @@ public class gestionApusPaneles {
     }
     
     public static List<JPanel> listPaneles = new ArrayList<>();
-    public void allPaneles(){
+    public static void allPaneles(){
         listPaneles.add(panel1);
         listPaneles.add(panel2);
         listPaneles.add(panel3);
