@@ -109,6 +109,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jButton11 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
+        jTextField9 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -340,7 +341,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 810, 80));
 
-        jTextField1.setText("0.0");
+        jTextField1.setText("133272.18504");
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, 130, -1));
 
         jTextField2.setText("0.0");
@@ -384,7 +385,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setText("Total Porcentaje");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 560, -1, -1));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 560, -1, -1));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -418,7 +419,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("Indirectos");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 610, -1, -1));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 610, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel14.setText("Imprevistos");
@@ -430,16 +431,21 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel16.setText("Total");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 610, -1, -1));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 610, -1, -1));
 
         jTextField6.setText("0.0");
-        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 625, 81, -1));
+        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 625, 81, -1));
 
         jTextField7.setText("0.0");
-        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 625, 81, -1));
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField7KeyPressed(evt);
+            }
+        });
+        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 625, 81, -1));
 
         jTextField8.setText("0.0");
-        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 625, 81, -1));
+        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 625, 81, -1));
 
         jButton4.setText("+");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -520,6 +526,9 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(816, 410, -1, -1));
+
+        jTextField9.setText("0.0");
+        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 625, 94, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -629,7 +638,6 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         if (kpress == KeyEvent.VK_ENTER) {
             calSubTot(jTable4);
             calParcialAndPorcent(jTable4);
-            calSubTotTbls();
         }// fin keyPress
     }//GEN-LAST:event_jTable4KeyPressed
 
@@ -637,8 +645,17 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
             calParcialTbl5();
+            calSubTotTbls();
         }// fin keyPress
     }//GEN-LAST:event_jTable5KeyPressed
+
+    private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
+        // imprevisto
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            calTotWithIndirectImprevUtil();
+        }
+    }//GEN-LAST:event_jTextField7KeyPressed
 
     /**
      * @param args the command line arguments
@@ -726,6 +743,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 
     // no move columnTable y dimension fija 
@@ -808,6 +826,8 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         size = getSeguros().size();
         changeDtaTbls(modelo5, jTable5, size, getSeguros());
+        jTable5.setValueAt("0.0", 0, 5);
+        jTable5.setValueAt("0.0", 1, 5);
 
     }
 
@@ -823,7 +843,8 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 fila[2] = lista.get(i).get(2);
                 fila[3] = lista.get(i).get(3);
 
-            } if (i == 0) {
+            }
+            if (i == 0) {
                 fila[4] = "";
                 fila[5] = "";
                 fila[6] = "0.0";
@@ -882,11 +903,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             }
             parcial = (double) Math.round(parcial * 100d) / 100d;
             tbl.setValueAt(String.valueOf(parcial), 0, 6);
-            
+
             // calculamos el porcentaje
             // table position 7  / jTextField1
             String txt = jTextField1.getText().trim();
-            if(!(txt.equals("0.0") || txt.equals("0") || txt.equals(""))){
+            if (!(txt.equals("0.0") || txt.equals("0") || txt.equals(""))) {
                 double par = vali.solomoney(tbl.getValueAt(0, 6).toString());
                 double tot = par / (vali.solomoney(txt));
                 tot = (double) Math.round(tot * 100d) / 100d;
@@ -894,27 +915,28 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             }
         }
     }
-    // calculo de parcial tabla 5
-    private void calParcialTbl5(){
+
+    // calculo de parcial tabla 5 *********************************
+    private void calParcialTbl5() {
         // calculamos parcial de la tabla 5
-            // valor costo directo :: jTextField1
-            final double porc = 0.05;
-            double costDirecTxt = vali.solomoney(jTextField1.getText());
-            double tot = costDirecTxt * porc ;
-            tot = (double) Math.round(tot * 100d) / 100d;
-            jTable5.setValueAt(String.valueOf(tot), 0, 6);
-            
-            // calculamos el porcentaje 
-            String txt = jTextField1.getText().trim();
-            if(!(txt.equals("0.0") || txt.equals("0") || txt.equals(""))){
-                double par = vali.solomoney(jTable5.getValueAt(0, 6).toString());
-                double tot1 = par / (vali.solomoney(txt));
-                tot1 = (double) Math.round(tot1 * 100d) / 100d;
-                jTable5.setValueAt(String.valueOf(tot1), 0, 7);
-            }
+        // valor costo directo :: jTextField1
+        final double porc = 0.05;
+        double costDirecTxt = vali.solomoney(jTextField1.getText());
+        double tot = costDirecTxt * porc;
+        tot = (double) Math.round(tot * 100d) / 100d;
+        jTable5.setValueAt(String.valueOf(tot), 0, 6);
+
+        // calculamos el porcentaje 
+        String txt = jTextField1.getText().trim();
+        if (!(txt.equals("0.0") || txt.equals("0") || txt.equals(""))) {
+            double par = vali.solomoney(jTable5.getValueAt(0, 6).toString());
+            double tot1 = par / (vali.solomoney(txt));
+            tot1 = (double) Math.round(tot1 * 100d) / 100d;
+            jTable5.setValueAt(String.valueOf(tot1), 0, 7);
+        }
     }
 
-    // metodo 3 acum subtotal de todas las tablas
+    // metodo 3 acum subtotal de todas las tablas en txt 
     private void calSubTotTbls() {
         double acum = 0.0;
         double porcenCI = vali.solomoney(jTextField2.getText());
@@ -924,14 +946,50 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         double totTbl2 = vali.solomoney(jTable2.getValueAt(0, 6).toString());
         double totTbl3 = vali.solomoney(jTable3.getValueAt(0, 6).toString());
         double totTbl4 = vali.solomoney(jTable4.getValueAt(0, 6).toString());
-        double totTbl5 = vali.solomoney(jTable5.getValueAt(0, 6).toString());
+        double totTbl5 = vali.solomoney(jTable5.getValueAt(0, 5).toString());
+        double totTbl51 = vali.solomoney(jTable5.getValueAt(1, 5).toString());
         // poner la tbl 5 pilas 
-        acum = totTbl1 + totTbl2 + totTbl3 + totTbl4 + totTbl5;
+        acum = totTbl1 + totTbl2 + totTbl3 + totTbl4 + totTbl5 + totTbl51;
+        acum = (double) Math.round(acum * 100d) / 100d;
         jTextField3.setText(String.valueOf(acum));
-        
+
         // calculo de parciales de todas las tbls
-        
+        double acum1 = 0.0;
+        double totParTbl1 = vali.solomoney(jTable1.getValueAt(0, 6).toString());
+        double totParTbl2 = vali.solomoney(jTable2.getValueAt(0, 6).toString());
+        double totParTbl3 = vali.solomoney(jTable3.getValueAt(0, 6).toString());
+        double totParTbl4 = vali.solomoney(jTable4.getValueAt(0, 6).toString());
+        double totParTbl5 = vali.solomoney(jTable5.getValueAt(0, 6).toString());
+        acum1 = totParTbl1 + totParTbl2 + totParTbl3 + totParTbl4 + totParTbl5;
+        acum1 = (double) Math.round(acum1 * 100d) / 100d;
+        jTextField4.setText(String.valueOf(acum1));
+
+        //calculo de totales porcentaje [7]
+        double acum2 = 0.0;
+        double totPorTbl1 = vali.solomoney(jTable1.getValueAt(0, 7).toString());
+        double totPorTbl2 = vali.solomoney(jTable2.getValueAt(0, 7).toString());
+        double totPorTbl3 = vali.solomoney(jTable3.getValueAt(0, 7).toString());
+        double totPorTbl4 = vali.solomoney(jTable4.getValueAt(0, 7).toString());
+        double totPorTbl5 = vali.solomoney(jTable5.getValueAt(0, 7).toString());
+        acum2 = totPorTbl1 + totPorTbl2 + totPorTbl3 + totPorTbl4 + totPorTbl5;
+        acum2 = (double) Math.round(acum2 * 100d) / 100d;
+        jTextField5.setText(String.valueOf(acum2));
+        // indirecto
+        jTextField6.setText(String.valueOf(acum2));
     }
+    
+    private void calTotWithIndirectImprevUtil() {
+        if (jTextField7.getText().length() > 0) {
+            double indirect = vali.solomoney(jTextField6.getText());
+            double imprevis = vali.solomoney(jTextField7.getText());
+            double utilidad = vali.solomoney(jTextField8.getText());
+            double total = indirect + imprevis + utilidad;
+            total = (double) Math.round(total * 100d) / 100d;
+            jTextField9.setText(String.valueOf(total));
+        }
+    }
+    
+    
 
     // Listas con datos de cada tabla
     private List<List<String>> getGrupTecnic() {
@@ -1172,6 +1230,6 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         data = null;
 
         return aux;
-    }
+    }   
 
 }
