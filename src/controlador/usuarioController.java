@@ -183,6 +183,75 @@ public class usuarioController {
         return aux;
     }
 
+    // antes de registro verificamos que username sea diferente del que esta en base de datos
+    public List<Usuarios> getUsuariosByUsername(String descrip) {
+        con = null;
+        pst = null;
+        sql = "select * from usuarios where username ='" + descrip + "'";
+        List<Usuarios> aux = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Usuarios();
+                datos.setId(rs.getInt(1));
+                datos.setNombres(rs.getString(2));
+                datos.setApellidos(rs.getString(3));
+                datos.setUsername(rs.getString(4));
+                datos.setContrasenia(rs.getString(5));
+                datos.setResponsable(rs.getInt(6));
+
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            System.out.println("err- " + e.getMessage());
+            e.getMessage();
+        }
+        return aux;
+    }
+    
+    // solo usuarios con responsable 1
+    public List<Usuarios> getUsuariosAllByResponsable() {
+        con = null;
+        pst = null;
+        sql = "select * from usuarios where responsable = 1";
+        List<Usuarios> aux = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Usuarios();
+                datos.setId(rs.getInt(1));
+                datos.setNombres(rs.getString(2));
+                datos.setApellidos(rs.getString(3));
+                datos.setUsername(rs.getString(4));
+                datos.setContrasenia(rs.getString(5));
+                datos.setResponsable(rs.getInt(6));
+
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return aux;
+    }
+
     // traemos el id sgt para hacer la insercion
     public int getIDSgt() {
         int id = 0;
@@ -209,9 +278,9 @@ public class usuarioController {
     }
 
     // metodo para cambiar de contraseña del usuario;
-    public boolean setCambiarContraseñaByUsuarioID(int id){
+    public boolean setCambiarContraseñaByUsuarioID(int id) {
         boolean resultado = false;
-        
+
         return resultado;
     }
 }

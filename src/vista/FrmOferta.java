@@ -5,8 +5,13 @@
  */
 package vista;
 
+import controlador.usuarioController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
+import modelo.Usuarios;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 /**
@@ -18,12 +23,16 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     /**
      * Creates new form oferta
      */
+    
+    usuarioController ctrUser = null;
+    
     public FrmOferta() {
         initComponents();
         setTitle("Ofertas");
         
         // default componentes
         setTablesNoMoveHeader() ;
+        llenarResponsable();
     }
 
     /**
@@ -43,8 +52,9 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), " Ofertas"));
@@ -111,6 +121,9 @@ public class FrmOferta extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 220, 40));
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, 190, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -159,6 +172,7 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
@@ -177,6 +191,17 @@ public class FrmOferta extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
             jTable1.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }*/
+    }
+    
+    private void llenarResponsable(){
+        // jComboBox1
+        ctrUser = new usuarioController();
+        List<Usuarios> users = (ArrayList<Usuarios>) ctrUser.getUsuariosAllByResponsable();
+        DefaultComboBoxModel cboModel = new DefaultComboBoxModel();
+        for (Usuarios item : users) {
+            cboModel.addElement(item);
+        }
+        jComboBox1.setModel(cboModel);
     }
 
 }

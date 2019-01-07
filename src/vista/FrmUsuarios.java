@@ -66,10 +66,10 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         txtApellidos = new javax.swing.JTextField();
         txtUsername = new javax.swing.JTextField();
         txtPass = new javax.swing.JTextField();
-        txtResponsable = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -148,7 +148,6 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
 
         txtPass.setText("ingehisa*temp*2019");
         jPanel1.add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 150, 210, -1));
-        jPanel1.add(txtResponsable, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 180, 210, -1));
 
         jButton1.setText("Nuevo");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -173,6 +172,9 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, -1, -1));
+
+        jCheckBox1.setText("Si");
+        jPanel1.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 184, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 320, 340));
 
@@ -296,12 +298,12 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // BtnSave
-        setSaveEquip();
+        setSaveUser();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // BtnEditar
-        setEditEquipo();
+        setEditUser();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
@@ -327,7 +329,13 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         txtApellidos.setText(jTable1.getValueAt(fila, 2).toString());
         txtUsername.setText(jTable1.getValueAt(fila, 3).toString());
         txtPass.setText(jTable1.getValueAt(fila, 4).toString());
-        txtResponsable.setText(jTable1.getValueAt(fila, 5).toString());
+        String dto = jTable1.getValueAt(fila, 5).toString();
+        if (dto.equals("1")) {
+            jCheckBox1.setSelected(true);
+        } else {
+            jCheckBox1.setSelected(false);
+        }
+
     }//GEN-LAST:event_jTable1MouseClicked
 
     /**
@@ -372,6 +380,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -393,7 +402,6 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombres;
     private javax.swing.JTextField txtPass;
-    private javax.swing.JTextField txtResponsable;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
@@ -455,26 +463,42 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
     }
 
     // metodo para guardar un equipo nuevo
-    private void setSaveEquip() {
+    private void setSaveUser() {
         // txtCodigo, txtNombres, txtApellidos, txtUsername, txtPass, txtResponsable
         if (txtNombres.getText().length() > 0
                 && txtApellidos.getText().length() > 0
                 && txtUsername.getText().length() > 0
                 && txtPass.getText().length() > 0) {
             try {
+
+                int marcado = 0;
+                if (jCheckBox1.isSelected()) {
+                    marcado = 1;
+                } else {
+                    marcado = 0;
+                }
+
                 usuario = new Usuarios();
                 usuario.setNombres(txtNombres.getText());
                 usuario.setApellidos(txtApellidos.getText());
                 usuario.setUsername(txtUsername.getText());
                 usuario.setContrasenia(txtPass.getText());
-                usuario.setResponsable(Integer.parseInt(txtResponsable.getText()));// cambiar componente por rButtom
+                usuario.setResponsable(marcado);// cambiar componente por rButtom
 
-                if (ctrUser.ingresar(usuario)) {
-                    JOptionPane.showConfirmDialog(this, "Usuario grabado con exito", "Confirmación", 2);
-                    setTableUsuariosAll();
+                // verificamos username
+                List<Usuarios> verificar = ctrUser.getUsuariosByUsername(usuario.getUsername());
+                if (verificar.isEmpty()) {
+                    if (ctrUser.ingresar(usuario)) {
+                        JOptionPane.showConfirmDialog(this, "Usuario grabado con exito", "Confirmación", 2);
+                        setTableUsuariosAll();
+                    } else {
+                        JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
+                    }
                 } else {
-                    JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
+                    JOptionPane.showConfirmDialog(this, "Eliga otro nombre de usuario", "Alerta", 2);
+                    txtUsername.setText("");
                 }
+                verificar.clear();
                 usuario = null;
             } catch (Exception e) {
                 System.out.println("err-saveEq " + e.getMessage());
@@ -485,7 +509,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         }
     }
 
-    private void setEditEquipo() {
+    private void setEditUser() {
         // txtCodigo, txtNombres, txtApellidos, txtUsername, txtPass, txtResponsable
         if (txtNombres.getText().length() > 0
                 && txtApellidos.getText().length() > 0
@@ -493,12 +517,19 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                 && txtPass.getText().length() > 0) {
             try {
 
+                int marcado = 0;
+                if (jCheckBox1.isSelected()) {
+                    marcado = 1;
+                } else {
+                    marcado = 0;
+                }
+
                 usuario = new Usuarios();
                 usuario.setNombres(txtNombres.getText());
                 usuario.setApellidos((txtApellidos.getText()));
                 usuario.setUsername((txtUsername.getText()));
                 usuario.setContrasenia(txtPass.getText());
-                usuario.setResponsable(Integer.parseInt(txtResponsable.getText()));
+                usuario.setResponsable(marcado);
                 usuario.setId(Integer.parseInt(txtCodigo.getText()));
 
                 if (ctrUser.actualizar(usuario)) {
