@@ -37,6 +37,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         initComponents();
         //getContentPane().setBackground(new java.awt.Color(237,179,88));
         // default componentes
+        jButton14.setVisible(false);
         setEsquemaTable();
         setTablsLlenar();
 

@@ -5,12 +5,19 @@
  */
 package controlador;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Apus;
+import modelo.EsquemaPresupuestoManual;
+import modelo.EsquemaPresupuestoManualTabla;
+import modelo.FormatoApus;
 import modelo.Presupuesto;
 import util.conexion;
 
@@ -19,7 +26,7 @@ import util.conexion;
  * @author personal1
  */
 public class presupuestoController {
-    
+
     private String sql = "";
     private Connection con;
     private PreparedStatement pst;
@@ -27,6 +34,9 @@ public class presupuestoController {
     private ResultSet rs;
     private conexion conPg = null;
     private Presupuesto datos = null;
+
+    private EsquemaPresupuestoManual datos1 = null;
+    private Apus apus = null;
 
     public int ingresar(Presupuesto datos) {
         int resultado = 0;
@@ -44,25 +54,25 @@ public class presupuestoController {
             pst.setString(4, datos.getDatosPrespuesto());
 
             pst.execute();
-            
+
             // now get the ID:
             ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
                 resultado = rs.getInt(1);
             }
             rs.close();
-            
+
             pst.close();
             con.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("insert Pres "+e.getMessage());
-            e.getMessage();            
+            System.out.println("insert Pres " + e.getMessage());
+            e.getMessage();
         }
         return resultado;
     }
 
-     public boolean actualizarUrlFile(Presupuesto datos) {
+    public boolean actualizarUrlFile(Presupuesto datos) {
         con = null;
         pst = null;
         sql = "UPDATE presupuesto SET url_file=? "
@@ -80,25 +90,25 @@ public class presupuestoController {
             conPg = null;
             return true;
         } catch (Exception e) {
-            System.out.println("update Pres "+e.getMessage());
+            System.out.println("update Pres " + e.getMessage());
             e.getMessage();
             return false;
         }
     }
-     
-     public List<Presupuesto> getPresupuestoAll() {
+
+    public List<Presupuesto> getPresupuestoAll() {
         List<Presupuesto> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
         sql = "select * from presupuesto";
         conPg = new conexion();
-        
+
         try {
             con = conPg.conn();
             stm = con.createStatement();
             rs = stm.executeQuery(sql);
-            
+
             while (rs.next()) {
                 datos = new Presupuesto();
                 datos.setId(rs.getInt(1));
@@ -107,43 +117,7 @@ public class presupuestoController {
                 datos.setOferta(rs.getString(4));
                 datos.setDatosPrespuesto(rs.getString(5));
                 datos.setUrl_file(rs.getString(6));
-               
-                aux.add(datos);
-                datos = null;
-            }
-            stm.close();
-            rs.close();
-            con.close();
-            conPg = null;
-        } catch (Exception e) {
-            System.out.println("Error clasifiController " + e.getMessage());
-            e.getMessage();
-        }
-        return aux;
-    }
-     
-     public List<Presupuesto> getPresupuestoByEmpresa(String dto) {
-        List<Presupuesto> aux = new ArrayList<>();
-        con = null;
-        rs = null;
-        stm = null;
-        sql = "select * from presupuesto where empresa '" + dto + "'";
-        conPg = new conexion();
-        
-        try {
-            con = conPg.conn();
-            stm = con.createStatement();
-            rs = stm.executeQuery(sql);
-            
-            while (rs.next()) {
-                datos = new Presupuesto();
-                datos.setId(rs.getInt(1));
-                datos.setEmpresa(rs.getString(2));
-                datos.setProyecto(rs.getString(3));
-                datos.setOferta(rs.getString(4));
-                datos.setDatosPrespuesto(rs.getString(5));
-                datos.setUrl_file(rs.getString(6));
-               
+
                 aux.add(datos);
                 datos = null;
             }
@@ -158,19 +132,55 @@ public class presupuestoController {
         return aux;
     }
 
-     public List<Presupuesto> getPresupuestoByProyecto(String dto) {
+    public List<Presupuesto> getPresupuestoByEmpresa(String dto) {
+        List<Presupuesto> aux = new ArrayList<>();
+        con = null;
+        rs = null;
+        stm = null;
+        sql = "select * from presupuesto where empresa '" + dto + "'";
+        conPg = new conexion();
+
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Presupuesto();
+                datos.setId(rs.getInt(1));
+                datos.setEmpresa(rs.getString(2));
+                datos.setProyecto(rs.getString(3));
+                datos.setOferta(rs.getString(4));
+                datos.setDatosPrespuesto(rs.getString(5));
+                datos.setUrl_file(rs.getString(6));
+
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            System.out.println("Error clasifiController " + e.getMessage());
+            e.getMessage();
+        }
+        return aux;
+    }
+
+    public List<Presupuesto> getPresupuestoByProyecto(String dto) {
         List<Presupuesto> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
         sql = "select * from presupuesto where proyecto ='" + dto + "'";
         conPg = new conexion();
-        
+
         try {
             con = conPg.conn();
             stm = con.createStatement();
             rs = stm.executeQuery(sql);
-            
+
             while (rs.next()) {
                 datos = new Presupuesto();
                 datos.setId(rs.getInt(1));
@@ -179,7 +189,7 @@ public class presupuestoController {
                 datos.setOferta(rs.getString(4));
                 datos.setDatosPrespuesto(rs.getString(5));
                 datos.setUrl_file(rs.getString(6));
-               
+
                 aux.add(datos);
                 datos = null;
             }
@@ -193,20 +203,20 @@ public class presupuestoController {
         }
         return aux;
     }
-    
-     public List<Presupuesto> getPresupuestoByOferta(String dto) {
+
+    public List<Presupuesto> getPresupuestoByOferta(String dto) {
         List<Presupuesto> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
         sql = "select * from presupuesto where oferta ='" + dto + "'";
         conPg = new conexion();
-        
+
         try {
             con = conPg.conn();
             stm = con.createStatement();
             rs = stm.executeQuery(sql);
-            
+
             while (rs.next()) {
                 datos = new Presupuesto();
                 datos.setId(rs.getInt(1));
@@ -215,7 +225,7 @@ public class presupuestoController {
                 datos.setOferta(rs.getString(4));
                 datos.setDatosPrespuesto(rs.getString(5));
                 datos.setUrl_file(rs.getString(6));
-               
+
                 aux.add(datos);
                 datos = null;
             }
@@ -229,20 +239,20 @@ public class presupuestoController {
         }
         return aux;
     }
-     
-      public List<Presupuesto> getPresupuestoByID(String dto) {
+
+    public List<Presupuesto> getPresupuestoByID(String dto) {
         List<Presupuesto> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
         sql = "select * from presupuesto where id =" + dto + "";
         conPg = new conexion();
-        
+
         try {
             con = conPg.conn();
             stm = con.createStatement();
             rs = stm.executeQuery(sql);
-            
+
             while (rs.next()) {
                 datos = new Presupuesto();
                 datos.setId(rs.getInt(1));
@@ -251,7 +261,7 @@ public class presupuestoController {
                 datos.setOferta(rs.getString(4));
                 datos.setDatosPrespuesto(rs.getString(5));
                 datos.setUrl_file(rs.getString(6));
-               
+
                 aux.add(datos);
                 datos = null;
             }
@@ -265,5 +275,139 @@ public class presupuestoController {
         }
         return aux;
     }
-     
+
+    // para verificar existencia de presupuesto de apus... si count es 0 puede hacer
+    // presupúesto OFERTA: INGEHISA 00'id_apus' - REV 001 
+    // sino mando mensaje de que solo puede realizar revisiones y envio conteo
+    // expresion OFERTA: INGEHISA 00'id_apus' - REV 00'count' --> 
+    
+    
+    
+    // metodo para saber si hay un apus como presupuesto ::: dto = id
+    public int getCountApusByPresupuesto(String dto) {
+        int param = 0;
+        con = null;
+        rs = null;
+        stm = null;
+        String sqlAux = "select count(id) from presupuesto where id_apus=" + dto;
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sqlAux);
+            if (rs.next()) {
+                param = rs.getInt(1);
+            }
+            
+            
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+            System.out.println("err- " + e.getMessage());
+        }
+        return param;
+    }
+
+    // traemos datos de APUS y convertimos a Presupuesto
+    public List<Presupuesto> getPresupuestoByApusID(String dto) {
+        List<Presupuesto> aux = new ArrayList<>();
+        con = null;
+        rs = null;
+        stm = null;
+        sql = "select * from apus where id =" + dto + "";
+        conPg = new conexion();
+        
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            // tengo que hacer consulta en presupuesto count by ID_apus a este valor le sumo +1
+            String sqlAux = "select count(id) from presupuesto where id_apus=3" + dto;
+
+            // devolvemos los datos del apus
+            // empresa, proyecto, datosApus;
+            // almacenar el id de apus :: variable global   *********
+            int id_apus = 0;
+            // consultar en cabecera de oferta para crear una nueva segun sea
+            String ofrt = "OFERTA: INGEHISA 00 - REV 001";
+            if (rs.next()) {
+                apus = new Apus();
+                apus.setId(rs.getInt(1));
+                apus.setEmpresa(rs.getString(2));
+                apus.setProyecto(rs.getString(3));
+                apus.setDatosApus(rs.getString(4));
+
+                // convertimos los datos en EsquemaPresupuestoManual
+                String esquema = getEsquema(apus);
+
+                datos = new Presupuesto();
+                datos.setDatosPrespuesto(esquema);
+                datos.setEmpresa(apus.getEmpresa());
+                datos.setProyecto(apus.getProyecto());
+                datos.setOferta("pendiente con ofrt");
+
+                // despues 
+                aux.add(datos);
+                apus = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            System.out.println("ErrorPresuController " + e.getMessage());
+            e.getMessage();
+        }
+        return aux;
+    }
+
+    // convertimos a EsquemaPresupuestoManual
+    private String getEsquema(Apus apus) {
+        EsquemaPresupuestoManual aux = new EsquemaPresupuestoManual();
+        aux.setCampo1(apus.getProyecto());
+        aux.setCampo2(apus.getEmpresa());
+        aux.setCampo3("INGENIERIA HIDROSANITARIA");
+        aux.setOferta("Esperar");
+        aux.setFecha("Guayaquil, ");
+
+        aux.setSubtotal("0.0");
+        aux.setIva("0.0");
+        aux.setSubtotalIva("0.0");
+        aux.setTotal("0.0");
+
+        List<EsquemaPresupuestoManualTabla> body = new ArrayList<>();
+        EsquemaPresupuestoManualTabla item = null;
+
+        Gson gson = new Gson();
+        Type tipoObjeto = new TypeToken<List<FormatoApus>>() {
+        }.getType();
+        ArrayList<FormatoApus> dto = gson.fromJson(convertString(apus), tipoObjeto);
+
+        int num = 1;
+        for (FormatoApus formatoApus : dto) {
+            item = new EsquemaPresupuestoManualTabla();
+            item.setNumeracion(String.valueOf(num));
+            item.setDescripcion(formatoApus.getDetalle());
+            item.setUnidad(formatoApus.getUnidad());
+            item.setCantidad("0");
+            item.setPreUnit(formatoApus.getValorOfert());
+            item.setPreTot("0.0");
+
+            body.add(item);
+            item = null;
+            num++;
+        }
+        aux.setListTbl(body);
+        // convertimos en String el dato para pasarlo al presupuesto        
+        return gson.toJson(aux);
+    }
+
+    private String convertString(Apus aux) {
+        return aux.getDatosApus();
+    }
+
 }

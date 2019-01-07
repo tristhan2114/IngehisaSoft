@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class EsquemaPresupuestoManual {
 
-    private String campo1;
-    private String campo2;
-    private String campo3;
+    private String campo1; // proyecto
+    private String campo2; // empresa
+    private String campo3; // default
 
     private String oferta;
     private String fecha;

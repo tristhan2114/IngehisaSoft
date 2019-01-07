@@ -87,23 +87,24 @@ public class FrmApus extends javax.swing.JInternalFrame {
     // instancia de gestion de paneles
     public static gestionApusPaneles getionPApus;
     private gestionImportApusBD gt;
-    
+
     // instancia de presupuesto resumen
     FrmApusPresupuesto freResumen;
     public static boolean activoFrmResumen;
-    
+
     apusController ctrApus = new apusController();
     Apus apus = null;
-    
+
     // variable para caracter
     private Character kpress;
-    
+
     /// desde import
     public static List<JPanel> listPanelesAux = new ArrayList<>();
 
     public FrmApus() {
         initComponents();
         //setResizable(true);
+        jButton2.setVisible(false);
         setTitle("APUS");
 
         setIconifiable(true);
@@ -4837,23 +4838,26 @@ public class FrmApus extends javax.swing.JInternalFrame {
         // controlamos instancia de contenedorPaneles
         ++i; // contiene
         addAPUS(apusP, i);
-        
-        
+
         //System.out.println("position " + i);
     }//GEN-LAST:event_BtnAddBodyActionPerformed
 
     private void btnForComponentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForComponentsActionPerformed
         // asigno un nombre por default
-        selecArchivo.setSelectedFile(new File("Apus-0001.xlsx"));
-        if (selecArchivo.showDialog(null, "Exportar") == JFileChooser.APPROVE_OPTION) {
-            archivo = selecArchivo.getSelectedFile();
-            if (archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")) {
-                //Cambia con el nombre de tu JTABLE
-                List<FormatoApus> datos = getSquemaExport();
-                JOptionPane.showMessageDialog(null, Exportar(archivo, datos) + "\n Formato ." + archivo.getName().substring(archivo.getName().lastIndexOf(".") + 1));
-            } else {
-                JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+        List<FormatoApus> datos = getSquemaExport();
+        if (!datos.isEmpty()) {
+            selecArchivo.setSelectedFile(new File("Apus-0001.xlsx"));
+            if (selecArchivo.showDialog(null, "Exportar") == JFileChooser.APPROVE_OPTION) {
+                archivo = selecArchivo.getSelectedFile();
+                if (archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")) {
+                    //Cambia con el nombre de tu JTABLE
+                    JOptionPane.showMessageDialog(null, Exportar(archivo, datos) + "\n Formato ." + archivo.getName().substring(archivo.getName().lastIndexOf(".") + 1));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "No ha realizado ningún APUS.");
         }
     }//GEN-LAST:event_btnForComponentsActionPerformed
 
@@ -4873,7 +4877,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
             if (list.isEmpty()) { // esta vacio
                 //System.out.println("vacio");
                 // cuando import desde base de datos
-                
+
             } else {
                 //System.out.println("si dto apus " + list.toString());
                 List<EsquemaPresupuesto> esq = getEsquemaWithFormatApus(list);
@@ -4913,7 +4917,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
             String txt = jTextField1.getText().trim();
-            if(txt.length()>0){
+            if (txt.length() > 0) {
                 importAPUS(txt);
             }
         }
@@ -5187,9 +5191,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
         }
 
         // hoja para el resumen de los apus
-        Sheet hojaResumenPresupuesto = wb.createSheet("PRESUPUESTO");
+        //Sheet hojaResumenPresupuesto = wb.createSheet("PRESUPUESTO");
         // fin 
-
         Sheet hoja = wb.createSheet("APUS");
         try {
             // tama�o de la A hasta la H  [[ row-fila]  column columna
@@ -5283,6 +5286,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 // formo cada apu segun recorro y encuentro datos
                 // cabecera
                 //System.out.println("new sizeRowAux Position  " + sizeRowAux);
+                // para hacer la suma de M + N + O + P
+                int positionM = 0, positionN = 0, positionO = 0, positionP = 0;
                 int positionAuxVuelt = 0;
                 for (int i = sizeRowAux; i < sizeRowApus; i++) {
                     Row fila = hoja.createRow(i);
@@ -5360,8 +5365,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue("CODIGO DE RUBRO:");
                                 } else if (j == 2) {
                                     celda2.setCellStyle(styleDes);
-                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     celda2.setCellValue(acumCodRubro);
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 } else if (j == 6) {
                                     celda2.setCellStyle(styleTitle);
                                     celda2.setCellValue("UNIDAD:");
@@ -5372,15 +5377,16 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             }
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 4) {
-                            // los rubros con unidad
+                            // los rubros con unidad ** esta de mas
                             for (int j = 0; j < 8; j++) {
                                 Cell celda2 = fila.createCell(j);
                                 if (j == 1) {
                                     celda2.setCellStyle(styleTitle);
-                                    celda2.setCellValue("RUBRO:");
+                                    celda2.setCellValue("");
                                 } else if (j == 2) {
                                     celda2.setCellStyle(styleDes);
-                                    celda2.setCellValue(dto.getRubro());
+                                    //celda2.setCellValue(dto.getRubro());
+                                    celda2.setCellValue("");
                                 }
                             }
                             positionAuxVuelt++;
@@ -5462,20 +5468,20 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                         hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
                                         celda2.setCellValue(dto.getTablaEquipo().get(g).get(0));
                                     } else if (h == 3) {
+                                        celda2.setCellValue(Integer.parseInt(dto.getTablaEquipo().get(g).get(1)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(1));
                                     } else if (h == 4) {
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(2)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(2));
                                     } else if (h == 5) {
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(3)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(3));
                                     } else if (h == 6) {
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(4)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(4));
                                     } else if (h == 7) {
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(5)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellValue(dto.getTablaEquipo().get(g).get(5));
                                     }
                                 }
                                 g++;
@@ -5495,7 +5501,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue("-- SUBTOTAL (M)");
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(dto.getTxtSubtEquipo());
+                                    celda2.setCellValue(Double.parseDouble(dto.getTxtSubtEquipo()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    positionM = i;
                                 }
                             }
                             positionAuxVuelt++;
@@ -5552,15 +5560,20 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                         hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
                                         celda2.setCellValue(dto.getTablaManObra().get(g).get(0));
                                     } else if (h == 3) {
-                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(1));
+                                        celda2.setCellValue(Integer.parseInt(dto.getTablaManObra().get(g).get(1)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     } else if (h == 4) {
-                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(2));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(2)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     } else if (h == 5) {
-                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(3));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(3)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     } else if (h == 6) {
-                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(4));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(4)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     } else if (h == 7) {
-                                        celda2.setCellValue(dto.getTablaManObra().get(g).get(5));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(5)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     }
                                 }
                                 g++;
@@ -5578,7 +5591,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue("-- SUBTOTAL (N)");
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(dto.getTxtSubtManObra());
+                                    celda2.setCellValue(Double.parseDouble(dto.getTxtSubtManObra()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    positionN = i;
                                 }
                             }
                             positionAuxVuelt++;
@@ -5634,11 +5649,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     } else if (h == 4) {
                                         celda2.setCellValue(dto.getTablaMateriales().get(g).get(1));
                                     } else if (h == 5) {
-                                        celda2.setCellValue(dto.getTablaMateriales().get(g).get(2));
+                                        celda2.setCellValue(Integer.parseInt(dto.getTablaMateriales().get(g).get(2)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     } else if (h == 6) {
-                                        celda2.setCellValue(dto.getTablaMateriales().get(g).get(3));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaMateriales().get(g).get(3)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     } else if (h == 7) {
-                                        celda2.setCellValue(dto.getTablaMateriales().get(g).get(4));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaMateriales().get(g).get(4)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     }
                                 }
                                 g++;
@@ -5656,7 +5674,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue("-- SUBTOTAL (O)");
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(dto.getTxtSubtMateriales());
+                                    celda2.setCellValue(Double.parseDouble(dto.getTxtSubtMateriales()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    positionO = i;
                                 }
                             }
                             positionAuxVuelt++;
@@ -5712,11 +5732,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     } else if (h == 4) {
                                         celda2.setCellValue(dto.getTablaTransport().get(g).get(1));
                                     } else if (h == 5) {
-                                        celda2.setCellValue(dto.getTablaTransport().get(g).get(2));
+                                        celda2.setCellValue(Integer.parseInt(dto.getTablaTransport().get(g).get(2)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     } else if (h == 6) {
-                                        celda2.setCellValue(dto.getTablaTransport().get(g).get(3));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(3)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     } else if (h == 7) {
-                                        celda2.setCellValue(dto.getTablaTransport().get(g).get(4));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(4)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     }
                                 }
                                 g++;
@@ -5734,7 +5757,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue("-- SUBTOTAL (P)");
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(dto.getTxtSubtTransport());
+                                    celda2.setCellValue(Double.parseDouble(dto.getTxtSubtTransport()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    positionP = i;
                                 }
                             }
                             positionAuxVuelt++;
@@ -5750,7 +5775,11 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 }
                                 if (j == 7) {
                                     hoja.addMergedRegion(new CellRangeAddress(i, i, 4, 6));
-                                    celda2.setCellValue(dto.getCostDirecto());
+                                    String strFormula = "SUM(H" + (positionM + 1) + "+H" + (positionN + 1) + "+H" + (positionO + 1) + "+H" + (positionP + 1) + ")";
+                                    System.out.println("str " + strFormula);
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+
                                 }
                             }
                             positionAuxVuelt++;
@@ -5774,7 +5803,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue(dto.getnIngrUtil());
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(dto.getrIngrUtil());
+                                    celda2.setCellValue(Double.parseDouble(dto.getrIngrUtil()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5793,7 +5823,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue(dto.getnOthUtil());
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(dto.getrOthUtil());
+                                    celda2.setCellValue(Double.parseDouble(dto.getrOthUtil()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5809,7 +5840,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 }
                                 if (j == 7) {
                                     hoja.addMergedRegion(new CellRangeAddress(i, i, 4, 6));
-                                    celda2.setCellValue(dto.getCostTotRubro());
+                                    celda2.setCellValue(Double.parseDouble(dto.getCostTotRubro()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5830,7 +5862,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 }
                                 if (j == 7) {
                                     hoja.addMergedRegion(new CellRangeAddress(i, i, 4, 6));
-                                    celda2.setCellValue(dto.getValorOfert());
+                                    celda2.setCellValue(Double.parseDouble(dto.getValorOfert()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5846,7 +5879,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 acumCodRubro++;
             }
 
-            // estilo de cabera Resumen APUS **********************************************************************
+            /*
+            // estilo de cabera Resumen APUS -------------------------------------------
             List<EsquemaPresupuesto> resumen = getEsquemaWithFormatApus(datos);
             System.out.println("datos news " + auxResPresu.toString());
             System.out.println("string[] " + auxT[0]);
@@ -5869,14 +5903,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
             styleCabe.setBorderBottom(CellStyle.BORDER_THIN);
             styleCabe.setBorderRight(CellStyle.BORDER_THIN);
             styleCabe.setBorderLeft(CellStyle.BORDER_THIN);
-            styleCabe.setAlignment(CellStyle.ALIGN_CENTER/* CellStyle.ALIGN_CENTER*/);
+            styleCabe.setAlignment(CellStyle.ALIGN_CENTER/* CellStyle.ALIGN_CENTER);
             styleCabe.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
             headerCabe.setFontHeightInPoints((short) 10);
             styleCabe.setFont(headerCabe);
 
             // inicio de insertar imagen
             // read the image to the stream
-            String url_imagen = System.getProperty("user.dir") +"\\resource\\img\\ingehisa.png";
+            String url_imagen = System.getProperty("user.dir") + "\\resource\\img\\ingehisa.png";
             final FileInputStream stream
                     = new FileInputStream(url_imagen);
             final CreationHelper helper = wb.getCreationHelper();
@@ -6028,14 +6062,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
                         }
                     }
                 }
-            }
-
+            }*/
             // save a base de datos y el file a un folder del sistema *********
-            saveDbFile(datos, resumen, wb);
+            //saveDbFile(datos, resumen, wb);
+            saveDbFile(datos, wb);
 
             wb.write(new FileOutputStream(archivo));
             respuesta = "Exportación exitosa.";
-            resumen.clear();
+            //resumen.clear();
             datos.clear();
 
         } catch (IOException | NumberFormatException e) {
@@ -6053,7 +6087,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
         FormatoApus entFormtApus;
         // variable i de cuantos veces voy a recorrer :::: i=1; i<=200;++i
         List<JPanel> listPaneles = gestionApusPaneles.listPaneles;
-        if(listPaneles.isEmpty()){
+        if (listPaneles.isEmpty()) {
             //System.out.println("vacio.. ");
             listPaneles = gestionImportApusBD.listPaneles;
         }
@@ -6274,39 +6308,40 @@ public class FrmApus extends javax.swing.JInternalFrame {
         return aux;
     }
 
-    private void saveDbFile(List<FormatoApus> listApus, List<EsquemaPresupuesto> resumen, Workbook workbook) {
+    private void saveDbFile(List<FormatoApus> listApus,/* List<EsquemaPresupuesto> resumen, */ Workbook workbook) {
         int id_pk = 0;
         final String pathFile = System.getProperty("user.dir") + "\\resource\\fileApus\\";
         String name = "";
         // las listas en la base de datos
         try {
             // convertimos las listas en json
-            Gson gson =new Gson();
+            Gson gson = new Gson();
             String formatoJSONApus = gson.toJson(listApus);
-            String formatoJSONResumen = gson.toJson(resumen);
-            
+            //String formatoJSONResumen = gson.toJson(resumen);
+
             apus = new Apus();
             apus.setEmpresa(listApus.get(0).getEmpresa());
             apus.setProyecto(listApus.get(0).getProyecto());
             apus.setDatosApus(formatoJSONApus);
-            apus.setDatosPresResu(formatoJSONResumen);
-            
+            //apus.setDatosPresResu(formatoJSONResumen);
+            apus.setDatosPresResu("---");
+
             id_pk = ctrApus.ingresar(apus);
-            
+
             // actualizamos el url_file ::: name  
-            name = "ApusPresResumen00"+id_pk+".xlsx";
+            name = "ApusPresResumen00" + id_pk + ".xlsx";
             apus.setId(id_pk);
             apus.setUrl_file(name);
             ctrApus.actualizarUrlFile(apus);
-            
+
             // ultimo necesito el id de apus
             File archivo = new File(pathFile + name);
             FileOutputStream out = new FileOutputStream(archivo);
             workbook.write(out);
             out.close();
-            
-            apus = null;           
-            
+
+            apus = null;
+
             //imprimimos en consola el texto con formato JSON
             //System.out.println("Texto en Formato JSON de los apus agregados:n" + formatoJSONApus);
             //System.out.println("Texto en Formato JSON de los resumen agregados:n" + formatoJSONResumen);
@@ -6317,9 +6352,9 @@ public class FrmApus extends javax.swing.JInternalFrame {
     }
 
     // metodo de busqueda APUS
-    private void importAPUS(String txt){
+    private void importAPUS(String txt) {
         List<Apus> aux = ctrApus.getApusByID(txt);
-        if(!aux.isEmpty()){
+        if (!aux.isEmpty()) {
             gt = new gestionImportApusBD();
             gt.importarDtos(aux);
         }
@@ -6331,7 +6366,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
         getionPApus = new gestionApusPaneles();
         getionPApus.panelCreateApus(apusP, i);
     }
-    
+
 }
 
 /**
@@ -6341,47 +6376,6 @@ public class FrmApus extends javax.swing.JInternalFrame {
  * poner formulas en tablas String strFormula= "SUM(A1:A10)";
  * cell.setCellType(HSSFCell.CELL_TYPE_FORMULA);
  * cell.setCellFormula(strFormula); /**
- *
- * System.out.println("acumRow " + acumRowDto); for (int i = 1; i <= 10; i++) {
- * Row fila = hoja.createRow(i); Cell celda = fila.createCell(1);
- *
- * if (i == 3 || i == 5 || i == 8) { celda.setCellValue(""); acumRowDto++; }
- * else { switch (i) { case 1: celda.setCellStyle(style);
- * celda.setCellValue(dto.getEmpresa()); //hoja.addMergedRegion(new
- * CellRangeAddress(2, 2, 1, 7)); break; case 2: celda.setCellStyle(style);
- * celda.setCellValue(dto.getProyecto()); //hoja.addMergedRegion(new
- * CellRangeAddress(3, 3, 1, 7)); break; case 4: celda.setCellStyle(style);
- * celda.setCellValue(dto.getAnalisis()); //hoja.addMergedRegion(new
- * CellRangeAddress(5, 5, 1, 7)); break; case 6: for (int j = 0; j < 8; j++) {
- * Cell celda2 = fila.createCell(j); if (j == 1) {
- * celda2.setCellValue("RUBRO:"); } else if (j == 2) {
- * celda2.setCellValue(dto.getRubro()); } else if (j == 6) {
- * celda2.setCellValue("UNIDAD:"); } else if (j == 7) {
- * celda2.setCellValue(dto.getUnidad()); } } break; case 7: for (int j = 0; j <
- * 8; j++) { Cell celda2 = fila.createCell(j); if (j == 1) {
- * celda2.setCellValue("DETALLE:"); } else if (j == 2) {
- * celda2.setCellValue(dto.getDetalle()); } } break; case 9:
- * celda.setCellValue("1.- EQUIPOS"); break; case 10: // TABLA EQUIPO int ac =
- * 0; for (int j = 1; j < 7; j++) { Cell celda2 = fila.createCell(j);
- * celda2.setCellValue(cabeceraEquipo[ac]); ac++; }
- *
- * int tama�oTblEquipo = dto.getTablaEquipo().size(); System.out.println("vvv "
- * + tama�oTblEquipo); for (List<String> str : dto.getTablaEquipo()) {
- * System.out.println("Teq " + str.toString()); int v = 0; for (int j = 1; j <
- * 7; j++) { Cell celda2 = fila.createCell(j); celda2.setCellValue(str.get(v));
- * v++; } } //System.out.println("eee " + tama�oTblEquipo); //if
- * (tama�oTblEquipo != 6) { // tama�oTblEquipo = tama�oTblEquipo / 2; //} for
- * (int j = 1; j < 7; j++) { //Cell celda2 = fila.createCell(j); //for (String
- * str : dto.getTablaEquipo()) { //System.out.println("sss "+str);
- * //celda2.setCellValue(str); //}
- *
- * }
- *
- * break; default: break; } acumRowDto++; } }// fin cabecera
- *
- *
- *
- *
  *
  */
 
@@ -6397,5 +6391,7 @@ for(int i=0;i<alumnos2 .size();i++){
 	Alumno al=alumnos2.get(i);
 	System.out.println(al.nombre+":"+al.grado+":"+al.grupo+":"+al.calificacion);
 }
+ano   mes  dia        hor min seg
+2019 -01  -07         09 :12  :58.594603-05
 
-*/
+ */

@@ -114,6 +114,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         table = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
         jTextField10 = new javax.swing.JTextField();
+        jTextField11 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         jMenu1.setText("jMenu1");
 
@@ -332,10 +335,36 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             }
         });
 
-        jTextField10.setText("Id...");
+        jTextField10.setText("Id Presu...");
         jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField10KeyPressed(evt);
+            }
+        });
+
+        jTextField11.setText("Id Apus...");
+        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField11KeyPressed(evt);
+            }
+        });
+
+        jLabel4.setText("0");
+
+        jCheckBox1.setText("Manual");
+        jCheckBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox1MouseClicked(evt);
+            }
+        });
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+        jCheckBox1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jCheckBox1KeyPressed(evt);
             }
         });
 
@@ -343,39 +372,48 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(35, 35, 35))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
-                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 843, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jTextField10))
+                                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField3)
+                                    .addComponent(jTextField2)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jCheckBox1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton3))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 7, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 843, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -385,13 +423,17 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jCheckBox1))
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
@@ -407,7 +449,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -577,6 +619,48 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField10KeyPressed
 
+    private void jTextField11KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyPressed
+        // ARMAMOS EL PRESUPUESTO SEGUN APUS
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            String txt = jTextField11.getText();
+            if (txt.length() > 0) {
+                importPresuSgnAPUS(txt);
+            }
+        }
+    }//GEN-LAST:event_jTextField11KeyPressed
+
+    private void jCheckBox1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCheckBox1KeyPressed
+
+    }//GEN-LAST:event_jCheckBox1KeyPressed
+
+    private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
+        
+    }//GEN-LAST:event_jCheckBox1MouseClicked
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // si esta desmarcado es con id de apus
+        // si no esta marcado es un presupuesto manual --> no tiene APUS
+        if (jCheckBox1.isSelected()) {
+            jTextField10.setText("0");
+            jTextField10.setEnabled(false);
+            jLabel4.setText("0");
+            jTextField11.setText("0");
+            jTextField11.setEnabled(false);
+        } else {
+            jTextField10.setText("0");
+            jTextField10.setEnabled(true);
+            jLabel4.setText("0");
+            jTextField11.setText("0");
+            jTextField11.setEnabled(true);
+            // hago consulta y count de manuales
+            
+            // limpiamos tabla, notas, subtotal, iva, subtotalIva, total
+            limpiarTabla();
+            limpiarTablaNotas();
+        }
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -620,9 +704,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     public static javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -630,6 +716,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -657,6 +744,12 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     // limpiar tabla
     private void limpiarTabla() {
         DefaultTableModel model1 = (DefaultTableModel) table.getModel();
+        model1.setRowCount(0);
+    }
+    
+    //limpiamos tabla notas
+    private void limpiarTablaNotas() {
+        DefaultTableModel model1 = (DefaultTableModel) jTable1.getModel();
         model1.setRowCount(0);
     }
 
@@ -1310,6 +1403,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         }
     }
 
+    // devuleve el presupuesto creado
     private void importDtsPresup(String txt) {
         // vaciamos las tablas
         int sizeTblBody = table.getRowCount();
@@ -1317,6 +1411,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         clearCompImport(sizeTblBody, sizeTblNot);
 
         List<Presupuesto> aux = ctrPres.getPresupuestoByID(txt);
+        addImportDtos(aux);
+
+    }
+
+    private void addImportDtos(List<Presupuesto> aux) {
         Gson gson = null;
         if (!aux.isEmpty()) {
             gson = new Gson();
@@ -1324,6 +1423,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             }.getType();
 
             EsquemaPresupuestoManual dto = gson.fromJson(convertString(aux), tipoObjeto);
+            System.out.println("gggg " + dto.toString());
             jTextField1.setText(dto.getCampo1());
             jTextField2.setText(dto.getCampo2());
             jTextField3.setText(dto.getCampo3());
@@ -1368,7 +1468,6 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             }
             //Sección 5
             jTable1.setModel(modelo1);
-
         }
 
     }
@@ -1390,6 +1489,28 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             listAux = item.getDatosPrespuesto();
         }
         return listAux;
+    }
+
+    // devuelve presupuesto segun apus
+    private void importPresuSgnAPUS(String txt) {
+        // verificamos que no haiga presupuesto segun apus
+        int valor = ctrPres.getCountApusByPresupuesto(txt);
+        //System.out.println("dto " + valor);
+        if (valor == 0) {
+            // vaciamos las tablas
+            int sizeTblBody = table.getRowCount();
+            int sizeTblNot = jTable1.getRowCount();
+            clearCompImport(sizeTblBody, sizeTblNot);
+
+            List<Presupuesto> aux = ctrPres.getPresupuestoByApusID(txt);
+            addImportDtos(aux);
+        } else {
+            JOptionPane.showMessageDialog(null, "Solo puede hacer revisiones con dicho APUS");
+            jTextField10.setText(txt);
+            jLabel4.setText(txt);
+            jTextField10.requestFocus();
+            jTextField11.setText("");
+        }
     }
 
 }

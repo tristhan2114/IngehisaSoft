@@ -44,50 +44,23 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), " Ofertas"));
-        jPanel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "Oferta", "Empresa", "Descripcion", "Ubicacion", "Responsable", "Elaborado por", "Fecha", "Subtotal", "Telefono"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(jTable1);
-
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 840, 273));
-
-        jButton2.setText("Guardar");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 320, -1, -1));
-
-        jButton1.setText("Actualizar ");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 320, -1, -1));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 860, 360));
 
         jButton3.setText("x");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -119,10 +92,57 @@ public class FrmOferta extends javax.swing.JInternalFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 220, 40));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 220, 40));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, 190, -1));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 70, 190, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Oferta", "Empresa", "Descripcion", "Ubicacion", "Responsable", "Elaborado por", "Fecha", "Subtotal", "Telefono"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 850, 273));
+
+        jButton1.setText("Actualizar ");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 380, -1, -1));
+
+        jButton2.setText("Guardar");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 380, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Responsable");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 50, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Fecha Fin");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("Fecha Inicio");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
+
+        jTextField1.setText("YY / MM / DD");
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 140, -1));
+
+        jTextField2.setText("YY / MM / DD");
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 70, 140, -1));
+
+        jButton4.setText("Filtrar");
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -172,12 +192,17 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
     // hacer que cabecera se quede fija y columnas alineadas a la derecha
