@@ -194,6 +194,7 @@ public class home extends javax.swing.JFrame {
         });
         jMenu3.add(menuIApus);
 
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/documents.png"))); // NOI18N
         jMenuItem8.setText("Documentos");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

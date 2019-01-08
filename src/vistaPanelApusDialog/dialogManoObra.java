@@ -55,6 +55,7 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
         btnClosed = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -64,7 +65,7 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Descripción: ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 17, 90, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,7 +108,7 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
                 jTextField1KeyPressed(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 12, 280, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 10, 250, -1));
 
         btnClosed.setText("X");
         btnClosed.addActionListener(new java.awt.event.ActionListener() {
@@ -115,11 +116,19 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
                 btnClosedActionPerformed(evt);
             }
         });
-        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 13, -1, -1));
+        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 10, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Total de registros");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, 220, -1));
+
+        jButton1.setText("Todos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 230));
 
@@ -144,6 +153,10 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
             getFiltoByCodAndDescrip();
         }
     }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        setTableEquipoAll();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,6 +196,7 @@ public class dialogManoObra extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClosed;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

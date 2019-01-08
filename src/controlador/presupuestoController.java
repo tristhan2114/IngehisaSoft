@@ -44,8 +44,8 @@ public class presupuestoController {
         int resultado = 0;
         con = null;
         pst = null;
-        sql = "INSERT INTO presupuesto (empresa, proyecto, oferta, datopresupuesto) "
-                + "values (?,?,?,?)";
+        sql = "INSERT INTO presupuesto (empresa, proyecto, oferta, datopresupuesto, id_apus, id_manual) "
+                + "values (?,?,?,?,?,?)";
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -54,6 +54,8 @@ public class presupuestoController {
             pst.setString(2, datos.getProyecto());
             pst.setString(3, datos.getOferta());
             pst.setString(4, datos.getDatosPrespuesto());
+            pst.setInt(5, datos.getId_apus());
+            pst.setInt(6, datos.getId_manual());
 
             pst.execute();
 
@@ -277,6 +279,43 @@ public class presupuestoController {
         }
         return aux;
     }
+    
+    // búsqueda por id_apus tbl apus con presupuesto  para frmDocumentos
+    public List<Presupuesto> getPresupuestoByID_Apus(int id_apus) {
+        List<Presupuesto> aux = new ArrayList<>();
+        con = null;
+        rs = null;
+        stm = null;
+        sql = "select * from presupuesto where id_apus =" + id_apus + " order by fecha_creacion asc";
+        conPg = new conexion();
+
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Presupuesto();
+                datos.setId(rs.getInt(1));
+                datos.setEmpresa(rs.getString(2));
+                datos.setProyecto(rs.getString(3));
+                datos.setOferta(rs.getString(4));
+                datos.setDatosPrespuesto(rs.getString(5));
+                datos.setUrl_file(rs.getString(6));
+
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            System.out.println("ErrorPresuController " + e.getMessage());
+            e.getMessage();
+        }
+        return aux;
+    }
 
     // para verificar existencia de presupuesto de apus... si count es 0 puede hacer
     // presupúesto OFERTA: INGEHISA 00'id_apus' - REV 001 
@@ -313,13 +352,89 @@ public class presupuestoController {
         return param;
     }
 
+    // cuando es busqueda de apus y envia sgt revision
+    public List<Presupuesto> getPresupuestoByID_Apus(String dto) {
+        List<Presupuesto> aux = new ArrayList<>();
+        con = null;
+        rs = null;
+        stm = null;
+        sql = "select * from presupuesto where id_apus =" + dto + " order by fecha_creacion desc limit 1";
+        conPg = new conexion();
+
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Presupuesto();
+                datos.setId(rs.getInt(1));
+                datos.setEmpresa(rs.getString(2));
+                datos.setProyecto(rs.getString(3));
+                datos.setOferta(rs.getString(4));
+                datos.setDatosPrespuesto(rs.getString(5));
+                datos.setUrl_file(rs.getString(6));
+
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            System.out.println("ErrorPresuController " + e.getMessage());
+            e.getMessage();
+        }
+        return aux;
+    }
+    
+    // metodo para traer los presupuestos manuales id_manual !=0
+     public List<Presupuesto> getPresupuestoByID_Manual() {
+        List<Presupuesto> aux = new ArrayList<>();
+        con = null;
+        rs = null;
+        stm = null;
+        // select * from presupuesto where id_manual != 0 order by id_manual, fecha_creacion asc
+        sql = "select * from presupuesto where id_manual != 0 order by id_manual, fecha_creacion asc";
+        conPg = new conexion();
+
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Presupuesto();
+                datos.setId(rs.getInt(1));
+                datos.setEmpresa(rs.getString(2));
+                datos.setProyecto(rs.getString(3));
+                datos.setOferta(rs.getString(4));
+                datos.setDatosPrespuesto(rs.getString(5));
+                datos.setUrl_file(rs.getString(6));
+
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            System.out.println("ErrorPresuController " + e.getMessage());
+            e.getMessage();
+        }
+        return aux;
+    }
+    
+     // traemos count de id_apus para crear oferta manual sgt
     // metodo para saber si hay un apus como presupuesto Manual
     public int getCountApusByPresupuestoManual() {
         int param = 0;
         con = null;
         rs = null;
         stm = null;
-        String sqlAux = "select id_apus from presupuesto order by id_apus desc limit 1";
+        String sqlAux = "select count(id) from presupuesto";
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -339,9 +454,38 @@ public class presupuestoController {
             e.getMessage();
             System.out.println("err- " + e.getMessage());
         }
-        return param;
+        return (param+1);
     }
     
+    // control de sgt revision segun id_manual
+     public int getCountPresupuestoManualById_manual(int dto) {
+        int param = 0;
+        con = null;
+        rs = null;
+        stm = null;
+        String sqlAux = "select count(id_manual) from presupuesto where id_manual ="+dto;
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sqlAux);
+            if (rs.next()) {
+                param = rs.getInt(1);
+                // jTextField4 rename ::::
+            }
+            
+            
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+            System.out.println("err- " + e.getMessage());
+        }
+        return (param);
+    }
+     
     // traemos datos de APUS y convertimos a Presupuesto
     public List<Presupuesto> getPresupuestoByApusID(String dto) {
         List<Presupuesto> aux = new ArrayList<>();

@@ -164,6 +164,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagen/documents.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Documentos"/>
               </Properties>
               <Events>

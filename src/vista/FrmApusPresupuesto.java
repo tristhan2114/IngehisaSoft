@@ -77,6 +77,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         setTablesNoMoveHeader();
         setIconifiable(true);
 
+        jTextField1.setToolTipText("Proyecto");
+        jTextField2.setToolTipText("Empresa");
+        jTextField3.setToolTipText("INGENIERIA HIDROSANITARIA");
+        jTextField5.setToolTipText("Fecha...");
+
     }
 
     /**
@@ -122,12 +127,16 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTextField1.setText("PARQUE ACUATICO DE MILAGRO");
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 12, 649, -1));
 
         jTextField2.setText("MALECON DEL VELERO");
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 37, 649, -1));
 
         jTextField3.setText("INGENIERIA HIDROSANITARIA");
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 63, 649, -1));
 
         jButton1.setText("X");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -135,6 +144,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(821, 11, -1, -1));
 
         jTextField4.setText("OFERTA: INGEHISA");
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
@@ -142,8 +152,10 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jTextField4ActionPerformed(evt);
             }
         });
+        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 85, 233, -1));
 
         jTextField5.setText("Guayaquil, ");
+        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(537, 84, 242, -1));
 
         jTextField6.setText("0.0");
 
@@ -215,13 +227,13 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -264,12 +276,15 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 359, -1, -1));
+
         jButton2.setText("+");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 86, -1, -1));
 
         jButton3.setText("Calcular");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -277,6 +292,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jButton3ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(789, 83, -1, -1));
 
         jButton4.setText("Generar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -284,6 +300,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jButton4ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -333,28 +350,40 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             table.getColumnModel().getColumn(5).setMaxWidth(90);
         }
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 115, 850, 230));
+
         jButton5.setText("--");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(375, 86, -1, -1));
 
         jTextField10.setText("Id Presu...");
         jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField10KeyPressed(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField10KeyTyped(evt);
+            }
         });
+        getContentPane().add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 78, -1));
 
         jTextField11.setText("Id Apus...");
         jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField11KeyPressed(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField11KeyTyped(evt);
+            }
         });
+        getContentPane().add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 85, 78, -1));
 
         jLabel4.setText("0");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(754, 66, -1, -1));
 
         jCheckBox1.setText("Manual");
         jCheckBox1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -372,96 +401,10 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jCheckBox1KeyPressed(evt);
             }
         });
+        getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(754, 11, -1, -1));
 
         jTextField12.setText("1 | 0");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(14, 14, 14)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jCheckBox1)
-                        .addGap(8, 8, 8)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jButton5))
-                            .addComponent(jButton2))
-                        .addGap(121, 121, 121)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton3))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jCheckBox1)
-                    .addComponent(jButton1))
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jLabel4)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5)
-                            .addComponent(jButton2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        getContentPane().add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 63, 78, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -646,23 +589,31 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jCheckBox1KeyPressed
 
     private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
-        
+
     }//GEN-LAST:event_jCheckBox1MouseClicked
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // si esta desmarcado es con id de apus
         // si no esta marcado es un presupuesto manual --> no tiene APUS
         if (jCheckBox1.isSelected()) {
+            // traemos el sgt
+            int valor = ctrPres.getCountApusByPresupuestoManual();
+            System.out.println("sss "+valor);
+            
             jTextField10.setText("Id Presu...");
             jTextField10.setEnabled(false);
             jLabel4.setText("0");
             jTextField11.setText("Id Apus...");
             jTextField11.setEnabled(false);
-            
+
             //hacer conteo de consulta y traer oferta sgt
-            jTextField12.setText("0"); // aqui el valor count
+            jTextField12.setText(""+valor); // aqui el valor count
             // en txtField la oferta que sigue
-            
+            // traer si se duplica ese presupuesto manual 
+            // select count(id_manual) from presupuesto where id_manual = 6  (valor + 1)
+            int sgt = ctrPres .getCountPresupuestoManualById_manual(valor);
+            String ofrt = "OFERTA: INGEHISA 00" + valor + " - REV 00" + (sgt + 1);
+            jTextField4.setText(ofrt);
         } else {
             jTextField10.setText("Id Presu...");
             jTextField10.setEnabled(true);
@@ -670,7 +621,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             jTextField11.setText("Id Apus...");
             jTextField11.setEnabled(true);
             // hago consulta y count de manuales
-            
+
             // limpiamos tabla, notas, subtotal, iva, subtotalIva, total
             limpiarTabla();
             limpiarTablaNotas();
@@ -680,6 +631,21 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jTextField11KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyTyped
+        // si lengt = 0  ::: Id Apus...
+        if (jTextField11.getText().length() == 0) {
+            jTextField11.setText("Id Apus...");
+        }
+
+    }//GEN-LAST:event_jTextField11KeyTyped
+
+    private void jTextField10KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyTyped
+        // si length = 0 ::: Id Presu...
+        if (jTextField10.getText().length() == 0) {
+            jTextField10.setText("Id Presu...");
+        }
+    }//GEN-LAST:event_jTextField10KeyTyped
 
     /**
      * @param args the command line arguments
@@ -767,7 +733,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         DefaultTableModel model1 = (DefaultTableModel) table.getModel();
         model1.setRowCount(0);
     }
-    
+
     //limpiamos tabla notas
     private void limpiarTablaNotas() {
         DefaultTableModel model1 = (DefaultTableModel) jTable1.getModel();
@@ -849,11 +815,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                     table.setValueAt(String.valueOf(cantAux), position, 3); // pongo el valor de validaciones
 
                     acumSubTot += presiTot;
-
                 }// verificacion de columna cantidad no nula   
 
             }
             // devuelve el subtotal
+            acumSubTot = (double) Math.round((acumSubTot) * 100d) / 100d; // solo 2 decimales
             jTextField6.setText(String.valueOf(acumSubTot));
         }
     }
@@ -945,6 +911,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         entity.setIva(jTextField9.getText());
         entity.setSubtotalIva(jTextField7.getText());
         entity.setTotal(jTextField8.getText());
+
         // la lista de la notas
         int sizeNotas = jTable1.getRowCount();
         if (sizeNotas > 0) {
@@ -1057,7 +1024,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         CellStyle styleTitle = wb.createCellStyle();
         Font headerTitle = wb.createFont();
         headerTitle.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        headerTitle.setFontHeightInPoints((short) 20);
+        headerTitle.setFontHeightInPoints((short) 14);
         styleTitle.setAlignment(CellStyle.ALIGN_CENTER);
         styleTitle.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
         styleTitle.setFont(headerTitle);
@@ -1065,8 +1032,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         try {
             // inicio de insertar imagen
             // read the image to the stream
+            String url_imagen = System.getProperty("user.dir") + "\\resource\\img\\logoIngehisa.png";
             final FileInputStream stream
-                    = new FileInputStream("C:\\Users\\personal1\\Pictures\\logoIngehisa.png");
+                    = new FileInputStream(url_imagen);
             final CreationHelper helper = wb.getCreationHelper();
             final Drawing drawing = hoja.createDrawingPatriarch();
             final ClientAnchor anchor = helper.createClientAnchor();
@@ -1077,7 +1045,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             anchor.setRow1(0); // arriba
             anchor.setRow2(0);
             final Picture pict = drawing.createPicture(anchor, pictureIndex);
-            pict.resize(3);
+            pict.resize(2);
 
             int sizePresupuesto = 13 + datos.getListTbl().size() + datos.getNota().size();
 
@@ -1279,8 +1247,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
 
                 if (bandera2 == true) {
                     if (re == acumPosition) {
-                        System.out.println("nueva position bandera2 " + acumPosition);
-                        System.out.println("re  " + re);
+                        //System.out.println("nueva position bandera2 " + acumPosition);
+                        //System.out.println("re  " + re);
                         fila = hoja.createRow(re);
                         for (int j = 1; j < 12; j++) {
                             Cell celda2 = fila.createCell(j);
@@ -1401,6 +1369,19 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             dtos.setEmpresa(jTextField1.getText());
             dtos.setProyecto(jTextField2.getText());
             dtos.setOferta(jTextField4.getText());
+
+            // lo id_apus & id_manual
+            // si jTextField11 != Id Apus...
+            if (!jTextField11.getText().equals("Id Apus...")) {
+                System.out.println("vvvIF "+jTextField11.getText());
+                dtos.setId_apus(Integer.parseInt(jTextField11.getText()));
+                dtos.setId_manual(0);
+            } else {
+                System.out.println("vvv "+jTextField11.getText());
+                dtos.setId_apus(0);
+                dtos.setId_manual(Integer.parseInt(jTextField12.getText()));
+            }
+
             dtos.setDatosPrespuesto(formatoJSONPresupuesto);
 
             id_pk = ctrPres.ingresar(dtos);
@@ -1433,6 +1414,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
 
         List<Presupuesto> aux = ctrPres.getPresupuestoByID(txt);
         addImportDtos(aux);
+        
+        jTextField11.setText("Id Apus...");
 
     }
 
@@ -1514,23 +1497,31 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
 
     // devuelve presupuesto segun apus
     private void importPresuSgnAPUS(String txt) {
+        // vaciamos las tablas
+        int sizeTblBody = table.getRowCount();
+        int sizeTblNot = jTable1.getRowCount();
+        clearCompImport(sizeTblBody, sizeTblNot);
+        
         // verificamos que no haiga presupuesto segun apus
         int valor = ctrPres.getCountApusByPresupuesto(txt);
         //System.out.println("dto " + valor);
         if (valor == 0) {
-            // vaciamos las tablas
-            int sizeTblBody = table.getRowCount();
-            int sizeTblNot = jTable1.getRowCount();
-            clearCompImport(sizeTblBody, sizeTblNot);
 
             List<Presupuesto> aux = ctrPres.getPresupuestoByApusID(txt);
             addImportDtos(aux);
+            jTextField4.setEditable(false);
+            //jTextField11.setEditable(false); // id apus
         } else {
-            JOptionPane.showMessageDialog(null, "Solo puede hacer revisiones con dicho APUS");
-            jTextField10.setText(txt);
-            jLabel4.setText(txt);
-            jTextField10.requestFocus();
-            jTextField11.setText("Id Apus...");
+            // traigo los datos sumando otra revision
+            String ofrt = "OFERTA: INGEHISA 00" + txt + " - REV 00" + (valor + 1);
+            
+            List<Presupuesto> aux = ctrPres.getPresupuestoByID_Apus(txt);
+            addImportDtos(aux);
+            
+            jTextField4.setText(ofrt);
+            jTextField4.setEditable(false);
+
+            //JOptionPane.showMessageDialog(null, "Realizando resivión siguiente de APUS");
         }
     }
 
@@ -1567,4 +1558,7 @@ NOTA:  no olvidar hacer la copia del archivo que se exporta a una ruta la cual s
 
 
 OFERTA: INGEHISA:001 - V:000
+
+https://www.youtube.com/watch?v=4Lj36wbywp8
+
  */

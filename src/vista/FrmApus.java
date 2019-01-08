@@ -4929,7 +4929,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
@@ -5324,8 +5324,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
                             } else if (j == 2) {
                                 //celda2.setCellStyle(styleTitlIzq);
+                                celda2.setCellValue(Double.parseDouble(dto.getValorOfert()));
                                 celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                celda2.setCellValue(dto.getValorOfert());
                             }
                         }
                         positionAuxVuelt++;
@@ -6092,7 +6092,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
     // almacenamos toda la informacion en un array de string
     public List<FormatoApus> getSquemaExport() {
         List<FormatoApus> listApus = new ArrayList<>();
-
+        String campo1 = "", campo2 = "";
+        int title1 = 0, title2 = 0;
         FormatoApus entFormtApus;
         // variable i de cuantos veces voy a recorrer :::: i=1; i<=200;++i
         List<JPanel> listPaneles = gestionApusPaneles.listPaneles;
@@ -6126,10 +6127,22 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     //System.out.println("position text  " + (position++));
                                     switch (position) {
                                         case 0:
-                                            entFormtApus.setEmpresa(textField.getText());
+                                            if (title1 == 0) {
+                                                entFormtApus.setEmpresa(textField.getText());
+                                                campo1 = textField.getText();
+                                                title1++;
+                                            } else {
+                                                entFormtApus.setEmpresa(campo1);
+                                            }
                                             break;
                                         case 1:
-                                            entFormtApus.setProyecto(textField.getText());
+                                            if (title2 == 0) {
+                                                entFormtApus.setProyecto(textField.getText());
+                                                campo2 = textField.getText();
+                                                title2++;
+                                            } else {
+                                                entFormtApus.setEmpresa(campo2);
+                                            }
                                             break;
                                         case 2:
                                             entFormtApus.setAnalisis(textField.getText());
@@ -6368,7 +6381,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
         if (!aux.isEmpty()) {
             gt = new gestionImportApusBD();
             gt.importarDtos(aux);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No existe el Apus solicitado\nConsulte los documentos existentes");
         }
     }
