@@ -20,6 +20,8 @@ import modelo.EsquemaPresupuestoManualTabla;
 import modelo.FormatoApus;
 import modelo.Presupuesto;
 import util.conexion;
+import vista.FrmApusPresupuesto;
+import static vistaPanelApus.panelApus.jTextField4;
 
 /**
  *
@@ -311,6 +313,35 @@ public class presupuestoController {
         return param;
     }
 
+    // metodo para saber si hay un apus como presupuesto Manual
+    public int getCountApusByPresupuestoManual() {
+        int param = 0;
+        con = null;
+        rs = null;
+        stm = null;
+        String sqlAux = "select id_apus from presupuesto order by id_apus desc limit 1";
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sqlAux);
+            if (rs.next()) {
+                param = rs.getInt(1);
+                // jTextField4 rename ::::
+            }
+            
+            
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+            System.out.println("err- " + e.getMessage());
+        }
+        return param;
+    }
+    
     // traemos datos de APUS y convertimos a Presupuesto
     public List<Presupuesto> getPresupuestoByApusID(String dto) {
         List<Presupuesto> aux = new ArrayList<>();
@@ -325,15 +356,12 @@ public class presupuestoController {
             stm = con.createStatement();
             rs = stm.executeQuery(sql);
 
-            // tengo que hacer consulta en presupuesto count by ID_apus a este valor le sumo +1
-            String sqlAux = "select count(id) from presupuesto where id_apus=3" + dto;
-
             // devolvemos los datos del apus
             // empresa, proyecto, datosApus;
             // almacenar el id de apus :: variable global   *********
-            int id_apus = 0;
             // consultar en cabecera de oferta para crear una nueva segun sea
-            String ofrt = "OFERTA: INGEHISA 00 - REV 001";
+            String ofrt = "OFERTA: INGEHISA 00"+dto+" - REV 001";
+            //FrmApusPresupuesto.jTextField4.setText(ofrt);
             if (rs.next()) {
                 apus = new Apus();
                 apus.setId(rs.getInt(1));
@@ -342,13 +370,13 @@ public class presupuestoController {
                 apus.setDatosApus(rs.getString(4));
 
                 // convertimos los datos en EsquemaPresupuestoManual
-                String esquema = getEsquema(apus);
+                String esquema = getEsquema(apus, ofrt);
 
                 datos = new Presupuesto();
                 datos.setDatosPrespuesto(esquema);
                 datos.setEmpresa(apus.getEmpresa());
                 datos.setProyecto(apus.getProyecto());
-                datos.setOferta("pendiente con ofrt");
+                datos.setOferta(ofrt);
 
                 // despues 
                 aux.add(datos);
@@ -366,12 +394,12 @@ public class presupuestoController {
     }
 
     // convertimos a EsquemaPresupuestoManual
-    private String getEsquema(Apus apus) {
+    private String getEsquema(Apus apus, String ofrt) {
         EsquemaPresupuestoManual aux = new EsquemaPresupuestoManual();
         aux.setCampo1(apus.getProyecto());
         aux.setCampo2(apus.getEmpresa());
         aux.setCampo3("INGENIERIA HIDROSANITARIA");
-        aux.setOferta("Esperar");
+        aux.setOferta(ofrt);
         aux.setFecha("Guayaquil, ");
 
         aux.setSubtotal("0.0");

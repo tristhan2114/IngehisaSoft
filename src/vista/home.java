@@ -30,13 +30,14 @@ public class home extends javax.swing.JFrame {
     FrmOferta frmOferta;
     FrmUsuarios frmUsuarios;
     FrmIndirectos frmIndirectos;
+    FrmDocumentos frmDocuments;
 
     // imagen logo fondo
     private ImageIcon imagenFondo;
     private ImageIcon imagenFondoRedimensionado;
 
     // atributo que controla frmInternos abiertos o no
-    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales, activoFrmResumen, activoTransporte, activoOferta, activoUsuarios, activoIndirecto;
+    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales, activoFrmResumen, activoTransporte, activoOferta, activoUsuarios, activoIndirecto, activoDocumentos;
 
     public home() {
         initComponents();
@@ -81,6 +82,7 @@ public class home extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         menuIApus = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -191,6 +193,14 @@ public class home extends javax.swing.JFrame {
             }
         });
         jMenu3.add(menuIApus);
+
+        jMenuItem8.setText("Documentos");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem8);
 
         jMenuBar1.add(jMenu3);
 
@@ -441,6 +451,26 @@ public class home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // FrmDocumentos
+        try {
+            if (activoDocumentos == true) {
+                frmDocuments.setLocation(10, 10);
+                frmDocuments.moveToFront();
+                frmDocuments.show();
+            } else {
+                activoDocumentos = true;
+                frmDocuments = new FrmDocumentos();
+                escritorio.add(frmDocuments);
+                frmDocuments.setLocation(10, 10);
+                frmDocuments.show();
+            }
+        } catch (Exception e) {
+            e.getMessage();
+            System.out.println("err-  "+e.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -494,6 +524,7 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuItem menuEquipo;
     private javax.swing.JMenuItem menuIApus;

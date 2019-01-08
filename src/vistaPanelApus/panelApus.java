@@ -194,7 +194,7 @@ public class panelApus extends javax.swing.JPanel {
 
         jLabel1.setText("Rubro: ");
 
-        jTextField4.setText("jTextField4");
+        jTextField4.setText("contador automático");
 
         jLabel2.setText("Unidad:");
 

@@ -5,18 +5,33 @@
  */
 package vista;
 
+import controlador.apusController;
+import controlador.presupuestoController;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import modelo.Apus;
+import modelo.Presupuesto;
+import sun.swing.table.DefaultTableCellHeaderRenderer;
+
 /**
  *
  * @author personal1
  */
-public class FrmDocumentos extends javax.swing.JFrame {
+public class FrmDocumentos extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form FrmDocumentos
      */
+    private apusController ctrApus = new apusController();
+    private presupuestoController ctrPres = new presupuestoController();
+
     public FrmDocumentos() {
         initComponents();
         setTitle("Documentos / Sistema");
+        setTablesNoMoveHeader();
+        setLlenarDatosTbl();
     }
 
     /**
@@ -60,6 +75,10 @@ public class FrmDocumentos extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(60);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(60);
+        }
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Filtro:");
@@ -67,6 +86,11 @@ public class FrmDocumentos extends javax.swing.JFrame {
         jTextField1.setText("jTextField1");
 
         jButton1.setText("x");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,6 +132,11 @@ public class FrmDocumentos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+        home.activoDocumentos = false;
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,4 +181,48 @@ public class FrmDocumentos extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    // hacer que cabecera se quede fija y columnas alineadas a la derecha
+    private void setTablesNoMoveHeader() {
+        jTable1.getTableHeader().setReorderingAllowed(false);
+    }
+
+    // limpiar tabla
+    private void limpiarTabla() {
+        DefaultTableModel model1 = (DefaultTableModel) jTable1.getModel();
+        model1.setRowCount(0);
+    }
+
+    // cargamos los datos de apus
+    private void setLlenarDatosTbl(){
+        int rows = jTable1.getRowCount();
+        if(rows > 0){
+            limpiarTabla();
+        }
+        List<Apus> listApus = ctrApus.getApusAll();
+        List<Presupuesto> listPresupuesto = ctrPres.getPresupuestoAll();
+        
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        
+        for (Apus listApu : listApus) {
+             //Sección 2
+            Object[] fila = new Object[5];
+            //Sección 3
+            fila[0] = listApu.getId(); // Id
+            fila[1] = listApu.getEmpresa(); // Empresa
+            fila[2] = listApu.getProyecto(); // Proyect
+            fila[3] = listApu.getUrl_file(); // Apus
+            
+            for (Presupuesto presupuesto : listPresupuesto) {
+                fila[4] = presupuesto.getUrl_file();
+            }
+            
+            //fila[4] = listApu.getPreUnit(); // Presupuesto
+            //Sección 4
+            modelo.addRow(fila);
+        }
+        //Sección 5
+        jTable1.setModel(modelo);
+    }
+    
 }

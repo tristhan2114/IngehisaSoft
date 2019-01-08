@@ -18,6 +18,8 @@ public class Presupuesto {
     
     private String datosPrespuesto;
     private String url_file;
+    private int id_apus;
+    private int id_manual;
 
     public Presupuesto() {
     }

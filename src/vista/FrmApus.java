@@ -4813,6 +4813,11 @@ public class FrmApus extends javax.swing.JInternalFrame {
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
 
         jTextField1.setText("Ingrese el ID del APUS");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField1KeyPressed(evt);
@@ -4922,6 +4927,10 @@ public class FrmApus extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -6092,6 +6101,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
             listPaneles = gestionImportApusBD.listPaneles;
         }
         int acum = 1; // para controlar vueltas que voy a dar
+        int rubr = 1;
         for (JPanel panel1 : listPaneles) {
             int position = 0;
             if (acum <= i) {
@@ -6125,7 +6135,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                             entFormtApus.setAnalisis(textField.getText());
                                             break;
                                         case 3:
-                                            entFormtApus.setRubro(textField.getText());
+                                            entFormtApus.setRubro(/*textField.getText()*/String.valueOf(rubr));// contador
+                                            rubr++;
                                             break;
                                         case 4:
                                             entFormtApus.setUnidad(textField.getText());
@@ -6357,6 +6368,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
         if (!aux.isEmpty()) {
             gt = new gestionImportApusBD();
             gt.importarDtos(aux);
+        }else{
+            JOptionPane.showMessageDialog(null, "No existe el Apus solicitado\nConsulte los documentos existentes");
         }
     }
 
