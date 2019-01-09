@@ -5,12 +5,15 @@
  */
 package vista;
 
+import controlador.ofertController;
 import controlador.usuarioController;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import modelo.Oferta;
 import modelo.Usuarios;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
 
@@ -23,16 +26,18 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     /**
      * Creates new form oferta
      */
-    
     usuarioController ctrUser = null;
-    
+
+    private ofertController ctrOfert = new ofertController();
+
     public FrmOferta() {
         initComponents();
         setTitle("Ofertas");
-        
+
         // default componentes
-        setTablesNoMoveHeader() ;
+        setTablesNoMoveHeader();
         llenarResponsable();
+        setLlenarDatosTbl() ;
     }
 
     /**
@@ -148,7 +153,7 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-         this.dispose();
+        this.dispose();
         home.activoOferta = false;
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -217,8 +222,8 @@ public class FrmOferta extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }*/
     }
-    
-    private void llenarResponsable(){
+
+    private void llenarResponsable() {
         // jComboBox1
         ctrUser = new usuarioController();
         List<Usuarios> users = (ArrayList<Usuarios>) ctrUser.getUsuariosAllByResponsable();
@@ -229,10 +234,76 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         jComboBox1.setModel(cboModel);
     }
 
+    private void limpiarTabla() {
+        DefaultTableModel model1 = (DefaultTableModel) jTable1.getModel();
+        model1.setRowCount(0);
+    }
+
+    // cargamos los datos OFERTA
+    private void setLlenarDatosTbl() {
+        if (jTable1.getRowCount() > 0) {
+            limpiarTabla();
+        }
+
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+
+        List<Oferta> listOfrtPA = ctrOfert.getOfertByPresuApus();
+        List<Oferta> listOfrtPM = ctrOfert.getOfertByPresuManual();
+
+        for (Oferta oferta : listOfrtPA) {
+            //Sección 2
+            Object[] fila = new Object[9];
+            //Sección 3
+            fila[0] = oferta.getId();
+            fila[1] = oferta.getOferta();
+            fila[2] = oferta.getDescripcion();
+            fila[3] = oferta.getUbicacion();
+            fila[4] = oferta.getResponsable();
+            fila[5] = oferta.getElab_por();
+            fila[6] = oferta.getFecha();
+            fila[7] = oferta.getSubtotal();
+            fila[8] = oferta.getTelefono();
+
+            //Sección 4
+            modelo.addRow(fila);
+        }
+        //Sección 5
+        jTable1.setModel(modelo);
+
+        // add la otra lista
+        for (Oferta oferta : listOfrtPM) {
+            //Sección 2
+            Object[] fila = new Object[9];
+            //Sección 3
+            fila[0] = oferta.getId();
+            fila[1] = oferta.getOferta();
+            fila[2] = oferta.getDescripcion();
+            fila[3] = oferta.getUbicacion();
+            fila[4] = oferta.getResponsable();
+            fila[5] = oferta.getElab_por();
+            fila[6] = oferta.getFecha();
+            fila[7] = oferta.getSubtotal();
+            fila[8] = oferta.getTelefono();
+
+            //Sección 4
+            modelo.addRow(fila);
+        }
+        //Sección 5
+        jTable1.setModel(modelo);
+    }
 }
 
 
 /*
+para los apus presupuesto 
+select id, empresa, oferta, fecha_creacion, id_apus from presupuesto where id_apus !=0
+group by id_apus , id
+order by id_apus asc
+
+para los manuales
+select id, empresa, oferta, fecha_creacion, id_manual from presupuesto where id_manual !=0
+group by id_manual , id
+order by id_manual asc
 
 OFERRTA 1
 AGRUPAR SEGUN VERSIONES
@@ -248,4 +319,4 @@ LO DEMAS ES MANUAL OSEA TIPIADO
 
 TRAER TODO LAS OFERTAS SEGUN ESTEN EL ORDEN DE TBL PRINCIPAL Y SI TIENE VERSIONES SE COLOCAN DE BAJO DE LA MISMA
 
-*/
+ */

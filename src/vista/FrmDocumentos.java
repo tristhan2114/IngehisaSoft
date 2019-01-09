@@ -165,6 +165,11 @@ public class FrmDocumentos extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
             jTable2.getColumnModel().getColumn(0).setMinWidth(45);
@@ -205,6 +210,22 @@ public class FrmDocumentos extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        String txt = "";
+        // cuando es click en [1]
+        int column = jTable2.getSelectedColumn();
+        //System.out.println("column "+column);
+        int position = jTable2.getSelectedRow();
+        if (column == 1) {
+            txt = jTable2.getValueAt(position, 1).toString();
+            //System.out.println("txt3 " + txt);
+            if (txt.length() > 0) {
+                // ultimo necesito el id de presupúesto                
+                getExportFile(pathFilePresupuesto + txt); // txt :: la ruta
+            }
+        } 
+    }//GEN-LAST:event_jTable2MouseClicked
 
     /**
      * @param args the command line arguments
