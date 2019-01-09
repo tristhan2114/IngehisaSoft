@@ -41,7 +41,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 import util.validaciones;
 
 /**
@@ -719,7 +718,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     private void setTablesNoMoveHeader() {
         table.getTableHeader().setReorderingAllowed(false);
 
-        DefaultTableCellRenderer cellRenderer = new DefaultTableCellHeaderRenderer();
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(JLabel.RIGHT);
         // table 2 al 5
         for (int i = 2; i < 6; ++i) {

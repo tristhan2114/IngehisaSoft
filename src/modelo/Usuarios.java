@@ -81,7 +81,7 @@ public class Usuarios {
 
     @Override
     public String toString() {
-        return "Usuarios{" + "id=" + id + ", nombres=" + nombres + ", apellidos=" + apellidos + ", username=" + username + ", contrasenia=" + contrasenia + ", responsable=" + responsable + '}';
+        return nombres ;
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
 import vistaPanelApus.panelApus;
 
 /**
@@ -336,7 +336,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
     // noEdit compo, no move column table, align derecha
     private void setComponent() {
         table.getTableHeader().setReorderingAllowed(false);
-        DefaultTableCellRenderer cellRenderer = new DefaultTableCellHeaderRenderer();
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(jLabel1.RIGHT);
         for (int i = 0; i < 3; ++i) {
             table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);

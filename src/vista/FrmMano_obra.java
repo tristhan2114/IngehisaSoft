@@ -36,6 +36,9 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
         // color de fondo
         //getContentPane().setBackground(new java.awt.Color(237,179,88));
 
+        setIconifiable(true);
+        setTitle("Mano de Obra");
+        
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

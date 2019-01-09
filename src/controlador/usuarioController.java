@@ -32,8 +32,8 @@ public class usuarioController {
     public boolean ingresar(Usuarios datos) {
         con = null;
         pst = null;
-        sql = "INSERT INTO usuarios (nombres, apellidos, username,  contrasenia "
-                + ") values (?,?,?,?)";
+        sql = "INSERT INTO usuarios (nombres, apellidos, username,  contrasenia, responsable "
+                + ") values (?,?,?,?,?)";
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -51,6 +51,7 @@ public class usuarioController {
             return true;
         } catch (Exception e) {
             e.getMessage();
+            System.out.println("dd "+e.getMessage());
             return false;
         }
     }
@@ -58,8 +59,7 @@ public class usuarioController {
     public boolean actualizar(Usuarios datos) {
         con = null;
         pst = null;
-        sql = "UPDATE usuarios SET nombres=?, apellidos=?, username=?, contrasenia=?, "
-                + " "
+        sql = "UPDATE usuarios SET nombres=?, apellidos=?, username=?, contrasenia=?, responsable=?"
                 + " where id=?";
         conPg = new conexion();
         try {
@@ -79,6 +79,7 @@ public class usuarioController {
             return true;
         } catch (Exception e) {
             e.getMessage();
+            System.out.println("dd "+e.getMessage());
             return false;
         }
     }

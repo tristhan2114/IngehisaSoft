@@ -88,7 +88,7 @@ public class equipoController {
     public List<Equipo> getEquipoAll() {
         con = null;
         pst = null;
-        sql = "select * from equipo";
+        sql = "select * from equipo order by id asc";
         List<Equipo> equipos = new ArrayList<>();
         conPg = new conexion();
         try {

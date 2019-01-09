@@ -31,6 +31,9 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
     public FrmUsuarios() {
         initComponents();
 
+        setIconifiable(true);
+        setTitle("Usuarios");
+        
         jRadioButton1.setSelected(true);
         txtCodigo.setEditable(false);
         jButton3.setEnabled(false);
@@ -210,7 +213,9 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(60);
+            jTable1.getColumnModel().getColumn(0).setMinWidth(45);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(45);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(45);
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(120);
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(120);
             jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);

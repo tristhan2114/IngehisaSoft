@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modelo.Oferta;
 import modelo.Usuarios;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 /**
  *
@@ -30,14 +30,28 @@ public class FrmOferta extends javax.swing.JInternalFrame {
 
     private ofertController ctrOfert = new ofertController();
 
+    int count = 0;
+
     public FrmOferta() {
         initComponents();
         setTitle("Ofertas");
 
+        setIconifiable(true);
+
         // default componentes
         setTablesNoMoveHeader();
         llenarResponsable();
-        setLlenarDatosTbl() ;
+        setLlenarDatosTbl();
+
+        // mirame
+        jButton2.setVisible(false);
+        jButton1.setVisible(false);
+        jButton4.setVisible(false);
+        jLabel3.setVisible(false);
+        jLabel4.setVisible(false);
+        jTextField1.setVisible(false);
+        jTextField2.setVisible(false);
+
     }
 
     /**
@@ -73,7 +87,7 @@ public class FrmOferta extends javax.swing.JInternalFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, 49, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 10, 49, -1));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -100,7 +114,12 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 220, 40));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 70, 190, -1));
+        jComboBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBox1MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 70, 190, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -119,18 +138,26 @@ public class FrmOferta extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane2.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(45);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(45);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(45);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(220);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(220);
+            jTable1.getColumnModel().getColumn(1).setMaxWidth(220);
+        }
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 850, 273));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 920, 273));
 
         jButton1.setText("Actualizar ");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 380, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 380, -1, -1));
 
         jButton2.setText("Guardar");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 380, -1, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 380, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Responsable");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 50, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 50, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Fecha Fin");
@@ -156,6 +183,19 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         this.dispose();
         home.activoOferta = false;
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jComboBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox1MouseClicked
+        // 
+            int rows = jTable1.getSelectedRow();
+            if (rows >= 0) {
+                String txt = jComboBox1.getSelectedItem().toString();
+                System.out.println("ss " + rows);
+                jTable1.setValueAt(txt, rows, 5);
+                count = 0;
+            } else {
+                JOptionPane.showConfirmDialog(this, "Debe seleccionar un registro");
+            }
+    }//GEN-LAST:event_jComboBox1MouseClicked
 
     /**
      * @param args the command line arguments

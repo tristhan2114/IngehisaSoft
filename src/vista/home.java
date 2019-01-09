@@ -31,13 +31,14 @@ public class home extends javax.swing.JFrame {
     FrmUsuarios frmUsuarios;
     FrmIndirectos frmIndirectos;
     FrmDocumentos frmDocuments;
+    private FrmIndirectoPoliza frmIndirectoPoliza;
 
     // imagen logo fondo
     private ImageIcon imagenFondo;
     private ImageIcon imagenFondoRedimensionado;
 
     // atributo que controla frmInternos abiertos o no
-    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales, activoFrmResumen, activoTransporte, activoOferta, activoUsuarios, activoIndirecto, activoDocumentos;
+    public static boolean activoEquipo, activoManoObra, activoApus, activoMateriales, activoFrmResumen, activoTransporte, activoOferta, activoUsuarios, activoIndirecto, activoDocumentos, activoFrmIndirectoPoliza;
 
     public home() {
         initComponents();
@@ -74,6 +75,7 @@ public class home extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu12 = new javax.swing.JMenu();
         menuEquipo = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -120,6 +122,15 @@ public class home extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem3);
+
+        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/gestion.png"))); // NOI18N
+        jMenuItem11.setText("Gestión");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem11);
 
         jMenuBar1.add(jMenu2);
 
@@ -472,6 +483,26 @@ public class home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        // FrmGestion Clasificacion y Proveedores
+        try {
+            if (activoFrmIndirectoPoliza == true) {
+                frmIndirectoPoliza.setLocation(23, 23);
+                frmIndirectoPoliza.moveToFront();
+                frmIndirectoPoliza.show();
+            } else {
+                activoFrmIndirectoPoliza = true;
+                frmIndirectoPoliza = new FrmIndirectoPoliza();
+                escritorio.add(frmIndirectoPoliza);
+                frmIndirectoPoliza.setLocation(23, 23);
+                frmIndirectoPoliza.show();
+            }
+        } catch (Exception e) {
+            e.getMessage();
+            //System.out.println("err-  "+e.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -519,6 +550,7 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -534,11 +566,11 @@ public class home extends javax.swing.JFrame {
 
     private void imagenFondo() {
         try {
-            //String ruta_imagen = System.getProperty("user.dir") +"/imagenes/logoFinal.png";
+            String ruta_imagen = System.getProperty("user.dir") +"\\resource\\img\\inghisa.png";
             //Imagen_fondo.setSize(escritorio.getSize());
             Imagen_fondo.setSize(escritorio.getSize());
 
-            imagenFondo = new ImageIcon(getClass().getResource("/imagen/fondo.jpg"));
+            imagenFondo = new ImageIcon(ruta_imagen);
             imagenFondoRedimensionado = new ImageIcon(imagenFondo.getImage().getScaledInstance(escritorio.getWidth(),
                     escritorio.getHeight(), java.awt.Image.SCALE_SMOOTH));
             Imagen_fondo.setIcon(imagenFondoRedimensionado);

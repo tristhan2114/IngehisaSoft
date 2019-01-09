@@ -32,6 +32,8 @@ public class FrmEquipo extends javax.swing.JInternalFrame {
 
     public FrmEquipo() {
         initComponents();
+        setIconifiable(true);
+        setTitle("Equipos");
         jRadioButton1.setSelected(true);
         txtcodigo.setEditable(false);
         txtdescripcion.setLineWrap(true);

@@ -32,6 +32,9 @@ public class FrmTransporte extends javax.swing.JInternalFrame {
 
     public FrmTransporte() {
         initComponents();
+        
+        setIconifiable(true);
+        setTitle("Transporte");
 
         // componentes default accion
         jRadioButton1.setSelected(true);
@@ -87,7 +90,7 @@ public class FrmTransporte extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -133,12 +136,14 @@ public class FrmTransporte extends javax.swing.JInternalFrame {
         txtdescripcion.setRows(5);
         jScrollPane1.setViewportView(txtdescripcion);
 
+        txtCantidad.setText("0");
         txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCantidadKeyTyped(evt);
             }
         });
 
+        txtTarifa.setText("0.0");
         txtTarifa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtTarifaKeyTyped(evt);

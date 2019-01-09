@@ -37,6 +37,8 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         initComponents();
         //getContentPane().setBackground(new java.awt.Color(237,179,88));
         // default componentes
+        setTitle("Costos Indirectos ");
+        setIconifiable(true);
         jButton14.setVisible(false);
         setEsquemaTable();
         setTablsLlenar();
@@ -689,7 +691,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // FrmIndirectoPoliza
-        try {
+        /*try {
             if (activoFrmIndirectoPoliza == true) {
                 frmIndirectoPoliza.setLocation(500, 300);
                 frmIndirectoPoliza.table.setValueAt(jTextField1.getText(), 0, 2);
@@ -706,7 +708,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             e.getMessage();
             //System.out.println("err-  "+e.getMessage());
-        }
+        }*/
     }//GEN-LAST:event_jButton14ActionPerformed
 
     /**

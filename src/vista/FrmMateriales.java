@@ -52,6 +52,9 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
     public FrmMateriales() {
         initComponents();
+        
+        setIconifiable(true);
+        setTitle("Materiales");
 
         jTextField1.setEditable(false);
         jButton5.setEnabled(false);
@@ -233,18 +236,32 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Descripción", "Empresa", "Clasificación", "Precio", "Imagen"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
         jScrollPane2.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(50);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(50);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(200);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(200);
+        }
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 778, 152));
 
@@ -254,7 +271,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 810, 230));
 
-        jButton2.setText("X");
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -537,6 +554,26 @@ aqui van los files
 tambn con el id
 apus/
 presupuesto/
+
+select count(id_clasificacion) from materiales where id_clasificacion=
+
+select count(id_proveedor) from materiales where id_proveedor=
+
+select materiales.id, materiales.descripcion, materiales.id_clasificacion, materiales.id_proveedor, materiales.precio, materiales.url_imagen,
+clasificacion.descripcion as clasdescripc, proveedor.nombre as proveenombr
+from materiales
+left join clasificacion on clasificacion.id = materiales.id_clasificacion
+left join proveedor on proveedor.id = materiales.id_proveedor
+group by materiales.descripcion, materiales.id, clasificacion.descripcion, proveedor.nombre
+
+
+http://basededatos.umh.es/sql/sql04.htm
+http://www.tutorialesprogramacionya.com/postgresqlya/temarios/descripcion.php?cod=191&punto=33&inicio=
+
+
+pagina de logo online
+https://www.crearlogogratisonline.com/
+
 
 
  */

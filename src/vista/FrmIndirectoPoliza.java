@@ -5,8 +5,16 @@
  */
 package vista;
 
+import controlador.clasificacionController;
+import controlador.proveedorController;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import modelo.Clasificacion;
+import modelo.Proveedor;
 import util.validaciones;
 
 /**
@@ -22,12 +30,25 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
     // variable para caracter
     private Character kpress;
 
+    private proveedorController ctrProvee = new proveedorController();
+    private clasificacionController ctrClasi = new clasificacionController();
+    
+    private Clasificacion clasificacion = null;
+    private Proveedor proveedor = null;
+
     public FrmIndirectoPoliza() {
         initComponents();
 
-        setTitle("Costo de Poliza / Costo Indirecto");
+        setIconifiable(true);
+        
+        jButton3.setVisible(false);
+        jButton5.setVisible(false);
+        setTitle("Gestión - Clasificación y Proveedores");
         setEsquemaTable();
-        table.setTableHeader(null);
+        setLlenarTbl();
+        
+        jTextField1.setEditable(false);
+        jTextField3.setEditable(false);
     }
 
     /**
@@ -40,61 +61,100 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Clasificación  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("COSTO DE POLIZA");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Id");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
 
-        table.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Descripción");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
+
+        jTextField1.setText("0");
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 27, 170, -1));
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 57, 170, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"<html><center><b>Monto de contrato</b></center></html>", null, "0.0", "0.0", "0", null, null, null, null, null},
-                {null, null, null, "0.0", null, null, null, null, null, null},
-                {"<html> <center> <b style=\"font-size:9;\"> GARANTIA DE BUEN USO <br>DEL ANTICIPO POR EL 20% </b></center></html>", null, null, null, null, "0.0", null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {"0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0"},
-                {null, null, "0", null, null, null, null, null, null, "0.0"},
-                {null, null, null, null, null, null, null, null, null, null},
-                {"<html><center><b style=\"font-size:9;\">POLIZA POR 5% POR <br>GARANTIA DE FIEL CUMPLIMIENTO</b></center></html>", null, null, null, null, "0.0", null, null, null, null},
-                {"", null, null, null, null, null, null, null, null, null},
-                {"0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0"},
-                {null, null, null, null, null, null, null, null, null, "0.0"}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10"
+                "Id", "Descripción"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-        });
-        table.setRowHeight(25);
-        table.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tableKeyPressed(evt);
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(table);
-        if (table.getColumnModel().getColumnCount() > 0) {
-            table.getColumnModel().getColumn(0).setPreferredWidth(170);
-            table.getColumnModel().getColumn(0).setMaxWidth(170);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(45);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(45);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(45);
         }
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 726, 300));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 91, 368, 206));
+
+        jButton2.setText("Guardar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 27, -1, -1));
+
+        jButton3.setText("Editar");
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 57, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 390, 310));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("Gestión de Clasificación  Proveedores");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, -1, -1));
 
         jButton1.setText("x");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -102,24 +162,107 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 6, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 0, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 340));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Proveedor  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("Nombre");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setText("Id");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+
+        jTextField3.setText("0");
+        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(103, 27, 190, -1));
+        jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(103, 57, 190, -1));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Id", "Nombre"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+        if (jTable2.getColumnModel().getColumnCount() > 0) {
+            jTable2.getColumnModel().getColumn(0).setMinWidth(45);
+            jTable2.getColumnModel().getColumn(0).setPreferredWidth(45);
+            jTable2.getColumnModel().getColumn(0).setMaxWidth(45);
+        }
+
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 91, 368, 206));
+
+        jButton4.setText("Guardar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 27, -1, -1));
+
+        jButton5.setText("Editar");
+        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 57, -1, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, 390, 310));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
-        FrmIndirectos.activoFrmIndirectoPoliza = false;
+        home.activoFrmIndirectoPoliza = false;
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyPressed
-        kpress = evt.getKeyChar();
-        if (kpress == KeyEvent.VK_ENTER) {
-            calGarantia();
-        }
-    }//GEN-LAST:event_tableKeyPressed
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // tbl Clasificacion
+        int fila = jTable1.rowAtPoint(evt.getPoint());
+        jTextField1.setText(jTable1.getValueAt(fila, 0).toString());
+        jTextField2.setText(jTable1.getValueAt(fila, 1).toString());
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // tbl Proveedores
+        int fila = jTable2.rowAtPoint(evt.getPoint());
+        jTextField3.setText(jTable2.getValueAt(fila, 0).toString());
+        jTextField4.setText(jTable2.getValueAt(fila, 1).toString());
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // Guardar Clasificacion
+        setSaveClasificacion();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // Guardar Proveedor
+        setSaveProveedor();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,113 +301,121 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    public static javax.swing.JTable table;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
     // no move columnTable y dimension fija 
     private void setEsquemaTable() {
-        table.getTableHeader().setReorderingAllowed(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable2.getTableHeader().setReorderingAllowed(false);
     }
 
-    // calculo de garantia 
-    private void calGarantia() {
-        String txt = table.getValueAt(0, 3).toString();
-        if (!(txt.equals("") || txt.equals("0") || txt.equals("0.0"))) {
-            //   position | columna      | position   | column      | position  |column :: no puede ser cero
-            //(    [1]       [3]     *       [0]         [2]    )  /    [0]        [3]
-            double campo1 = vali.solomoney(table.getValueAt(1, 3).toString());
-            double campo2 = vali.solomoney(table.getValueAt(0, 2).toString());
-            double campo3 = vali.solomoney(table.getValueAt(0, 3).toString());
-            //     [2]        [5]
-            double tot = (campo1 * campo2) / campo3;
-            tot = (double) Math.round(tot * 100d) / 100d;
-            table.setValueAt(String.valueOf(tot), 2, 5);
-            // poner valor default [4]    [0]
-            table.setValueAt(String.valueOf(tot), 4, 0);
-        }
-        // calculo de garantia segun anticipo
-        // ( [4] [0] * [4] [1] * [4] [2] ) / [4] [3]  == [4] [4]
-        txt = table.getValueAt(4, 3).toString();
-        if (!(txt.equals("") || txt.equals("0") || txt.equals("0.0"))) {
-            double campo1 = vali.solomoney(table.getValueAt(4, 0).toString());
-            double campo2 = vali.solomoney(table.getValueAt(4, 1).toString());
-            double campo3 = vali.solomoney(table.getValueAt(4, 2).toString());
-            double campo4 = vali.solomoney(table.getValueAt(4, 3).toString());
-            //     [2]        [5]
-            double tot = (campo1 * campo2 * campo3) / campo4;
-            tot = (double) Math.round(tot * 100d) / 100d;
-            table.setValueAt(String.valueOf(tot), 4, 4);
-        }
-        // calculo de resultado anterior * 0.035
-        final double num = 0.035;
-        double val = vali.solomoney(table.getValueAt(4, 4).toString());
-        double valR = val * num;
-        valR = (double) Math.round(valR * 100d) / 100d;
-        table.setValueAt(String.valueOf(valR), 4, 5);
-        // calculo suma de resultado [4][4] + [4][5] +[4][6] = [4][7]
-        double val1 = vali.solomoney(table.getValueAt(4, 4).toString());
-        double val2 = vali.solomoney(table.getValueAt(4, 5).toString());
-        double val3 = vali.solomoney(table.getValueAt(4, 6).toString());
-        double vaR = val1 + val2 + val3;
-        vaR = (double) Math.round(vaR * 100d) / 100d;
-        table.setValueAt(String.valueOf(vaR), 4, 7);
-        // calculo [4][7] * 0.12  == [4][8]  ::
-        final double num2 = 0.12;
-        double var1 = vali.solomoney(table.getValueAt(4, 7).toString());
-        double tot1 = var1 * num2;
-        tot1 = (double) Math.round(tot1 * 100d) / 100d;
-        table.setValueAt(String.valueOf(tot1), 4, 8);
-        // suma de [4][7] + [4][8] == [4][9]  [5][9]
-        double sum1 = vali.solomoney(table.getValueAt(4, 7).toString());
-        double sum2 = vali.solomoney(table.getValueAt(4, 8).toString());
-        tot1 = sum1 + sum2;
-        tot1 = (double) Math.round(tot1 * 100d) / 100d;
-        table.setValueAt(String.valueOf(tot1), 4, 9);
-        table.setValueAt(String.valueOf(tot1), 5, 9);
-
-        // calculo de garant cumplimient [0][2] * [9][1]  == [9][0] and [7][5]
-        var1 = vali.solomoney(table.getValueAt(0, 2).toString());
-        double var2 = vali.solomoney(table.getValueAt(9, 1).toString());
-        tot1 = var1 * var2;
-        tot1 = (double) Math.round(tot1 * 100d) / 100d;
-        table.setValueAt(String.valueOf(tot1), 9, 0);
-        table.setValueAt(String.valueOf(tot1), 7, 5);
-        // calculo de cumpli garant     !=0
-        txt = table.getValueAt(9, 3).toString();
-        if (!(txt.equals("") || txt.equals("0") || txt.equals("0.0"))) {
-            //( [9][0] * [9][1] * [9][2] )/[9][3]  == [9][4]
-            double campo1 = vali.solomoney(table.getValueAt(9, 0).toString());
-            double campo2 = vali.solomoney(table.getValueAt(9, 1).toString());
-            double campo3 = vali.solomoney(table.getValueAt(9, 2).toString());
-            double campo4 = vali.solomoney(table.getValueAt(9, 3).toString());
-            double tot = (campo1 * campo2 * campo3) / campo4;
-            tot = (double) Math.round(tot * 100d) / 100d;
-            table.setValueAt(String.valueOf(tot), 9, 4);
-        }
-        // en amarillo me quede
-        
-        
-        
-        // rename value
-        setNameValueTable();
+    private void setCleanClasifi() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
     }
 
-    private void setNameValueTable() {
-        // cuando cambia el porcentaje de anticipo
-        //  [4][1]
-        double n1 = vali.solomoney(table.getValueAt(4, 1).toString());
-        n1 = n1 * 100;
-        String name1 = "<html><center><b style='font-size:9'>GARANTIA DE BUEN USO <br>DEL ANTICIPO POR EL " + n1 + "%</b></center></html>";
-        table.setValueAt(name1, 2, 0);
-
-        // garantia del cumplimiento
-        double n2 = vali.solomoney(table.getValueAt(9, 1).toString());
-        n2 = n2 * 100;
-        String name2 = "<html><center><b style='font-size:9'>POLIZA POR " + n2 + "% POR GARANTIA<br> DE FIEL CUMPLIMIENTO</b></center></html>";
-        table.setValueAt(name2, 7, 0);
+    private void setCleanProvee() {
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
     }
+
+    private void setLlenarTbl() {
+        if (jTable1.getRowCount() > 0) {
+            setCleanClasifi();
+        }
+        if (jTable2.getRowCount() > 0) {
+            setCleanProvee();
+        }
+
+        List<Clasificacion> clasificaciones = ctrClasi.getClasificacionAll();
+        List<Proveedor> proveedores = ctrProvee.getProveedoresAll();
+
+        DefaultTableModel model1 = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
+
+        Object[] row;
+        for (Proveedor item : proveedores) {
+            row = new Object[2];
+            row[0] = item.getId();
+            row[1] = item.getNombre();
+            model1.addRow(row);
+            row = null;
+        }
+        jTable2.setModel(model1);
+
+        for (Clasificacion item : clasificaciones) {
+            row = new Object[2];
+            row[0] = item.getId();
+            row[1] = item.getDescripcion();
+            model2.addRow(row);
+            row = null;
+        }
+        jTable1.setModel(model2);
+    }
+
+    private void setSaveClasificacion() {
+        if (jTextField2.getText().length() > 0) {
+            try {
+                clasificacion = new Clasificacion();
+                clasificacion.setDescripcion(jTextField2.getText());
+                
+                if(ctrClasi.ingresar(clasificacion)){
+                    JOptionPane.showConfirmDialog(this, "Clasificación agregada con exito", "Confirmación", 2);
+                    setLlenarTbl();
+                }else {
+                    JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
+                }
+                clasificacion = null;
+            } catch (Exception e) {
+                System.out.println("err-saveGestClasifica " + e.getMessage());
+                e.getMessage();
+            }
+        }else {
+            JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
+        }
+    }
+
+    private void setSaveProveedor() {
+        if (jTextField4.getText().length() > 0) {
+            try {
+                proveedor = new Proveedor();
+                proveedor.setNombre(jTextField4.getText());
+                
+                if(ctrProvee.ingresar(proveedor)){
+                    JOptionPane.showConfirmDialog(this, "Proveedor agregada con exito", "Confirmación", 2);
+                    setLlenarTbl();
+                }else {
+                    JOptionPane.showConfirmDialog(this, "Error server", "Error", 2);
+                }
+                proveedor = null;
+            } catch (Exception e) {
+                System.out.println("err-saveGestProvee " + e.getMessage());
+                e.getMessage();
+            }
+        }else {
+            JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
+        }
+    }
+    
+    
 
 }

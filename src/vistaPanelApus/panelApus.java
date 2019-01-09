@@ -27,7 +27,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import modelo.Equipo;
 import modelo.ManoObra;
 import modelo.Transporte;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 /**
  *
@@ -1374,7 +1373,7 @@ public class panelApus extends javax.swing.JPanel {
         tableMa.getTableHeader().setReorderingAllowed(false);
         tableT.getTableHeader().setReorderingAllowed(false);
 
-        DefaultTableCellRenderer cellRenderer = new DefaultTableCellHeaderRenderer();
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(jLabel1.RIGHT);
         // tableE y TableM 1 al 5 other  1 al 4
         for (int i = 1; i < 6; ++i) {

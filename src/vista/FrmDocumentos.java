@@ -21,7 +21,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modelo.Apus;
 import modelo.Presupuesto;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 /**
  *
@@ -42,6 +41,7 @@ public class FrmDocumentos extends javax.swing.JInternalFrame {
 
     public FrmDocumentos() {
         initComponents();
+        setIconifiable(true);
         setTitle("Documentos / Sistema");
         setTablesNoMoveHeader();
         setLlenarDatosTbl();
