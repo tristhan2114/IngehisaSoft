@@ -1182,8 +1182,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                                 if (aux.equals("")) {
                                     celda2.setCellValue("");
                                 } else {
-                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     celda2.setCellValue(Integer.parseInt(datos.getListTbl().get(size).getCantidad().trim()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 }
                             } else if (j == 10) {
                                 String aux = datos.getListTbl().get(size).getPreUnit();
@@ -1212,7 +1212,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                     acumPosition = re;
                     bandera1 = true;
                 }
-
+                
                 // footer del presumen 
                 if (bandera1 == true) {
                     if (re == acumPosition) {

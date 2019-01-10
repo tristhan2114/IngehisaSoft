@@ -1244,7 +1244,7 @@ public class panelApus extends javax.swing.JPanel {
             // traigo valor de cantidad [1]
             String cant = tableE.getValueAt(position, 1).toString();
             if (!cant.equals("")) { // columna cantidad no nula
-                int cantAux = validacion.soloNumero(cant);
+                double cantAux = validacion.solomoney(cant);
                 double tarifa = Double.parseDouble(tableE.getValueAt(position, 2).toString());
 
                 double cost = getCostHora(cantAux, tarifa); // metodo control de decimales
@@ -1285,7 +1285,7 @@ public class panelApus extends javax.swing.JPanel {
             // traigo valor de cantidad [1]
             String cant = tableM.getValueAt(position, 1).toString();
             if (!cant.equals("")) { // columna cantidad no nula
-                int cantAux = validacion.soloNumero(cant);
+                double cantAux = validacion.solomoney(cant);
                 double tarifa = Double.parseDouble(tableM.getValueAt(position, 2).toString());
                 double cost = getCostHora(cantAux, tarifa); // metodo control de decimales
                 tableM.setValueAt(String.valueOf(cantAux), position, 1); // pongo el valor de validaciones
@@ -1326,7 +1326,7 @@ public class panelApus extends javax.swing.JPanel {
             // traigo valor de cantidad [2]
             String cant = tableMa.getValueAt(position, 2).toString();
             if (!cant.equals("")) { // columna cantidad no nula
-                int cantAux = validacion.soloNumero(cant);
+                double cantAux = validacion.solomoney(cant);
                 // R:[4]  = [2] * [3]
                 double precUnit = Double.parseDouble(tableMa.getValueAt(position, 3).toString());
 
@@ -1349,7 +1349,7 @@ public class panelApus extends javax.swing.JPanel {
             // traigo valor de cantidad [2]
             String cant = tableT.getValueAt(position, 2).toString();
             if (!cant.equals("")) { // columna cantidad no nula
-                int cantAux = validacion.soloNumero(cant);
+                double cantAux = validacion.solomoney(cant);
                 // R:[4]  = [2] * [3]
                 double tari = validacion.solomoney(tableT.getValueAt(position, 3).toString());
 
@@ -1621,7 +1621,7 @@ public class panelApus extends javax.swing.JPanel {
     }
 
     // metodo para controlar calculo segun numero de decimales tableEqui y table Mano
-    private Double getCostHora(int cantAux, double tarifa) {
+    private Double getCostHora(double cantAux, double tarifa) {
         //int decim = Integer.parseInt(cboDecimales.getSelectedItem().toString());
         int decim = cboDecimales.getSelectedIndex();
         //System.out.println("decimales " + decim);

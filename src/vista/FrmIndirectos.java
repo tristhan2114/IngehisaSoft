@@ -6,11 +6,26 @@
 package vista;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import modelo.EsquemaCostIndirect;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.validaciones;
 import static vista.home.escritorio;
 
@@ -26,24 +41,34 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
     validaciones vali = new validaciones();
     // variable para caracter
     private Character kpress;
-    
+
     // control de costo de poliza
-    public static boolean activoFrmIndirectoPoliza ;
+    public static boolean activoFrmIndirectoPoliza;
 
     // FrmIndirecto
     private FrmIndirectoPoliza frmIndirectoPoliza;
-    
+
+    // variables para exportar contenido a excel
+    JFileChooser selecArchivo = new JFileChooser();
+    File archivo;
+    Workbook wb;
+
+    // cabecera 
+    private String cabecera[] = {"Cant", "Personal", "Costo\nSemanales", "Semanas", "Cálculos", "Subtotal", "Parcial", "Porcentaje"};
+
     public FrmIndirectos() {
         initComponents();
         //getContentPane().setBackground(new java.awt.Color(237,179,88));
         // default componentes
         setTitle("Costos Indirectos ");
         setIconifiable(true);
+        jButton3.setVisible(false);
         jButton14.setVisible(false);
         setEsquemaTable();
         setTablsLlenar();
 
         calCostSemMens();
+        calCostSemMensTbl2();
     }
 
     //hacer calculo de tabla Costo Indirecto
@@ -353,10 +378,10 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 810, 80));
 
         jTextField1.setText("133272.18504");
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, 130, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(382, 32, 130, -1));
 
         jTextField2.setText("0.0");
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 30, 70, -1));
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(605, 32, 70, -1));
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         jLabel7.setText("Costo Directo:");
@@ -425,7 +450,12 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         jButton3.setText("Actualizar");
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 570, -1, -1));
 
-        jButton2.setText("Guardar");
+        jButton2.setText("Generar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 570, -1, -1));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -642,6 +672,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
     private void jTable2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable2KeyPressed
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
+            calCostSemMensTbl2();
             calSubTot(jTable2);
             calParcialAndPorcent(jTable2);
             calSubTotTbls();
@@ -710,6 +741,22 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             //System.out.println("err-  "+e.getMessage());
         }*/
     }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        EsquemaCostIndirect datos = getEsquema();
+        System.out.println("todo " + datos.toString());
+        selecArchivo.setSelectedFile(new File("CostoIndirecto-0001.xlsx"));
+        if (selecArchivo.showDialog(null, "Exportar") == JFileChooser.APPROVE_OPTION) {
+            archivo = selecArchivo.getSelectedFile();
+            if (archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")) {
+                //Cambia con el nombre de tu JTABLE
+                JOptionPane.showMessageDialog(null, Exportar(archivo, datos) + "\n Formato ." + archivo.getName().substring(archivo.getName().lastIndexOf(".") + 1));
+            } else {
+                JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -898,6 +945,11 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 fila[2] = lista.get(i).get(2);
                 fila[3] = lista.get(i).get(3);
 
+                fila[4] = "";
+                fila[5] = "";
+                fila[6] = "";
+                fila[7] = "";
+
             }
             if (i == 0) {
                 fila[4] = "";
@@ -925,6 +977,20 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 jTable1.setValueAt(String.valueOf(costSema), i, 2);
                 double tot = costSema * SEMANAS;
                 jTable1.setValueAt(String.valueOf(tot), i, 4);
+            }
+            calSubTot(jTable1);
+        }
+    }
+
+    // metodo 1 de tabla2
+    private void calCostSemMensTbl2() {
+        int sizeRowCount = jTable2.getRowCount();
+        if (sizeRowCount > 0) {
+            for (int i = 0; i < sizeRowCount; ++i) {
+                double costSema = vali.solomoney(jTable2.getValueAt(i, 2).toString());
+                jTable2.setValueAt(String.valueOf(costSema), i, 2);
+                double tot = costSema * SEMANAS;
+                jTable2.setValueAt(String.valueOf(tot), i, 4);
             }
             calSubTot(jTable1);
         }
@@ -965,6 +1031,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             if (!(txt.equals("0.0") || txt.equals("0") || txt.equals(""))) {
                 double par = vali.solomoney(tbl.getValueAt(0, 6).toString());
                 double tot = par / (vali.solomoney(txt));
+                tot = tot * 100;
                 tot = (double) Math.round(tot * 100d) / 100d;
                 tbl.setValueAt(String.valueOf(tot), 0, 7);
             }
@@ -986,6 +1053,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         if (!(txt.equals("0.0") || txt.equals("0") || txt.equals(""))) {
             double par = vali.solomoney(jTable5.getValueAt(0, 6).toString());
             double tot1 = par / (vali.solomoney(txt));
+            tot1 = tot1 * 100;
             tot1 = (double) Math.round(tot1 * 100d) / 100d;
             jTable5.setValueAt(String.valueOf(tot1), 0, 7);
         }
@@ -1027,12 +1095,13 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         double totPorTbl4 = vali.solomoney(jTable4.getValueAt(0, 7).toString());
         double totPorTbl5 = vali.solomoney(jTable5.getValueAt(0, 7).toString());
         acum2 = totPorTbl1 + totPorTbl2 + totPorTbl3 + totPorTbl4 + totPorTbl5;
+        
         acum2 = (double) Math.round(acum2 * 100d) / 100d;
         jTextField5.setText(String.valueOf(acum2));
         // indirecto
         jTextField6.setText(String.valueOf(acum2));
     }
-    
+
     private void calTotWithIndirectImprevUtil() {
         if (jTextField7.getText().length() > 0) {
             double indirect = vali.solomoney(jTextField6.getText());
@@ -1043,8 +1112,6 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             jTextField9.setText(String.valueOf(total));
         }
     }
-    
-    
 
     // Listas con datos de cada tabla
     private List<List<String>> getGrupTecnic() {
@@ -1285,7 +1352,805 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         data = null;
 
         return aux;
-    }   
+    }
 
+    private EsquemaCostIndirect getEsquema() {
+        EsquemaCostIndirect aux = new EsquemaCostIndirect();
+        aux.setCostIndirecto(jTextField1.getText());
+        aux.setPorcent(jTextField2.getText());
+
+        int sizeRowsCount = 0;
+        // tabla Grupo Tecnico (jTable1)
+        sizeRowsCount = jTable1.getRowCount();
+        for (int i = 0; i < sizeRowsCount; ++i) {
+            List<String> tbl = new ArrayList<>();
+            tbl.add(jTable1.getValueAt(i, 0).toString());
+            tbl.add(jTable1.getValueAt(i, 1).toString());
+            tbl.add(jTable1.getValueAt(i, 2).toString());
+            tbl.add(jTable1.getValueAt(i, 3).toString());
+            tbl.add(jTable1.getValueAt(i, 4).toString());
+            tbl.add(jTable1.getValueAt(i, 5).toString());
+            tbl.add(jTable1.getValueAt(i, 6).toString());
+            tbl.add(jTable1.getValueAt(i, 7).toString());
+            aux.getTblGT().add(tbl);
+        }
+
+        // tabla Personal de Soporte  (jTable2)
+        sizeRowsCount = jTable2.getRowCount();
+        for (int i = 0; i < sizeRowsCount; ++i) {
+            List<String> tbl = new ArrayList<>();
+            tbl.add(jTable2.getValueAt(i, 0).toString());
+            tbl.add(jTable2.getValueAt(i, 1).toString());
+            tbl.add(jTable2.getValueAt(i, 2).toString());
+            tbl.add(jTable2.getValueAt(i, 3).toString());
+            tbl.add(jTable2.getValueAt(i, 4).toString());
+            tbl.add(jTable2.getValueAt(i, 5).toString());
+            tbl.add(jTable2.getValueAt(i, 6).toString());
+            tbl.add(jTable2.getValueAt(i, 7).toString());
+            aux.getTblPS().add(tbl);
+        }
+
+        // tabla Costos Semanales  (jTable3)
+        sizeRowsCount = jTable3.getRowCount();
+        for (int i = 0; i < sizeRowsCount; ++i) {
+            List<String> tbl = new ArrayList<>();
+            tbl.add(jTable3.getValueAt(i, 0).toString());
+            tbl.add(jTable3.getValueAt(i, 1).toString());
+            tbl.add(jTable3.getValueAt(i, 2).toString());
+            tbl.add(jTable3.getValueAt(i, 3).toString());
+            tbl.add(jTable3.getValueAt(i, 4).toString());
+            tbl.add(jTable3.getValueAt(i, 5).toString());
+            tbl.add(jTable3.getValueAt(i, 6).toString());
+            tbl.add(jTable3.getValueAt(i, 7).toString());
+            aux.getTblCS().add(tbl);
+        }
+
+        // tabla Campamento  (jTable4)
+        sizeRowsCount = jTable4.getRowCount();
+        for (int i = 0; i < sizeRowsCount; ++i) {
+            List<String> tbl = new ArrayList<>();
+            tbl.add(jTable4.getValueAt(i, 0).toString());
+            tbl.add(jTable4.getValueAt(i, 1).toString());
+            tbl.add(jTable4.getValueAt(i, 2).toString());
+            tbl.add(jTable4.getValueAt(i, 3).toString());
+            tbl.add(jTable4.getValueAt(i, 4).toString());
+            tbl.add(jTable4.getValueAt(i, 5).toString());
+            tbl.add(jTable4.getValueAt(i, 6).toString());
+            tbl.add(jTable4.getValueAt(i, 7).toString());
+            aux.getTblCa().add(tbl);
+        }
+
+        // tabla Seguros  (jTable5)
+        sizeRowsCount = jTable5.getRowCount();
+        for (int i = 0; i < sizeRowsCount; ++i) {
+            List<String> tbl = new ArrayList<>();
+            tbl.add(jTable5.getValueAt(i, 0).toString());
+            tbl.add(jTable5.getValueAt(i, 1).toString());
+            tbl.add(jTable5.getValueAt(i, 2).toString());
+            tbl.add(jTable5.getValueAt(i, 3).toString());
+            tbl.add(jTable5.getValueAt(i, 4).toString());
+            tbl.add(jTable5.getValueAt(i, 5).toString());
+            tbl.add(jTable5.getValueAt(i, 6).toString());
+            tbl.add(jTable5.getValueAt(i, 7).toString());
+            aux.getTblSe().add(tbl);
+        }
+
+        aux.setTotSubtotal(jTextField3.getText());
+        aux.setTotParcial(jTextField4.getText());
+        aux.setTotPorcentaje(jTextField5.getText());
+
+        aux.setIndirect(jTextField6.getText());
+        aux.setImprevist(jTextField7.getText());
+        aux.setUtilidad(jTextField8.getText());
+        aux.setTotal(jTextField9.getText());
+
+        return aux;
+    }
+
+    private String Exportar(File archivo, EsquemaCostIndirect datos) {
+        String respuesta = "Falla en la generación del Costo Indirecto.";
+        if (archivo.getName().endsWith("xls")) {
+            wb = new HSSFWorkbook();
+        } else {
+            wb = new XSSFWorkbook();
+        }
+
+        Sheet hoja = wb.createSheet("Costo Indirecto");
+        // fuente negrita de tama�o 10
+        Font fontNeg = wb.createFont();
+        fontNeg.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        fontNeg.setFontHeightInPoints((short) 9);
+        // fuente solo tama�o 10 sin segrita
+        Font fontGene = wb.createFont();
+        fontGene.setFontHeightInPoints((short) 9);
+
+        CellStyle style = wb.createCellStyle();
+        style.setAlignment(CellStyle.ALIGN_CENTER/* CellStyle.ALIGN_CENTER*/);
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setFont(fontNeg);
+
+        // cabecera de la tabla
+        Font headerCabe = wb.createFont();
+        //headerCab.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        CellStyle styleCabe = wb.createCellStyle();
+        styleCabe.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        styleCabe.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+        styleCabe.setBorderTop(CellStyle.BORDER_THIN);
+        styleCabe.setBorderBottom(CellStyle.BORDER_THIN);
+        styleCabe.setBorderRight(CellStyle.BORDER_THIN);
+        styleCabe.setBorderLeft(CellStyle.BORDER_THIN);
+        styleCabe.setAlignment(CellStyle.ALIGN_CENTER/* CellStyle.ALIGN_CENTER*/);
+        styleCabe.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
+        headerCabe.setFontHeightInPoints((short) 9);
+        styleCabe.setFont(headerCabe);
+        
+        CellStyle styleTitlIzqGene = wb.createCellStyle();
+        styleTitlIzqGene.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        styleTitlIzqGene.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+        styleTitlIzqGene.setBorderTop(CellStyle.BORDER_THIN);
+        styleTitlIzqGene.setBorderBottom(CellStyle.BORDER_THIN);
+        styleTitlIzqGene.setBorderRight(CellStyle.BORDER_THIN);
+        styleTitlIzqGene.setBorderLeft(CellStyle.BORDER_THIN);
+        styleTitlIzqGene.setAlignment(CellStyle.ALIGN_LEFT);
+        styleTitlIzqGene.setFont(fontGene);
+
+        int sizeHoja = 19
+                + datos.getTblCS().size()
+                + datos.getTblCa().size()
+                + datos.getTblGT().size()
+                + datos.getTblPS().size()
+                + datos.getTblSe().size();
+
+        int acumPosition = 0;
+        boolean bandera1 = false;
+        boolean bandera2 = false;
+        boolean bandera3 = false;
+        boolean bandera4 = false;
+        boolean bandera5 = false;
+        boolean bandera6 = false;
+        boolean bandera7 = false;
+
+        boolean cabeTbl1 = false;
+        boolean cabeTbl2 = false;
+        boolean cabeTbl3 = false;
+        boolean cabeTbl4 = false;
+
+        boolean cabeTbl5 = false;
+        boolean cabeTbl6 = false;
+        boolean cabeTbl7 = false;
+
+        System.out.println("sizeHoja " + sizeHoja);
+
+        try {
+
+            for (int re = 0; re < sizeHoja; ++re) {
+                Row fila = hoja.createRow(re);
+
+                if (re == 0) {
+                    for (int j = 0; j < 8; ++j) {
+                        Cell celda2 = fila.createCell(j);
+                        celda2.setCellStyle(style);
+                        if (j == 0) {
+                            celda2.setCellValue("CUADRO DE COSTOS INDIRECTOS");
+                        } else if (j == 7) {
+                            hoja.addMergedRegion(new CellRangeAddress(re, re, 0, 7));
+                        }
+                    }
+                }
+
+                if (re == 1) {
+                    for (int j = 0; j < 8; ++j) {
+                        Cell celda2 = fila.createCell(j);
+                        celda2.setCellStyle(style);
+                        if (j == 1) {
+                            celda2.setCellValue("COSTO DIRECTO");
+                        }
+                        if (j == 3) {
+                            hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
+                            celda2.setCellValue(Double.parseDouble(datos.getCostIndirecto()));
+                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                        }
+                        if (j == 4) {
+                            celda2.setCellValue("PORCENTAJE");
+                        }
+                        if (j == 6) {
+                            hoja.addMergedRegion(new CellRangeAddress(re, re, 4, 5));
+                            celda2.setCellValue(Double.parseDouble(datos.getPorcent()));
+                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                        }
+                    }
+                }
+
+                if (re == 2) {
+                    for (int j = 0; j < 8; ++j) {
+                        Cell celda2 = fila.createCell(j);
+                        celda2.setCellStyle(styleCabe);
+                        celda2.setCellValue(cabecera[j]);
+                        if (j == 2) {
+                            hoja.setColumnWidth((short) j, 620);
+                            hoja.autoSizeColumn((short) 2, true);
+                        }
+
+                    }
+                }
+
+                if (re == 3) {
+                    for (int j = 0; j < 8; ++j) {
+                        Cell celda2 = fila.createCell(j);
+                        celda2.setCellStyle(style);
+                        celda2.setCellValue("");
+
+                    }
+                }
+
+                if (re == 4) {
+                    for (int j = 0; j < 8; ++j) {
+                        Cell celda2 = fila.createCell(j);
+                        celda2.setCellStyle(style);
+                        if (j == 1) {
+                            celda2.setCellValue("GRUPO TECNICO");
+                            celda2.setCellStyle(styleTitlIzqGene);
+                        } else if (j == 2) {
+                            hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
+                            celda2.setCellStyle(styleTitlIzqGene);
+                        } else {
+                            celda2.setCellValue("");
+                        }
+                    }
+                } // FIN 4
+
+                if (re == 5) {
+                    // tabla GT
+                    int tblSize = datos.getTblGT().size();
+                    for (int size = 0; size < tblSize; ++size) {
+                        fila = hoja.createRow(re);
+                        for (int j = 0; j < 8; j++) {
+                            Cell celda2 = fila.createCell(j);
+                            celda2.setCellStyle(style);
+
+                            if (j == 0) {
+                                celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(0)));
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            }
+                            if (j == 1) {
+                                celda2.setCellValue(datos.getTblGT().get(size).get(1));
+                                hoja.setColumnWidth((short) j, 620);
+                                hoja.autoSizeColumn((short) 1, true);
+                                celda2.setCellStyle(styleTitlIzqGene);
+                            }
+                            if (j == 2) {
+                                celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(2)));
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            }
+                            if (j == 3) {
+                                celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(3)));
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            }
+                            if (j == 4) {
+                                celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(4)));
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            }
+                            if (j == 5) {
+                                celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(5)));
+                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            }
+                            if (j == 6) {
+                                if (datos.getTblGT().get(size).get(6).length() > 0) {
+                                    celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(6)));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                }
+                            }
+                            if (j == 7) {
+                                if (datos.getTblGT().get(size).get(7).length() > 0) {
+                                    celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(7)));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                }
+                            }
+                        }
+                        re++;
+                    }
+                    acumPosition = re;
+                    cabeTbl1 = true;
+                }
+
+                // damos espacio
+                if (cabeTbl1 == true) {
+                    for (int i = 0; i < 2; ++i) {
+                        fila = hoja.createRow(re);
+                        if (i == 0) {
+                            for (int j = 0; j < 8; ++j) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(style);
+                                celda2.setCellValue("");
+
+                            }
+                            re++;
+                        } else {
+                            for (int j = 0; j < 8; ++j) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(style);
+                                if (j == 1) {
+                                    celda2.setCellValue("PERSONAL DE SOPORTE");
+                                } else if (j == 2) {
+                                    hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
+                                    celda2.setCellStyle(styleTitlIzqGene);
+                                } else {
+                                    celda2.setCellValue("");
+                                }
+
+                            }
+                            re++;
+                        }
+                    }
+                    acumPosition = re;
+                    cabeTbl1 = false;
+                    bandera1 = true;
+                }
+
+                // tabla 2
+                if (bandera1 == true) {
+                    if (re == acumPosition) {
+                        int tblSize = datos.getTblPS().size();
+                        for (int size = 0; size < tblSize; ++size) {
+                            fila = hoja.createRow(re);
+                            for (int j = 0; j < 8; j++) {
+                                Cell celda2 = fila.createCell(j);
+                                celda2.setCellStyle(style);
+
+                                if (j == 0) {
+                                    celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(0)));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                }
+                                if (j == 1) {
+                                    celda2.setCellValue(datos.getTblPS().get(size).get(1));
+                                    celda2.setCellStyle(styleTitlIzqGene);
+                                }
+                                if (j == 2) {
+                                    celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(2)));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                }
+                                if (j == 3) {
+                                    celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(3)));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                }
+                                if (j == 4) {
+                                    celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(4)));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                }
+                                if (j == 5) {
+                                    celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(5)));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                }
+                                if (j == 6) {
+                                    if (datos.getTblPS().get(size).get(6).length() > 0) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(6)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                }
+                                if (j == 7) {
+                                    if (datos.getTblPS().get(size).get(7).length() > 0) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(7)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                }
+                            }
+                            re++;
+                        }
+                        acumPosition = re;
+                        bandera1 = false;
+                        cabeTbl2 = true;
+                    }
+
+                    // damos espacio para tabla 3
+                    if (cabeTbl2 == true) {
+                        for (int i = 0; i < 2; ++i) {
+                            fila = hoja.createRow(re);
+                            if (i == 0) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    celda2.setCellValue("");
+
+                                }
+                            } else {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    if (j == 1) {
+                                        celda2.setCellValue("COSTOS SEMANALES");
+                                    } else if (j == 2) {
+                                        hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
+                                        celda2.setCellStyle(styleTitlIzqGene);
+                                    } else {
+                                        celda2.setCellValue("");
+                                    }
+                                }
+                            }
+                            re++;
+                        }
+                        cabeTbl2 = false;
+                        bandera2 = true;
+                        acumPosition = re;
+                    }
+                    // tabla 3
+                    if (bandera2 == true) {
+                        if (acumPosition == re) {
+                            int tblSize = datos.getTblCS().size();
+                            for (int size = 0; size < tblSize; ++size) {
+                                fila = hoja.createRow(re);
+                                for (int j = 0; j < 8; j++) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    if (j == 0) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(0)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 1) {
+                                        celda2.setCellValue(datos.getTblCS().get(size).get(1));
+                                        celda2.setCellStyle(styleTitlIzqGene);
+                                    }
+                                    if (j == 2) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(2)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 3) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(3)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 4) {
+                                        celda2.setCellValue("");
+                                        //System.out.println("ssds "+datos.getTblPS().get(size).get(6).toString());
+                                        //if (datos.getTblPS().get(size).get(4).length() > 0) {
+                                        //  celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(4)));
+                                        //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //}
+                                    }
+                                    if (j == 5) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(5)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 6) {
+                                        if (datos.getTblCS().get(size).get(6).length() > 0) {
+                                            celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(6)));
+                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        }
+                                    }
+                                    if (j == 7) {
+                                        if (datos.getTblCS().get(size).get(7).length() > 0) {
+                                            celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(7)));
+                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        }
+                                    }
+
+                                }
+                                re++;
+                            }
+                            acumPosition = re;
+                            bandera2 = false;
+                            cabeTbl3 = true;
+                        }
+                    }
+                    // espacios para tabla 4
+                    if (cabeTbl3 == true) {
+                        for (int i = 0; i < 2; ++i) {
+                            fila = hoja.createRow(re);
+                            if (i == 0) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    celda2.setCellValue("");
+
+                                }
+                            } else {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    if (j == 1) {
+                                        celda2.setCellValue("CAMPAMENTO");
+                                    } else if (j == 2) {
+                                        hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
+                                        celda2.setCellStyle(styleTitlIzqGene);
+                                    } else {
+                                        celda2.setCellValue("");
+                                    }
+                                }
+                            }
+                            re++;
+                        }
+                        cabeTbl3 = false;
+                        bandera3 = true;
+                        acumPosition = re;
+                    }
+
+                    // tabla 4
+                    if (bandera3 == true) {
+                        if (acumPosition == re) {
+                            int tblSize = datos.getTblCa().size();
+                            for (int size = 0; size < tblSize; ++size) {
+                                fila = hoja.createRow(re);
+                                for (int j = 0; j < 8; j++) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    if (j == 0) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(0)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 1) {
+                                        celda2.setCellValue(datos.getTblCa().get(size).get(1));
+                                        celda2.setCellStyle(styleTitlIzqGene);
+                                    }
+                                    if (j == 2) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(2)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 3) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(3)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 4) {
+                                        celda2.setCellValue("");
+                                        //System.out.println("ssds "+datos.getTblPS().get(size).get(6).toString());
+                                        //if (datos.getTblPS().get(size).get(4).length() > 0) {
+                                        //  celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(4)));
+                                        //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //}
+                                    }
+                                    if (j == 5) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(5)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 6) {
+                                        if (datos.getTblCa().get(size).get(6).length() > 0) {
+                                            celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(6)));
+                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        }
+                                    }
+                                    if (j == 7) {
+                                        if (datos.getTblCa().get(size).get(7).length() > 0) {
+                                            celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(7)));
+                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        }
+                                    }
+
+                                }
+                                re++;
+                            }
+                            acumPosition = re;
+                            bandera3 = false;
+                            cabeTbl4 = true;
+                        }
+                    }
+
+                    // cabecera tbl 5
+                    // espacios para tabla 4
+                    if (cabeTbl4 == true) {
+                        for (int i = 0; i < 2; ++i) {
+                            fila = hoja.createRow(re);
+                            if (i == 0) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    celda2.setCellValue("");
+
+                                }
+                            } else {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    if (j == 1) {
+                                        celda2.setCellValue("SEGUROS");
+                                    } else if (j == 2) {
+                                        hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
+                                        celda2.setCellStyle(styleTitlIzqGene);
+                                    } else {
+                                        celda2.setCellValue("");
+                                    }
+                                }
+                            }
+                            re++;
+                        }
+                        cabeTbl4 = false;
+                        bandera4 = true;
+                        acumPosition = re;
+                    }
+                    // TBL SGT
+                    if (bandera4 == true) {
+                        if (acumPosition == re) {
+                            int tblSize = datos.getTblSe().size();
+                            for (int size = 0; size < tblSize; ++size) {
+                                fila = hoja.createRow(re);
+                                for (int j = 0; j < 8; j++) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    if (j == 0) {
+                                        celda2.setCellValue("");
+                                        //celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(0)));
+                                        //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 1) {
+                                        celda2.setCellValue(datos.getTblSe().get(size).get(1));
+                                        celda2.setCellStyle(styleTitlIzqGene);
+                                    }
+                                    if (j == 2) {
+                                        celda2.setCellValue("");
+                                        //celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(2)));
+                                        //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 3) {
+                                        celda2.setCellValue("");
+                                        //celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(3)));
+                                        //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 4) {
+                                        celda2.setCellValue("");
+                                        //System.out.println("ssds "+datos.getTblPS().get(size).get(6).toString());
+                                        //if (datos.getTblPS().get(size).get(4).length() > 0) {
+                                        //  celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(4)));
+                                        //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //}
+                                    }
+                                    if (j == 5) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(5)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 6) {
+                                        if (datos.getTblSe().get(size).get(6).length() > 0) {
+                                            celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(6)));
+                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        }
+                                    }
+                                    if (j == 7) {
+                                        if (datos.getTblSe().get(size).get(7).length() > 0) {
+                                            celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(7)));
+                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        }
+                                    }
+
+                                }
+                                re++;
+                            }
+                            acumPosition = re;
+                            bandera4 = false;
+                            cabeTbl5 = true;
+                        }
+                    }
+
+                    // colocamos total
+                    if (cabeTbl5 == true) {
+                        for (int i = 0; i < 2; ++i) {
+                            fila = hoja.createRow(re);
+                            if (i == 1) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    celda2.setCellValue("");
+
+                                }
+                            } else {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    if (j == 1) {
+                                        celda2.setCellValue("TOTAL");
+                                    }
+                                    if (j == 5) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTotSubtotal()));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 6) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTotParcial()));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                    if (j == 7) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getPorcent()));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    }
+                                }
+                            }
+                            re++;
+                        }
+                        cabeTbl5 = false;
+                        cabeTbl6 = true;
+                        acumPosition = re;
+                    }
+
+                    // lo demas
+                    if (cabeTbl6 == true) {
+                        for (int i = 0; i < 5; ++i) {
+                            fila = hoja.createRow(re);
+                            if (i == 0) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(style);
+                                    celda2.setCellValue("");
+                                }
+                            }
+
+                            if (i == 1) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    if (j == 6) {
+                                        celda2.setCellValue("INDIRECTOS");
+                                        celda2.setCellStyle(style);
+                                    }
+                                    if (j == 7) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getIndirect()));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(style);
+                                    }
+                                }
+                            }
+
+                            if (i == 2) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    if (j == 6) {
+                                        celda2.setCellValue("IMPREVISTOS");
+                                        celda2.setCellStyle(style);
+                                    }
+                                    if (j == 7) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getImprevist()));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(style);
+                                    }
+                                }
+                            }
+
+                            if (i == 3) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    if (j == 6) {
+                                        celda2.setCellValue("UTILIDAD");
+                                        celda2.setCellStyle(style);
+                                    }
+                                    if (j == 7) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getImprevist()));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(style);
+                                    }
+                                }
+                            }
+
+                            if (i == 4) {
+                                for (int j = 0; j < 8; ++j) {
+                                    Cell celda2 = fila.createCell(j);
+                                    if (j == 6) {
+                                        celda2.setCellValue("TOTAL");
+                                        celda2.setCellStyle(style);
+                                    }
+                                    if (j == 7) {
+                                        celda2.setCellValue(Double.parseDouble(datos.getTotal()));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(style);
+                                    }
+                                }
+                            }
+                            re++;
+                        }
+
+                    }
+                    cabeTbl6 = false;
+                }
+
+                ///
+            }// fin for
+
+            wb.write(new FileOutputStream(archivo));
+            respuesta = "Exportación exitosa.";
+            datos = null;
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Err-CostIndi... " + e.getMessage());
+        }
+        return respuesta;
+    }
+
+    /*
+    poner en porcentaje para los calculos
     
+                String aux = jTextField1.getText();
+                String aux1 = aux.replace('%', '');
+    */
 }

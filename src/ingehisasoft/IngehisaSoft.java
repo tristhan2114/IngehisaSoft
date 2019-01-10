@@ -33,8 +33,11 @@ public class IngehisaSoft {
      */
     
     
+    
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        
        new home().setVisible(true);
        
         //auxEj();

@@ -35,7 +35,7 @@ public class proveedorController {
         con = null;
         rs = null;
         stm = null;
-        sql = "select * from proveedor";
+        sql = "select * from proveedor order by id asc";
         conPg = new conexion();
 
         try {
@@ -47,6 +47,7 @@ public class proveedorController {
                 datos = new Proveedor();
                 datos.setId(rs.getInt(1));
                 datos.setNombre(rs.getString(2));
+                datos.setTelefono(rs.getString(3));
 
                 aux.add(datos);
                 datos = null;
@@ -65,12 +66,13 @@ public class proveedorController {
     public boolean ingresar(Proveedor datos) {
         con = null;
         pst = null;
-        sql = "INSERT INTO proveedor (nombre) values (?)";
+        sql = "INSERT INTO proveedor (nombre, telefono) values (?,?)";
         conPg = new conexion();
         try {
             con = conPg.conn();
             pst = con.prepareStatement(sql);
             pst.setString(1, datos.getNombre());
+            pst.setString(2, datos.getTelefono());
 
             pst.execute();
             pst.close();
@@ -83,4 +85,28 @@ public class proveedorController {
         }
     }
 
+    public boolean actualizar(Proveedor datos) {
+        con = null;
+        pst = null;
+        sql = "UPDATE proveedor SET nombre=?, telefono=? "
+                + " where id=?";
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            pst = con.prepareStatement(sql);
+            pst.setString(1, datos.getNombre());
+            pst.setString(2, datos.getTelefono());
+            pst.setInt(3, datos.getId());
+
+            pst.execute();
+            pst.close();
+            con.close();
+            conPg = null;
+            return true;
+        } catch (Exception e) {
+            e.getMessage();
+            return false;
+        }
+    }
+    
 }
