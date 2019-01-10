@@ -860,7 +860,7 @@ public class panelApus extends javax.swing.JPanel {
                 //Sección 3
                 fila[0] = equipo.getDescripcion(); // descripcion
                 fila[1] = ""; // cantidad (vacio)
-                fila[2] = equipo.getDiario(); // diario
+                fila[2] = equipo.getHora(); // hora
                 fila[3] = ""; // costo hora (vacio)
                 fila[4] = ""; // rendimiento (vacio)
                 fila[5] = ""; // costo unitario (vacio)
@@ -947,7 +947,7 @@ public class panelApus extends javax.swing.JPanel {
                 //Sección 3
                 fila[0] = manoObra.getDescripcion(); // descripcion
                 fila[1] = ""; // cantidad (vacio)
-                fila[2] = manoObra.getDiario(); // tarifa
+                fila[2] = manoObra.getHora(); // tarifa
                 fila[3] = ""; // costo hora (vacio)
                 fila[4] = ""; // rendimiento (vacio)
                 fila[5] = ""; // costo unitario (vacio)

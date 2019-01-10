@@ -1031,7 +1031,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         try {
             // inicio de insertar imagen
             // read the image to the stream
-            String url_imagen = System.getProperty("user.dir") + "\\resource\\img\\logoIngehisa.png";
+            String url_imagen = System.getProperty("user.dir") + "\\resource\\img\\inghisa2.png";
             final FileInputStream stream
                     = new FileInputStream(url_imagen);
             final CreationHelper helper = wb.getCreationHelper();
