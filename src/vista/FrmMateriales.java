@@ -10,6 +10,8 @@ import controlador.materialesController;
 import controlador.proveedorController;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.Material;
@@ -36,7 +38,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
      * Creates new form materiales
      */
     private final String path_imagen = System.getProperty("user.dir") + "\\resourse\\img\\materiales\\";
-    private String name = "material00";
+    private String name = "";
 
     private materialesController ctrMaterial = new materialesController();
     private validaciones vali = new validaciones();
@@ -49,10 +51,14 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private JPanel contentPane;
     File fichero = null;
     String imagen = "";
+    private String rutaImagenSelect = "";
+
+    private String path_ = System.getProperty("user.dir") + "\\resource\\img\\";
+    private String pathSaveImage = System.getProperty("user.dir") + "\\resource\\img\\material\\";
 
     public FrmMateriales() {
         initComponents();
-        
+
         setIconifiable(true);
         setTitle("Materiales");
 
@@ -69,6 +75,8 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         setEsquemaTable();
         setTableMaterialesAll();
         getIdSgt();
+
+        setImageDefault();
 
     }
 
@@ -96,12 +104,13 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jComboBox2 = new javax.swing.JComboBox();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -190,19 +199,6 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         });
         jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 160, -1));
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jButton1.setText("Buscar Imagen");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 145, -1, -1));
-
-        jLabel8.setText("Imagen");
-        jLabel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 140, 120));
-
         jButton3.setText("Nuevo");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,7 +222,25 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jLabel9.setText("Unidad");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 810, 180));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Imagen  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setText("Imagen");
+        jLabel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 16, 150, 120));
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jButton1.setText("Buscar Imagen");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(625, 10, 180, 170));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 810, 190));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Consulta  / ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 0, 255))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -292,6 +306,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jButton5.setEnabled(false);
         jButton4.setEnabled(true);
         getIdSgt();
+        setImageDefault();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
@@ -316,26 +331,28 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         file.addChoosableFileFilter(filtro);
         file.setFileFilter(filtro);
         int seleccion = file.showOpenDialog(contentPane);
-        
+
         //Si el usuario, pincha en aceptar
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             if (file.getSelectedFile().getName().endsWith(".jpg")
                     || file.getSelectedFile().getName().endsWith(".png")
                     || file.getSelectedFile().getName().endsWith(".jpeg")
                     || file.getSelectedFile().getName().endsWith(".gif")) {
-                
+
                 //Seleccionamos el fichero
                 fichero = file.getSelectedFile();
                 //Devuelve la ruta hasta llegar a la carpeta imagenes
-                String ruta = file.getSelectedFile().getAbsolutePath();
-                System.out.println("" + ruta);
+                rutaImagenSelect = file.getSelectedFile().getAbsolutePath();
+                System.out.println("" + rutaImagenSelect);
+                System.out.println("" + file.getSelectedFile().getName());
+                name = file.getSelectedFile().getName();
                 //La imagen seleccionada se muestra en el lbfoto
-                ImageIcon icon = new ImageIcon(ruta);
+                ImageIcon icon = new ImageIcon(rutaImagenSelect);
                 Icon icono = new ImageIcon(icon.getImage().getScaledInstance(jLabel8.getWidth(), jLabel8.getHeight(), Image.SCALE_DEFAULT));
                 jLabel8.setText(null);
                 jLabel8.setIcon(icono);
-            }else{
-                JOptionPane.showConfirmDialog(null, "No es una imagen ","Información", 2);
+            } else {
+                JOptionPane.showConfirmDialog(null, "No es una imagen ", "Información", 2);
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -395,6 +412,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -460,6 +478,19 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         addRowTable(list);
     }
 
+    // imagen default carga
+    private void setImageDefault() {
+        String ruta = System.getProperty("user.dir") + "\\resource\\img\\default.png";
+        ImageIcon icon = new ImageIcon(ruta);
+        jLabel8.setSize(150, 120);
+
+        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(jLabel8.getWidth(), jLabel8.getHeight(), Image.SCALE_DEFAULT));
+        jLabel8.setText(null);
+        jLabel8.setIcon(icono);
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+    }
+
     // lleno el cuerpo de la tabla
     private void addRowTable(List<Materiales> list) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -490,11 +521,9 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private void setSaveMaterial() {
         //jComboBox1, jComboBox2, txtdescripcion, jTextField3, jTextField2, la urlFile
         if (txtdescripcion.getText().length() > 0
-                && jTextField3.getText().length() > 0
-                && fichero!=null) {
+                && jTextField3.getText().length() > 0) {
             try {
                 datos = new Materiales();
-                int pk = ctrMaterial.getIDSgt();
                 Proveedor pro = (Proveedor) jComboBox1.getSelectedItem();
                 Clasificacion cla = (Clasificacion) jComboBox2.getSelectedItem();
                 datos.setId_clasificacion(cla.getId());
@@ -502,13 +531,19 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
                 datos.setDescripcion(txtdescripcion.getText());
                 datos.setUnidad(jTextField3.getText());
                 datos.setPrecio(Double.parseDouble(jTextField2.getText()));
-                datos.setUrl_imagen(name + "" + pk);
+
+                if (fichero == null) {
+                    datos.setUrl_imagen("default.png");
+                } else {
+                    datos.setUrl_imagen(name);
+                }
 
                 System.out.println("dto " + datos.toString());
-                if(ctrMaterial.ingresar(datos)){
-                    
+                //if (ctrMaterial.ingresar(datos)) {
+                if(!datos.getUrl_imagen().equals("default.png")){
+                    //copyImagenInsert(name, rutaImagenSelect);
                 }
-                
+                //}
                 // de nuevo fichero null o vacio y modelo
                 fichero = null;
                 datos = null;
@@ -517,7 +552,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
                 e.getMessage();
             }
         } else {
-            JOptionPane.showConfirmDialog(this, "Campos vacios \ny/o no ha seleccionado una imagen", "Alerta", 2);
+            JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
         }
 
     }
@@ -526,11 +561,11 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         //jComboBox1, jComboBox2, txtdescripcion, jTextField3, jTextField2, la urlFile, jTextField1
         try {
             if (txtdescripcion.getText().length() > 0
-                && jTextField3.getText().length() > 0) {
-                
-            }else {
-            JOptionPane.showConfirmDialog(this, "Campos vacios \ny/o no ha seleccionado una imagen", "Alerta", 2);
-        }
+                    && jTextField3.getText().length() > 0) {
+
+            } else {
+                JOptionPane.showConfirmDialog(this, "Campos vacios \ny/o no ha seleccionado una imagen", "Alerta", 2);
+            }
 
         } catch (Exception e) {
             System.out.println("");
@@ -538,6 +573,49 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         }
     }
 
+    // metodo que copiara la imagen y almacenara dentro del if de insert
+    private void copyImagenInsert(String name1, String rutaImagenSelect1) {
+        File archivoOrigen; // archivo de entrada
+        File archivoDestino;
+        FileInputStream in = null;
+        FileOutputStream out = null;
+        boolean b;
+        try {
+            archivoOrigen = new File(rutaImagenSelect1);
+            archivoDestino = new File(pathSaveImage + name1);
+
+            if (b = archivoOrigen.exists()) {
+                /**
+                 * Validamos que el archivo de origen se pueda leer
+                 */
+                if (b = archivoOrigen.canRead()) {
+                    /**
+                     * Creamos el lector y el escritor
+                     */
+                    in = new FileInputStream(archivoOrigen);
+                    out = new FileOutputStream(archivoDestino);
+
+                    /**
+                     * Mientras se lee de un lado por otro lado se escribe
+                     */
+                    int c;
+                    while ((c = in.read()) != -1) {
+                        out.write(c);
+                    }
+                }
+            }
+
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+
+        } catch (Exception e) {
+            System.out.println("err-" + e.getMessage());
+        }
+    }
 }
 
 /*
