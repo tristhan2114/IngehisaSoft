@@ -69,21 +69,9 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         calCostSemMens();
         calCostSemMensTbl2();
-    }
 
-    //hacer calculo de tabla Costo Indirecto
-    private void calIndirectos() {
-        /*
-          [2] costo semanal --> llena Calculo [5]= ([2]*4)
-          [0] cantidad [2]costo semanal [3] semanas --->  llena [5]= [0]*[2]*[3]
-          [6]Parcial = suma de todo el subtotal[6]
-          [7]porcentaje = costo directo/ parcial[6]
-           Indirectos=total de porcentaje
-           Imprevisto = el llena 
-           Utilidad = el llena 
-           total = Indirecto + Imprevisto + Utilidad
-
-         */
+        calParcialTbl5();
+        calSubTotTbls();
     }
 
     /**
@@ -1033,7 +1021,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 double tot = par / (vali.solomoney(txt));
                 tot = tot * 100;
                 tot = (double) Math.round(tot * 100d) / 100d;
-                tbl.setValueAt(String.valueOf(tot), 0, 7);
+                tbl.setValueAt(String.valueOf(tot) + "%", 0, 7);
             }
         }
     }
@@ -1055,7 +1043,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
             double tot1 = par / (vali.solomoney(txt));
             tot1 = tot1 * 100;
             tot1 = (double) Math.round(tot1 * 100d) / 100d;
-            jTable5.setValueAt(String.valueOf(tot1), 0, 7);
+            jTable5.setValueAt(String.valueOf(tot1) + "%", 0, 7);
         }
     }
 
@@ -1089,27 +1077,32 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         //calculo de totales porcentaje [7]
         double acum2 = 0.0;
-        double totPorTbl1 = vali.solomoney(jTable1.getValueAt(0, 7).toString());
-        double totPorTbl2 = vali.solomoney(jTable2.getValueAt(0, 7).toString());
-        double totPorTbl3 = vali.solomoney(jTable3.getValueAt(0, 7).toString());
-        double totPorTbl4 = vali.solomoney(jTable4.getValueAt(0, 7).toString());
-        double totPorTbl5 = vali.solomoney(jTable5.getValueAt(0, 7).toString());
+        double totPorTbl1 = vali.solomoney(setDeletePorc(jTable1.getValueAt(0, 7).toString()));
+        double totPorTbl2 = vali.solomoney(setDeletePorc(jTable2.getValueAt(0, 7).toString()));
+        double totPorTbl3 = vali.solomoney(setDeletePorc(jTable3.getValueAt(0, 7).toString()));
+        double totPorTbl4 = vali.solomoney(setDeletePorc(jTable4.getValueAt(0, 7).toString()));
+        double totPorTbl5 = vali.solomoney(setDeletePorc(jTable5.getValueAt(0, 7).toString()));
         acum2 = totPorTbl1 + totPorTbl2 + totPorTbl3 + totPorTbl4 + totPorTbl5;
-        
+
         acum2 = (double) Math.round(acum2 * 100d) / 100d;
-        jTextField5.setText(String.valueOf(acum2));
+        jTextField5.setText(String.valueOf(acum2) + "%");
         // indirecto
-        jTextField6.setText(String.valueOf(acum2));
+        jTextField6.setText(String.valueOf(acum2) + "%");
     }
 
     private void calTotWithIndirectImprevUtil() {
         if (jTextField7.getText().length() > 0) {
-            double indirect = vali.solomoney(jTextField6.getText());
-            double imprevis = vali.solomoney(jTextField7.getText());
-            double utilidad = vali.solomoney(jTextField8.getText());
+            String n1 = setDeletePorc(jTextField7.getText());
+            String n2 = setDeletePorc(jTextField8.getText());
+            double indirect = vali.solomoney(setDeletePorc(jTextField6.getText()));
+            double imprevis = vali.solomoney(setDeletePorc(jTextField7.getText()));
+            double utilidad = vali.solomoney(setDeletePorc(jTextField8.getText()));
             double total = indirect + imprevis + utilidad;
             total = (double) Math.round(total * 100d) / 100d;
-            jTextField9.setText(String.valueOf(total));
+
+            jTextField7.setText(n1 + "%");
+            jTextField8.setText(n2 + "%");
+            jTextField9.setText(String.valueOf(total) + "%");
         }
     }
 
@@ -1486,7 +1479,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         styleCabe.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
         headerCabe.setFontHeightInPoints((short) 9);
         styleCabe.setFont(headerCabe);
-        
+
         CellStyle styleTitlIzqGene = wb.createCellStyle();
         styleTitlIzqGene.setFillPattern(CellStyle.SOLID_FOREGROUND);
         styleTitlIzqGene.setFillForegroundColor(IndexedColors.WHITE.getIndex());
@@ -1504,14 +1497,17 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 + datos.getTblPS().size()
                 + datos.getTblSe().size();
 
+        int fin = 13 + datos.getTblCS().size()
+                + datos.getTblCa().size()
+                + datos.getTblGT().size()
+                + datos.getTblPS().size()
+                + datos.getTblSe().size();
+
         int acumPosition = 0;
         boolean bandera1 = false;
         boolean bandera2 = false;
         boolean bandera3 = false;
         boolean bandera4 = false;
-        boolean bandera5 = false;
-        boolean bandera6 = false;
-        boolean bandera7 = false;
 
         boolean cabeTbl1 = false;
         boolean cabeTbl2 = false;
@@ -1520,9 +1516,25 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
         boolean cabeTbl5 = false;
         boolean cabeTbl6 = false;
-        boolean cabeTbl7 = false;
 
         System.out.println("sizeHoja " + sizeHoja);
+
+        // estilo que convierte a solo numero la celda
+        CellStyle styleNumero = wb.createCellStyle();
+        styleNumero.setBorderTop(CellStyle.BORDER_THIN);
+        styleNumero.setBorderBottom(CellStyle.BORDER_THIN);
+        styleNumero.setBorderRight(CellStyle.BORDER_THIN);
+        styleNumero.setBorderLeft(CellStyle.BORDER_THIN);
+        styleNumero.setDataFormat(wb.createDataFormat().getFormat("0.00"));
+        styleNumero.setFont(fontGene);
+        // estilo que convierte a solo porcentaje la celda
+        CellStyle stylePorcentaje = wb.createCellStyle();
+        stylePorcentaje.setBorderTop(CellStyle.BORDER_THIN);
+        stylePorcentaje.setBorderBottom(CellStyle.BORDER_THIN);
+        stylePorcentaje.setBorderRight(CellStyle.BORDER_THIN);
+        stylePorcentaje.setBorderLeft(CellStyle.BORDER_THIN);
+        stylePorcentaje.setDataFormat(wb.createDataFormat().getFormat("0.00%"));
+        stylePorcentaje.setFont(fontGene);
 
         try {
 
@@ -1552,6 +1564,9 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                             hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
                             celda2.setCellValue(Double.parseDouble(datos.getCostIndirecto()));
                             celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            celda2.setCellStyle(styleNumero);
+                            hoja.setColumnWidth((short) j, 620);
+                            hoja.autoSizeColumn((short) 3, true);
                         }
                         if (j == 4) {
                             celda2.setCellValue("PORCENTAJE");
@@ -1560,6 +1575,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                             hoja.addMergedRegion(new CellRangeAddress(re, re, 4, 5));
                             celda2.setCellValue(Double.parseDouble(datos.getPorcent()));
                             celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                            //celda2.setCellStyle(stylePorcentaje);
                         }
                     }
                 }
@@ -1570,7 +1586,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                         celda2.setCellStyle(styleCabe);
                         celda2.setCellValue(cabecera[j]);
                         if (j == 2) {
-                            hoja.setColumnWidth((short) j, 620);
+                            hoja.setColumnWidth((short) j, 630);
                             hoja.autoSizeColumn((short) 2, true);
                         }
 
@@ -1592,10 +1608,10 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                         celda2.setCellStyle(style);
                         if (j == 1) {
                             celda2.setCellValue("GRUPO TECNICO");
-                            celda2.setCellStyle(styleTitlIzqGene);
+                            celda2.setCellStyle(style);
                         } else if (j == 2) {
                             hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
-                            celda2.setCellStyle(styleTitlIzqGene);
+                            celda2.setCellStyle(style);
                         } else {
                             celda2.setCellValue("");
                         }
@@ -1603,6 +1619,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                 } // FIN 4
 
                 if (re == 5) {
+                    int positionInicial = re;
                     // tabla GT
                     int tblSize = datos.getTblGT().size();
                     for (int size = 0; size < tblSize; ++size) {
@@ -1624,29 +1641,57 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                             if (j == 2) {
                                 celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(2)));
                                 celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                celda2.setCellStyle(styleNumero);
                             }
                             if (j == 3) {
                                 celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(3)));
                                 celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                celda2.setCellStyle(styleNumero);
+
                             }
                             if (j == 4) {
-                                celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(4)));
-                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                //celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(4)));
+                                //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                //celda2.setCellStyle(styleNumero);
+                                //
+                                String strFormula = "SUM(C" + (re + 1) + "*4)";
+                                celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                celda2.setCellFormula(strFormula);
+                                celda2.setCellStyle(styleNumero);
                             }
                             if (j == 5) {
-                                celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(5)));
-                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                //celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(5)));
+                                //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                //celda2.setCellStyle(styleNumero);
+                                String strFormula = "SUM(C" + (re + 1) + "*A" + (re + 1) + "*D" + (re + 1) + ")";
+                                celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                celda2.setCellFormula(strFormula);
+                                celda2.setCellStyle(styleNumero);
+
                             }
                             if (j == 6) {
                                 if (datos.getTblGT().get(size).get(6).length() > 0) {
-                                    celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(6)));
-                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    //celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(6)));
+                                    //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    //celda2.setCellStyle(styleNumero);
+                                    // con formula}
+                                    String strFormula = "SUM(F" + (positionInicial + 1) + ":F" + (positionInicial + tblSize) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             if (j == 7) {
                                 if (datos.getTblGT().get(size).get(7).length() > 0) {
-                                    celda2.setCellValue(Double.parseDouble(datos.getTblGT().get(size).get(7)));
-                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    //double val = Double.parseDouble(setDeletePorc(datos.getTblGT().get(size).get(7)));
+                                    //val = val / 100;
+                                    //celda2.setCellValue(val);
+                                    //celda2.setCellStyle(stylePorcentaje);
+
+                                    String strFormula = "SUM(G" + (re + 1) + "/D" + (2) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(stylePorcentaje);
                                 }
                             }
                         }
@@ -1711,29 +1756,54 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                 if (j == 2) {
                                     celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(2)));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                                 if (j == 3) {
                                     celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(3)));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                                 if (j == 4) {
-                                    celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(4)));
-                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    //celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(4)));
+                                    //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    //celda2.setCellStyle(styleNumero);
+                                    String strFormula = "SUM(C" + (re + 1) + "*4)";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                                 if (j == 5) {
-                                    celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(5)));
+                                    /*celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(5)));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);*/
+                                    String strFormula = "SUM(C" + (re + 1) + "*A" + (re + 1) + "*D" + (re + 1) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                                 if (j == 6) {
                                     if (datos.getTblPS().get(size).get(6).length() > 0) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(6)));
+                                        /*celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(6)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);*/
+
+                                        String strFormula = "SUM(F" + (re + 1) + ":F" + (re + tblSize) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                 }
                                 if (j == 7) {
                                     if (datos.getTblPS().get(size).get(7).length() > 0) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getTblPS().get(size).get(7)));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //double val = Double.parseDouble(setDeletePorc(datos.getTblPS().get(size).get(7)));
+                                        //val = val / 100;
+                                        //celda2.setCellValue(val);
+                                        //celda2.setCellStyle(stylePorcentaje);
+
+                                        String strFormula = "SUM(G" + (re + 1) + "/D" + (2) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(stylePorcentaje);
                                     }
                                 }
                             }
@@ -1795,10 +1865,12 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                     if (j == 2) {
                                         celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(2)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 3) {
                                         celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(3)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 4) {
                                         celda2.setCellValue("");
@@ -1809,19 +1881,36 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                         //}
                                     }
                                     if (j == 5) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(5)));
+                                        /*celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(5)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);*/
+                                        String strFormula = "SUM(C" + (re + 1) + "*A" + (re + 1) + "*D" + (re + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 6) {
                                         if (datos.getTblCS().get(size).get(6).length() > 0) {
-                                            celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(6)));
+                                            /*celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(6)));
                                             celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                            celda2.setCellStyle(styleNumero);*/
+                                            String strFormula = "SUM(F" + (re + 1) + ":F" + (re + tblSize) + ")";
+                                            celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                            celda2.setCellFormula(strFormula);
+                                            celda2.setCellStyle(styleNumero);
                                         }
                                     }
                                     if (j == 7) {
                                         if (datos.getTblCS().get(size).get(7).length() > 0) {
-                                            celda2.setCellValue(Double.parseDouble(datos.getTblCS().get(size).get(7)));
-                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                            //double val = Double.parseDouble(setDeletePorc(datos.getTblCS().get(size).get(7)));
+                                            //val = val / 100;
+                                            //celda2.setCellValue(val);
+                                            //celda2.setCellStyle(stylePorcentaje);
+
+                                            String strFormula = "SUM(G" + (re + 1) + "/D" + (2) + ")";
+                                            celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                            celda2.setCellFormula(strFormula);
+                                            celda2.setCellStyle(stylePorcentaje);
                                         }
                                     }
 
@@ -1885,10 +1974,12 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                     if (j == 2) {
                                         celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(2)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 3) {
                                         celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(3)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 4) {
                                         celda2.setCellValue("");
@@ -1899,19 +1990,35 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                         //}
                                     }
                                     if (j == 5) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(5)));
+                                        /*celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(5)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);*/
+                                        String strFormula = "SUM(C" + (re + 1) + "*A" + (re + 1) + "*D" + (re + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 6) {
                                         if (datos.getTblCa().get(size).get(6).length() > 0) {
-                                            celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(6)));
+                                            /*celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(6)));
                                             celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                            celda2.setCellStyle(styleNumero);*/
+                                            String strFormula = "SUM(F" + (re + 1) + ":F" + (re + tblSize) + ")";
+                                            celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                            celda2.setCellFormula(strFormula);
+                                            celda2.setCellStyle(styleNumero);
                                         }
                                     }
                                     if (j == 7) {
                                         if (datos.getTblCa().get(size).get(7).length() > 0) {
-                                            celda2.setCellValue(Double.parseDouble(datos.getTblCa().get(size).get(7)));
-                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                            //double val = Double.parseDouble(setDeletePorc(datos.getTblCa().get(size).get(7)));
+                                            //val = val / 100;
+                                            //celda2.setCellValue(val);
+                                            //celda2.setCellStyle(stylePorcentaje);
+                                            String strFormula = "SUM(G" + (re + 1) + "/D" + (2) + ")";
+                                            celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                            celda2.setCellFormula(strFormula);
+                                            celda2.setCellStyle(stylePorcentaje);
                                         }
                                     }
 
@@ -1995,17 +2102,31 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                     if (j == 5) {
                                         celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(5)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 6) {
                                         if (datos.getTblSe().get(size).get(6).length() > 0) {
-                                            celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(6)));
+                                            /*celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(6)));
                                             celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                            celda2.setCellStyle(styleNumero);*/
+                                            String strFormula = "SUM(D2*0.05)";
+                                            celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                            celda2.setCellFormula(strFormula);
+                                            celda2.setCellStyle(styleNumero);
+
                                         }
                                     }
                                     if (j == 7) {
                                         if (datos.getTblSe().get(size).get(7).length() > 0) {
-                                            celda2.setCellValue(Double.parseDouble(datos.getTblSe().get(size).get(7)));
-                                            celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                            //double val = Double.parseDouble(setDeletePorc(datos.getTblSe().get(size).get(7)));
+                                            //val = val / 100;
+                                            //celda2.setCellValue(val);
+                                            //celda2.setCellStyle(stylePorcentaje);
+
+                                            String strFormula = "SUM(G" + (re + 1) + "/D" + (2) + ")";
+                                            celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                            celda2.setCellFormula(strFormula);
+                                            celda2.setCellStyle(stylePorcentaje);
                                         }
                                     }
 
@@ -2020,16 +2141,9 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
                     // colocamos total
                     if (cabeTbl5 == true) {
-                        for (int i = 0; i < 2; ++i) {
+                        for (int i = 1; i < 2; ++i) {
                             fila = hoja.createRow(re);
                             if (i == 1) {
-                                for (int j = 0; j < 8; ++j) {
-                                    Cell celda2 = fila.createCell(j);
-                                    celda2.setCellStyle(style);
-                                    celda2.setCellValue("");
-
-                                }
-                            } else {
                                 for (int j = 0; j < 8; ++j) {
                                     Cell celda2 = fila.createCell(j);
                                     celda2.setCellStyle(style);
@@ -2037,16 +2151,34 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                         celda2.setCellValue("TOTAL");
                                     }
                                     if (j == 5) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getTotSubtotal()));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //celda2.setCellValue(Double.parseDouble(datos.getTotSubtotal()));
+                                        //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //celda2.setCellStyle(styleNumero);
+                                        String strFormula = "SUM(F1:F" + (fin) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 6) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getTotParcial()));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //celda2.setCellValue(Double.parseDouble(datos.getTotParcial()));
+                                        //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //celda2.setCellStyle(styleNumero);
+
+                                        String strFormula = "SUM(G1:G" + (fin) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                     if (j == 7) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getPorcent()));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        //double val = Double.parseDouble(setDeletePorc(datos.getIndirect()));
+                                        //val = val / 100;
+                                        //celda2.setCellValue(val);
+                                        //celda2.setCellStyle(styleNumero);
+
+                                        String strFormula = "SUM(H1:H" + (fin) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(stylePorcentaje);
                                     }
                                 }
                             }
@@ -2067,6 +2199,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                     celda2.setCellStyle(style);
                                     celda2.setCellValue("");
                                 }
+                                hoja.addMergedRegion(new CellRangeAddress(re, re, 0, 7));
                             }
 
                             if (i == 1) {
@@ -2077,9 +2210,15 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                         celda2.setCellStyle(style);
                                     }
                                     if (j == 7) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getIndirect()));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellStyle(style);
+                                        //double val = Double.parseDouble(setDeletePorc(datos.getIndirect()));
+                                        //val = val / 100;
+                                        //celda2.setCellValue(val);
+                                        //celda2.setCellStyle(stylePorcentaje);
+
+                                        String strFormula = "SUM(H" + (fin + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(stylePorcentaje);
                                     }
                                 }
                             }
@@ -2092,9 +2231,10 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                         celda2.setCellStyle(style);
                                     }
                                     if (j == 7) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getImprevist()));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellStyle(style);
+                                        double val = Double.parseDouble(setDeletePorc(datos.getImprevist()));
+                                        val = val / 100;
+                                        celda2.setCellValue(val);
+                                        celda2.setCellStyle(stylePorcentaje);
                                     }
                                 }
                             }
@@ -2107,9 +2247,10 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                         celda2.setCellStyle(style);
                                     }
                                     if (j == 7) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getImprevist()));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellStyle(style);
+                                        double val = Double.parseDouble(setDeletePorc(datos.getUtilidad()));
+                                        val = val / 100;
+                                        celda2.setCellValue(val);
+                                        celda2.setCellStyle(stylePorcentaje);
                                     }
                                 }
                             }
@@ -2122,9 +2263,15 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
                                         celda2.setCellStyle(style);
                                     }
                                     if (j == 7) {
-                                        celda2.setCellValue(Double.parseDouble(datos.getTotal()));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                        celda2.setCellStyle(style);
+                                        //double val = Double.parseDouble(setDeletePorc(datos.getTotal()));
+                                        //val = val / 100;
+                                        //celda2.setCellValue(val);
+                                        //celda2.setCellStyle(stylePorcentaje);
+
+                                        String strFormula = "SUM(H" + (fin + 2) + ":H" + (fin + 5) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(stylePorcentaje);
                                     }
                                 }
                             }
@@ -2147,10 +2294,14 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         return respuesta;
     }
 
+    // metodo para eliminar (%) 
+    private String setDeletePorc(String dto) {
+        return dto.replace("%", "");
+    }
     /*
     poner en porcentaje para los calculos
     
                 String aux = jTextField1.getText();
                 String aux1 = aux.replace('%', '');
-    */
+     */
 }

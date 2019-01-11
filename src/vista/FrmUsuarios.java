@@ -9,7 +9,6 @@ import controlador.usuarioController;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import modelo.Equipo;
 import modelo.Usuarios;
 import util.validaciones;
 
@@ -73,6 +72,8 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel10 = new javax.swing.JLabel();
+        jCheckBox2 = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -116,7 +117,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 10, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, -1, -1));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Gestión  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 0, 255))); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -142,8 +143,8 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 155, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setText("Responsable:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 187, -1, -1));
+        jLabel7.setText("Administrador:");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 210, -1, -1));
         jPanel1.add(txtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 30, 210, -1));
         jPanel1.add(txtNombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 60, 210, -1));
         jPanel1.add(txtApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 90, 210, -1));
@@ -177,7 +178,14 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, -1, -1));
 
         jCheckBox1.setText("Si");
-        jPanel1.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 184, -1, -1));
+        jPanel1.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 184, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setText("Responsable:");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 187, -1, -1));
+
+        jCheckBox2.setText("Si");
+        jPanel1.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 206, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 320, 340));
 
@@ -386,7 +394,9 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
