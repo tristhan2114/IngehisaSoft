@@ -297,13 +297,13 @@ public class FrmMano_obra extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, 720, 380));
 
-        btnClose.setText("X");
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
             }
         });
-        getContentPane().add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 0, -1, 40));
+        getContentPane().add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1014, 0, 38, 38));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 

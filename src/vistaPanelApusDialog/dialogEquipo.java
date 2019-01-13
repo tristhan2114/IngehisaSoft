@@ -108,13 +108,13 @@ public class dialogEquipo extends javax.swing.JInternalFrame {
         });
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 10, 260, -1));
 
-        btnClosed.setText("X");
+        btnClosed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         btnClosed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClosedActionPerformed(evt);
             }
         });
-        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
+        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(467, 0, 30, 30));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Total de registros");

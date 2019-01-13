@@ -43,6 +43,7 @@ public class home extends javax.swing.JFrame {
     public home() {
         initComponents();
 
+        jMenuItem11.setVisible(false);
         // escritorio
         setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -551,17 +552,17 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem2;
+    public static javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
+    public static javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
-    private javax.swing.JMenuItem menuEquipo;
+    public static javax.swing.JMenuItem menuEquipo;
     private javax.swing.JMenuItem menuIApus;
-    private javax.swing.JMenuItem menuIManoObra;
+    public static javax.swing.JMenuItem menuIManoObra;
     // End of variables declaration//GEN-END:variables
 
     private void imagenFondo() {

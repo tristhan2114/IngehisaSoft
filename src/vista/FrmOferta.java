@@ -7,15 +7,29 @@ package vista;
 
 import controlador.ofertController;
 import controlador.usuarioController;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import modelo.Oferta;
 import modelo.Usuarios;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -32,6 +46,13 @@ public class FrmOferta extends javax.swing.JInternalFrame {
 
     int count = 0;
 
+    // variables para exportar contenido a excel
+    JFileChooser selecArchivo = new JFileChooser();
+    File archivo;
+    Workbook wb;
+
+    final String[] cabeceraOfert = {"ID", "OFERTA", "EMPRESA", "DESCRIPCIÓN", "UBICACIÓN", "RESPONSABLE", "ELABORADO POR", "FECHA", "SUBTOTAL", "TELÉFONO"};
+
     public FrmOferta() {
         initComponents();
         setTitle("Ofertas");
@@ -42,16 +63,14 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         setTablesNoMoveHeader();
         llenarResponsable();
         setLlenarDatosTbl();
+        setUpdateDatosTblDB();
 
         // mirame
-        jButton2.setVisible(false);
-        jButton1.setVisible(false);
         jButton4.setVisible(false);
         jLabel3.setVisible(false);
         jLabel4.setVisible(false);
         jTextField1.setVisible(false);
-        jTextField2.setVisible(false);
-
+        jTextField2.setVisible(false);        
     }
 
     /**
@@ -69,7 +88,6 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -81,13 +99,13 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton3.setText("x");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 10, 49, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1121, 0, 38, 38));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -118,8 +136,11 @@ public class FrmOferta extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jComboBox1MouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jComboBox1MousePressed(evt);
+            }
         });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 70, 190, -1));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 70, 190, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -147,17 +168,19 @@ public class FrmOferta extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(1).setMaxWidth(220);
         }
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 920, 273));
-
-        jButton1.setText("Actualizar ");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 380, -1, -1));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 1140, 273));
 
         jButton2.setText("Guardar");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 380, -1, -1));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 380, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Responsable");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 50, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 50, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Fecha Fin");
@@ -183,19 +206,38 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         this.dispose();
         home.activoOferta = false;
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    int countMouse = 0;
     private void jComboBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox1MouseClicked
         // 
-            int rows = jTable1.getSelectedRow();
-            if (rows >= 0) {
-                String txt = jComboBox1.getSelectedItem().toString();
-                System.out.println("ss " + rows);
-                jTable1.setValueAt(txt, rows, 5);
-                count = 0;
-            } else {
-                JOptionPane.showConfirmDialog(this, "Debe seleccionar un registro");
-            }
     }//GEN-LAST:event_jComboBox1MouseClicked
+
+    private void jComboBox1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox1MousePressed
+        int rows = jTable1.getSelectedRow();
+        if (rows >= 0) {
+            String txt = jComboBox1.getSelectedItem().toString();
+            //System.out.println("ss " + rows);
+            jTable1.setValueAt(txt, rows, 5);
+            count = 0;
+        } else {
+            JOptionPane.showConfirmDialog(this, "Debe seleccionar un registro");
+        }
+    }//GEN-LAST:event_jComboBox1MousePressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // Btnsave y exportar
+        // tomamos todo los datos de la tabla
+        List<Oferta> list = getEsquema();
+        System.out.println("ssa " + list.toString());
+        selecArchivo.setSelectedFile(new File("Oferta.xlsx"));
+        if (selecArchivo.showDialog(null, "Exportar") == JFileChooser.APPROVE_OPTION) {
+            archivo = selecArchivo.getSelectedFile();
+            if (archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")) {
+                JOptionPane.showMessageDialog(null, Exportar(archivo, list) + "\n Formato ." + archivo.getName().substring(archivo.getName().lastIndexOf(".") + 1));
+            } else {
+                JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,7 +276,6 @@ public class FrmOferta extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -292,17 +333,18 @@ public class FrmOferta extends javax.swing.JInternalFrame {
 
         for (Oferta oferta : listOfrtPA) {
             //Sección 2
-            Object[] fila = new Object[9];
+            Object[] fila = new Object[10];
             //Sección 3
             fila[0] = oferta.getId();
             fila[1] = oferta.getOferta();
-            fila[2] = oferta.getDescripcion();
-            fila[3] = oferta.getUbicacion();
-            fila[4] = oferta.getResponsable();
-            fila[5] = oferta.getElab_por();
-            fila[6] = oferta.getFecha();
-            fila[7] = oferta.getSubtotal();
-            fila[8] = oferta.getTelefono();
+            fila[2] = oferta.getEmpresa();
+            fila[3] = oferta.getDescripcion();
+            fila[4] = oferta.getUbicacion();
+            fila[5] = oferta.getResponsable();
+            fila[6] = oferta.getElab_por();
+            fila[7] = oferta.getFecha();
+            fila[8] = oferta.getSubtotal();
+            fila[9] = oferta.getTelefono();
 
             //Sección 4
             modelo.addRow(fila);
@@ -313,23 +355,251 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         // add la otra lista
         for (Oferta oferta : listOfrtPM) {
             //Sección 2
-            Object[] fila = new Object[9];
+            Object[] fila = new Object[10];
             //Sección 3
             fila[0] = oferta.getId();
             fila[1] = oferta.getOferta();
-            fila[2] = oferta.getDescripcion();
-            fila[3] = oferta.getUbicacion();
-            fila[4] = oferta.getResponsable();
-            fila[5] = oferta.getElab_por();
-            fila[6] = oferta.getFecha();
-            fila[7] = oferta.getSubtotal();
-            fila[8] = oferta.getTelefono();
+            fila[2] = oferta.getEmpresa();
+            fila[3] = oferta.getDescripcion();
+            fila[4] = oferta.getUbicacion();
+            fila[5] = oferta.getResponsable();
+            fila[6] = oferta.getElab_por();
+            fila[7] = oferta.getFecha();
+            fila[8] = oferta.getSubtotal();
+            fila[9] = oferta.getTelefono();
 
             //Sección 4
             modelo.addRow(fila);
         }
         //Sección 5
         jTable1.setModel(modelo);
+    }
+
+    // ponemos los datos de la base de datos segun oferta
+    private void setUpdateDatosTblDB() {
+        List<Oferta> list = ctrOfert.getOfertasAll();
+        int sizeTbl = jTable1.getRowCount();
+        for (int i = 0; i < sizeTbl; i++) {
+            String txtOferta = jTable1.getValueAt(i, 1).toString();
+            //System.out.println(" i "+i + " dtoTBL "+txtOferta);
+            for (Oferta oferta : list) {
+                if (txtOferta.equals(oferta.getOferta())) {
+                    //System.out.println(" obj "+oferta.getOferta());
+                    jTable1.setValueAt(oferta.getEmpresa(), i, 2);
+                    jTable1.setValueAt(oferta.getDescripcion(), i, 3);
+                    jTable1.setValueAt(oferta.getUbicacion(), i, 4);
+                    jTable1.setValueAt(oferta.getResponsable(), i, 5);
+                    jTable1.setValueAt(oferta.getElab_por(), i, 6);
+                    jTable1.setValueAt(oferta.getFecha(), i, 7);
+                    jTable1.setValueAt(oferta.getSubtotal(), i, 8);
+                    jTable1.setValueAt(oferta.getTelefono(), i, 9);
+                }
+            }
+        }
+
+    }
+
+    private List<Oferta> getEsquema() {
+        List<Oferta> aux = new ArrayList<>();
+        int rowsTbl = jTable1.getRowCount();
+        Oferta dato = null;
+        for (int i = 0; i < rowsTbl; i++) {
+            dato = new Oferta();
+            
+            dato.setOferta(jTable1.getValueAt(i, 1).toString());
+            dato.setEmpresa(jTable1.getValueAt(i, 2).toString());
+            dato.setDescripcion(jTable1.getValueAt(i, 3).toString());
+            dato.setUbicacion(jTable1.getValueAt(i, 4).toString());
+            dato.setResponsable(jTable1.getValueAt(i, 5).toString());
+            dato.setElab_por(jTable1.getValueAt(i, 6).toString());
+            dato.setFecha(jTable1.getValueAt(i, 7).toString());
+            dato.setSubtotal(jTable1.getValueAt(i, 8).toString());
+            dato.setTelefono(jTable1.getValueAt(i, 9).toString());
+
+            aux.add(dato);
+            dato = null;
+        }
+
+        return aux;
+    }
+
+    private String Exportar(File archivo, List<Oferta> list) {
+        String respuesta = "Falla en la generación del PRESUPUESTO.";
+        if (archivo.getName().endsWith("xls")) {
+            wb = new HSSFWorkbook();
+        } else {
+            wb = new XSSFWorkbook();
+        }
+
+        // hoja para el resumen de los apus
+        Sheet hoja = wb.createSheet("OFERTAS");
+
+        // cabecera de la tabla
+        Font headerCabe = wb.createFont();
+        //headerCab.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        CellStyle styleCabe = wb.createCellStyle();
+        styleCabe.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        styleCabe.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+        styleCabe.setBorderTop(CellStyle.BORDER_THIN);
+        styleCabe.setBorderBottom(CellStyle.BORDER_THIN);
+        styleCabe.setBorderRight(CellStyle.BORDER_THIN);
+        styleCabe.setBorderLeft(CellStyle.BORDER_THIN);
+        styleCabe.setAlignment(CellStyle.ALIGN_CENTER/* CellStyle.ALIGN_CENTER*/);
+        styleCabe.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
+        headerCabe.setFontHeightInPoints((short) 10);
+        styleCabe.setFont(headerCabe);
+
+        // la cabecera 
+        CellStyle styleTitle = wb.createCellStyle();
+        Font headerTitle = wb.createFont();
+        headerTitle.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        headerTitle.setFontHeightInPoints((short) 9);
+        styleTitle.setAlignment(CellStyle.ALIGN_JUSTIFY);
+        styleTitle.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
+        styleTitle.setFont(headerTitle);
+
+        int size = 1 + list.size();
+        try {
+            for (int re = 0; re < size; ++re) {
+                Row fila = hoja.createRow(re);
+
+                if (re == 0) {
+                    for (int j = 0; j < 10; j++) {
+                        Cell celda = fila.createCell(j);
+                        celda.setCellStyle(styleCabe);
+                        if (j == 0) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[0]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 1) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[1]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 2) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[2]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 3) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[3]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 4) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[4]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 5) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[5]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 6) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[6]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 7) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[7]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 8) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[8]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                        if (j == 9) {
+                            hoja.setColumnWidth((short) j, 620);
+                            celda.setCellValue(cabeceraOfert[9]);
+                            hoja.autoSizeColumn((short) j, true);
+                        }
+                    }
+                    re++;
+                }
+                // fin cabecera
+                if (re == 1) {
+                    for (Oferta oferta : list) {
+                        fila = hoja.createRow(re);
+
+                        for (int j = 0; j < 10; j++) {
+                            Cell celda = fila.createCell(j);
+                            celda.setCellStyle(styleTitle);
+                            if (j == 0) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getId());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 1) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getOferta());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 2) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getEmpresa());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 3) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getDescripcion());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 4) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getUbicacion());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 5) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getResponsable());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 6) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getElab_por());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 7) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getFecha());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 8) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getSubtotal());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                            if (j == 9) {
+                                hoja.setColumnWidth((short) j, 620);
+                                celda.setCellValue(oferta.getTelefono());
+                                hoja.autoSizeColumn((short) j, true);
+                            }
+                        }
+                        
+                        
+
+                        re++;
+                    }
+                }
+
+            }
+            wb.write(new FileOutputStream(archivo));
+            // save a la base de datos
+            saveDb(list);
+            //list = null;
+            respuesta = "Exportación exitosa.";
+        } catch (Exception e) {
+            System.out.println("err " + e.getMessage());
+        }
+        return respuesta;
+    }
+
+    private void saveDb(List<Oferta> list) {
+        ctrOfert.ingresar(list);
     }
 }
 

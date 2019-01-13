@@ -827,14 +827,14 @@ public class panelApus extends javax.swing.JPanel {
     private void btnAddEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddEActionPerformed
         try {
             if (activoDlgEquipo == true) {
-                dlgequipo.setLocation(23, 23);
+                dlgequipo.setLocation(833, 23);
                 dlgequipo.moveToFront();
                 dlgequipo.show();
             } else {
                 activoDlgEquipo = true;
                 dlgequipo = new dialogEquipo();
                 vista.home.escritorio.add(dlgequipo);
-                dlgequipo.setLocation(23, 23);
+                dlgequipo.setLocation(833, 23);
                 dlgequipo.show();
             }
         } catch (Exception e) {
@@ -1097,14 +1097,14 @@ public class panelApus extends javax.swing.JPanel {
     private void btnAddMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMActionPerformed
         try {
             if (activoDlgManoObra == true) {
-                dlgManoObra.setLocation(23, 23);
+                dlgManoObra.setLocation(833, 100);
                 dlgManoObra.moveToFront();
                 dlgManoObra.show();
             } else {
                 activoDlgManoObra = true;
                 dlgManoObra = new dialogManoObra();
                 vista.home.escritorio.add(dlgManoObra);
-                dlgManoObra.setLocation(23, 23);
+                dlgManoObra.setLocation(833, 100);
                 dlgManoObra.show();
             }
         } catch (Exception e) {
@@ -1116,14 +1116,14 @@ public class panelApus extends javax.swing.JPanel {
     private void btnAddMaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMaActionPerformed
         try {
             if (activoDlgMateriales == true) {
-                dlgMateriales.setLocation(23, 23);
+                dlgMateriales.setLocation(833, 150);
                 dlgMateriales.moveToFront();
                 dlgMateriales.show();
             } else {
                 activoDlgMateriales = true;
                 dlgMateriales = new dialogMateriales();
                 vista.home.escritorio.add(dlgMateriales);
-                dlgMateriales.setLocation(23, 23);
+                dlgMateriales.setLocation(833, 150);
                 dlgMateriales.show();
             }
         } catch (Exception e) {
@@ -1135,14 +1135,14 @@ public class panelApus extends javax.swing.JPanel {
     private void btnAddTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTActionPerformed
         try {
             if (activoDlgTransporte == true) {
-                dlgTransporte.setLocation(23, 23);
+                dlgTransporte.setLocation(833, 250);
                 dlgTransporte.moveToFront();
                 dlgTransporte.show();
             } else {
                 activoDlgTransporte = true;
                 dlgTransporte = new dialogTransporte();
                 vista.home.escritorio.add(dlgTransporte);
-                dlgTransporte.setLocation(23, 23);
+                dlgTransporte.setLocation(833, 250);
                 dlgTransporte.show();
             }
         } catch (Exception e) {

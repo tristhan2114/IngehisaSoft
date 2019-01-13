@@ -27,6 +27,8 @@ import modelo.Clasificacion;
 import modelo.Materiales;
 import modelo.Proveedor;
 import util.validaciones;
+import static vista.home.activoFrmIndirectoPoliza;
+import static vista.home.escritorio;
 
 /**
  *
@@ -37,6 +39,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     /**
      * Creates new form materiales
      */
+    private FrmIndirectoPoliza frmIndirectoPoliza;
     private final String path_imagen = System.getProperty("user.dir") + "\\resourse\\img\\materiales\\";
     private String name = "";
 
@@ -116,6 +119,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jTable1 = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -291,7 +295,15 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 10, -1, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 0, 38, 38));
+
+        jButton6.setText("Gestión Proveedores y Clasificación");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -357,6 +369,26 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // FrmGestion Clasificacion y Proveedores
+        try {
+            if (activoFrmIndirectoPoliza == true) {
+                frmIndirectoPoliza.setLocation(23, 23);
+                frmIndirectoPoliza.moveToFront();
+                frmIndirectoPoliza.show();
+            } else {
+                activoFrmIndirectoPoliza = true;
+                frmIndirectoPoliza = new FrmIndirectoPoliza();
+                escritorio.add(frmIndirectoPoliza);
+                frmIndirectoPoliza.setLocation(23, 23);
+                frmIndirectoPoliza.show();
+            }
+        } catch (Exception e) {
+            e.getMessage();
+            //System.out.println("err-  "+e.getMessage());
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -399,6 +431,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;

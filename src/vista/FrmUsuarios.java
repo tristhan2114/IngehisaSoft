@@ -111,13 +111,13 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 220, 40));
 
-        jButton4.setText("X");
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 0, 38, 38));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Gestión  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 0, 255))); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -196,14 +196,14 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Nombres", "Apellidos", "Username", "Contraseña", "Responsable"
+                "Id", "Nombres", "Apellidos", "Username", "Contraseña", "Responsable", "Admin"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -229,6 +229,9 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
             jTable1.getColumnModel().getColumn(4).setPreferredWidth(110);
             jTable1.getColumnModel().getColumn(5).setPreferredWidth(80);
+            jTable1.getColumnModel().getColumn(6).setMinWidth(45);
+            jTable1.getColumnModel().getColumn(6).setPreferredWidth(45);
+            jTable1.getColumnModel().getColumn(6).setMaxWidth(45);
         }
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -275,7 +278,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                                 .addComponent(jRadioButton1)
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButton2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
                                 .addComponent(jButton5)))))
                 .addContainerGap())
         );
@@ -299,7 +302,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 590, 340));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 610, 340));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -348,6 +351,15 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         } else {
             jCheckBox1.setSelected(false);
         }
+        
+        dto = jTable1.getValueAt(fila, 6).toString();
+        if (dto.equals("1")) {
+            jCheckBox2.setSelected(true);
+        } else {
+            jCheckBox2.setSelected(false);
+        }
+        
+        
 
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -456,13 +468,14 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         Object[] row;
         for (Usuarios item : list) {
-            row = new Object[6];
+            row = new Object[7];
             row[0] = item.getId();
             row[1] = item.getNombres();
             row[2] = item.getApellidos();
             row[3] = item.getUsername();
             row[4] = item.getContrasenia();
             row[5] = item.getResponsable();
+            row[6] = item.getAdministrador();
 
             model.addRow(row);
             row = null;
@@ -486,11 +499,18 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                 && txtPass.getText().length() > 0) {
             try {
 
-                int marcado = 0;
+                int marcado = 0, marcado1 = 0;
                 if (jCheckBox1.isSelected()) {
                     marcado = 1;
                 } else {
                     marcado = 0;
+                }
+                
+                // responsable
+                if (jCheckBox2.isSelected()) {
+                    marcado1 = 1;
+                } else {
+                    marcado1 = 0;
                 }
 
                 usuario = new Usuarios();
@@ -499,6 +519,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                 usuario.setUsername(txtUsername.getText());
                 usuario.setContrasenia(txtPass.getText());
                 usuario.setResponsable(marcado);// cambiar componente por rButtom
+                usuario.setAdministrador(marcado1);// cambiar componente por rButtom
 
                 // verificamos username
                 List<Usuarios> verificar = ctrUser.getUsuariosByUsername(usuario.getUsername());
@@ -532,11 +553,18 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                 && txtPass.getText().length() > 0) {
             try {
 
-                int marcado = 0;
+                int marcado = 0, marcado1 = 0;
                 if (jCheckBox1.isSelected()) {
                     marcado = 1;
                 } else {
                     marcado = 0;
+                }
+                
+                // responsable
+                if (jCheckBox2.isSelected()) {
+                    marcado1 = 1;
+                } else {
+                    marcado1 = 0;
                 }
 
                 usuario = new Usuarios();
@@ -545,6 +573,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                 usuario.setUsername((txtUsername.getText()));
                 usuario.setContrasenia(txtPass.getText());
                 usuario.setResponsable(marcado);
+                usuario.setAdministrador(marcado1);
                 usuario.setId(Integer.parseInt(txtCodigo.getText()));
 
                 if (ctrUser.actualizar(usuario)) {

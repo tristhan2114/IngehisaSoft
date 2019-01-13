@@ -137,13 +137,13 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         jTextField3.setText("INGENIERIA HIDROSANITARIA");
         getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 63, 649, -1));
 
-        jButton1.setText("X");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(821, 11, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(828, 0, 38, 38));
 
         jTextField4.setText("OFERTA: INGEHISA");
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
@@ -232,7 +232,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -275,7 +275,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 359, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 359, 850, -1));
 
         jButton2.setText("+");
         jButton2.addActionListener(new java.awt.event.ActionListener() {

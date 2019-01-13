@@ -74,13 +74,13 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
         jTextField1.setText("a");
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 42, 79, -1));
 
-        btnClosed.setText("X");
+        btnClosed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         btnClosed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClosedActionPerformed(evt);
             }
         });
-        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
+        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(452, 0, 30, 30));
 
         jLabel3.setText("Mano de obra sueldo");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 73, 209, -1));

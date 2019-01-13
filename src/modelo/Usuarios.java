@@ -18,17 +18,19 @@ public class Usuarios {
     private String contrasenia;
 
     private int responsable; // 1:si; 2:normal
+    private int administrador; // 1:si; 2:normal
 
     public Usuarios() {
     }
 
-    public Usuarios(int id, String nombres, String apellidos, String username, String contrasenia, int responsable) {
+    public Usuarios(int id, String nombres, String apellidos, String username, String contrasenia, int responsable, int administrador) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.username = username;
         this.contrasenia = contrasenia;
         this.responsable = responsable;
+        this.administrador = administrador;
     }
 
     public int getId() {
@@ -77,6 +79,14 @@ public class Usuarios {
 
     public void setResponsable(int responsable) {
         this.responsable = responsable;
+    }
+
+    public int getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(int administrador) {
+        this.administrador = administrador;
     }
 
     @Override

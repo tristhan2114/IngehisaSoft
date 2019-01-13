@@ -32,8 +32,8 @@ public class usuarioController {
     public boolean ingresar(Usuarios datos) {
         con = null;
         pst = null;
-        sql = "INSERT INTO usuarios (nombres, apellidos, username,  contrasenia, responsable "
-                + ") values (?,?,?,?,?)";
+        sql = "INSERT INTO usuarios (nombres, apellidos, username,  contrasenia, responsable, administrador "
+                + ") values (?,?,?,?,?,?)";
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -43,6 +43,7 @@ public class usuarioController {
             pst.setString(3, datos.getUsername());
             pst.setString(4, datos.getContrasenia());
             pst.setInt(5, datos.getResponsable());
+            pst.setInt(6, datos.getAdministrador());
 
             pst.execute();
             pst.close();
@@ -59,7 +60,7 @@ public class usuarioController {
     public boolean actualizar(Usuarios datos) {
         con = null;
         pst = null;
-        sql = "UPDATE usuarios SET nombres=?, apellidos=?, username=?, contrasenia=?, responsable=?"
+        sql = "UPDATE usuarios SET nombres=?, apellidos=?, username=?, contrasenia=?, responsable=?, administrador=?"
                 + " where id=?";
         conPg = new conexion();
         try {
@@ -70,7 +71,9 @@ public class usuarioController {
             pst.setString(3, datos.getUsername());
             pst.setString(4, datos.getContrasenia());
             pst.setInt(5, datos.getResponsable());
-            pst.setInt(6, datos.getId());
+            pst.setInt(6, datos.getAdministrador());
+            
+            pst.setInt(7, datos.getId());
 
             pst.execute();
             pst.close();
@@ -103,6 +106,7 @@ public class usuarioController {
                 datos.setUsername(rs.getString(4));
                 datos.setContrasenia(rs.getString(5));
                 datos.setResponsable(rs.getInt(6));
+                datos.setAdministrador(rs.getInt(7));
 
                 aux.add(datos);
                 datos = null;
@@ -136,6 +140,7 @@ public class usuarioController {
                 datos.setUsername(rs.getString(4));
                 datos.setContrasenia(rs.getString(5));
                 datos.setResponsable(rs.getInt(6));
+                datos.setAdministrador(rs.getInt(7));
 
                 aux.add(datos);
                 datos = null;
@@ -169,6 +174,7 @@ public class usuarioController {
                 datos.setUsername(rs.getString(4));
                 datos.setContrasenia(rs.getString(5));
                 datos.setResponsable(rs.getInt(6));
+                datos.setAdministrador(rs.getInt(7));
 
                 aux.add(datos);
                 datos = null;
@@ -204,6 +210,7 @@ public class usuarioController {
                 datos.setUsername(rs.getString(4));
                 datos.setContrasenia(rs.getString(5));
                 datos.setResponsable(rs.getInt(6));
+                datos.setAdministrador(rs.getInt(7));
 
                 aux.add(datos);
                 datos = null;
@@ -239,6 +246,7 @@ public class usuarioController {
                 datos.setUsername(rs.getString(4));
                 datos.setContrasenia(rs.getString(5));
                 datos.setResponsable(rs.getInt(6));
+                datos.setAdministrador(rs.getInt(7));
 
                 aux.add(datos);
                 datos = null;

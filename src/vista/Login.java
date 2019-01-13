@@ -211,14 +211,22 @@ public class Login extends javax.swing.JFrame {
             
             if (rs[0].equals("1")) {
                 this.dispose();
-                JOptionPane.showMessageDialog(null, "Bienvenido "+rs[1]+" "+rs[2]+"\n Has ingresado "
+                JOptionPane.showMessageDialog(null, "Bienvenido "+rs[2]+" "+rs[3]+"\n Has ingresado "
                         + "satisfactoriamente al sistema", "Mensaje de bienvenida",
                         JOptionPane.INFORMATION_MESSAGE);
 
                 // jLabel1 :: nombre y apellido
                 home home1 = new home();
                 home1.jLabel1.setText("Bienvenido "+rs[1]+" "+rs[2]);
+                // metodo para desabilitar
+                if(!rs[4].equals("1")){
+                    home1.menuEquipo.setEnabled(false);
+                    home1.jMenuItem2.setEnabled(false);
+                    home1.menuIManoObra.setEnabled(false);
+                    home1.jMenuItem5.setEnabled(false);
+                }
                 home1.setVisible(true);
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Acceso denegado:\n"
                         + "Por favor ingrese un usuario y/o contraseñía correctos", "Acceso denegado",

@@ -70,13 +70,13 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
         jTextField1.setText("jTextField1");
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 10, 250, -1));
 
-        btnClosed.setText("X");
+        btnClosed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         btnClosed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClosedActionPerformed(evt);
             }
         });
-        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, -1, -1));
+        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 0, 30, 30));
 
         jButton1.setText("Todos");
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(365, 10, -1, -1));
@@ -85,7 +85,7 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

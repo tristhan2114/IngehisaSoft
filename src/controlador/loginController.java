@@ -20,8 +20,8 @@ public class loginController {
     private conexion cn = null;
 
     public String[] validar_ingreso(String usuario, String clave) {
-        String[] resultado = new String[3];
-        String SSQL = "SELECT * FROM usuarios WHERE username= '" + usuario + "' AND contrasenia= '" + clave + "'";
+        String[] resultado = new String[5];
+        String SSQL = "SELECT id, nombres, apellidos, administrador FROM usuarios WHERE username= '" + usuario + "' AND contrasenia= '" + clave + "'";
         try {
             cn = new conexion();
             Statement stm = cn.conn().createStatement();
@@ -29,12 +29,16 @@ public class loginController {
 
             if (rs.next()) {
                 resultado[0] = "1";
-                resultado[1] = rs.getString(2);
-                resultado[2] = rs.getString(3);
+                resultado[1] = String.valueOf(rs.getInt(1));
+                resultado[2] = rs.getString(2);
+                resultado[3] = rs.getString(3);
+                resultado[4] = String.valueOf(rs.getInt(4));
             } else {
                 resultado[0] = "2";
-                resultado[1] = rs.getString(2);
-                resultado[2] = rs.getString(3);
+                resultado[1] = String.valueOf(rs.getInt(1));
+                resultado[2] = rs.getString(2);
+                resultado[3] = rs.getString(3);
+                resultado[4] = String.valueOf(rs.getInt(4));
             }
 
             rs.close();
