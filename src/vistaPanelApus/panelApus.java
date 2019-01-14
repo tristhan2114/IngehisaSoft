@@ -2,6 +2,7 @@ package vistaPanelApus;
 
 import controlador.equipoController;
 import controlador.manoObraController;
+import controlador.materialesController;
 import controlador.transporteController;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -26,6 +27,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import modelo.Equipo;
 import modelo.ManoObra;
+import modelo.Materiales;
 import modelo.Transporte;
 
 /**
@@ -60,6 +62,7 @@ public class panelApus extends javax.swing.JPanel {
     private equipoController ctrEquip = new equipoController();
     private manoObraController ctrManObra = new manoObraController();
     private transporteController ctrTransport = new transporteController();
+    private materialesController ctrMaterial = new materialesController();
 
     public panelApus() {
         validacion = new validaciones();
@@ -508,7 +511,6 @@ public class panelApus extends javax.swing.JPanel {
             }
         });
 
-        jTextField19.setText("jTextField19");
         jTextField19.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField19KeyPressed(evt);
@@ -969,19 +971,32 @@ public class panelApus extends javax.swing.JPanel {
         // addMate 
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
-            // aqui la consulta
+            // aqui la consulta getMaterialById
+            String fill = jTextField19.getText().trim();
+            int id = validacion.soloNumero(fill);
+            List<Materiales> listFill = ctrMaterial.getMaterialById(id);
+
             //Sección 1 
             DefaultTableModel modelo = (DefaultTableModel) tableMa.getModel();
-            //Sección 2
-            Object[] fila = new Object[6];
-            //Sección 3
-            fila[0] = jTextField19.getText(); // descripcion
-            fila[1] = jTextField19.getText(); // unidad 
-            fila[2] = ""; // cantidad
-            fila[3] = jTextField19.getText(); // precio unit
-            fila[4] = ""; // costo unitario (vacio)
-            //Sección 4
-            modelo.addRow(fila);
+
+            for (Materiales materiales : listFill) {
+                //Sección 2
+                Object[] fila = new Object[6];
+                //Sección 3
+                fila[0] = materiales.getDescripcion(); // descripcion
+                fila[1] = materiales.getUnidad(); // unidad 
+                fila[2] = ""; // cantidad
+                fila[3] = materiales.getPrecio(); // precio unit
+                fila[4] = ""; // costo unitario (vacio)
+                //Sección 4
+                modelo.addRow(fila);
+            }
+
+            // mensaje de error
+            if (listFill.isEmpty()) {
+                jTextField19.setText("No Ítem " + id);
+            }
+
             //Sección 5
             tableMa.setModel(modelo);
         }

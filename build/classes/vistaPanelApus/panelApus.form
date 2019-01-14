@@ -952,9 +952,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField19">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField19"/>
-      </Properties>
       <Events>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField19KeyPressed"/>
       </Events>

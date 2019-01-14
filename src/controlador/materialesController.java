@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Materiales;
+import modelo.MaterialesDto;
 import util.conexion;
 
 /**
@@ -28,6 +29,7 @@ public class materialesController {
     private conexion conPg;
 
     private Materiales datos;
+    private MaterialesDto item;
 
     public boolean ingresar(Materiales datos) {
         con = null;
@@ -85,11 +87,15 @@ public class materialesController {
         }
     }
 
-    public List<Materiales> getMaterialAll() {
+    public List<MaterialesDto> getMaterialAll() {
         con = null;
         pst = null;
-        sql = "select * from materiales";
-        List<Materiales> equipos = new ArrayList<>();
+        sql = "select materiales.id, materiales.id_clasificacion, materiales.id_proveedor, proveedor.nombre as pronombre, "
+                + "clasificacion.descripcion as cladesc, materiales.descripcion, materiales.unidad, materiales.precio, materiales.url_imagen "
+                + "from materiales "
+                + "left join clasificacion on clasificacion.id = materiales.id_clasificacion "
+                + "left join proveedor on proveedor.id = materiales.id_proveedor order by materiales.id";
+        List<MaterialesDto> list = new ArrayList<>();
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -97,17 +103,21 @@ public class materialesController {
             rs = stm.executeQuery(sql);
 
             while (rs.next()) {
-                datos = new Materiales();
-                datos.setId(rs.getInt(1));
-                datos.setId_clasificacion(rs.getInt(2));
-                datos.setId_proveedor(rs.getInt(3));
-                datos.setDescripcion(rs.getString(4));
-                datos.setUnidad(rs.getString(5));
-                datos.setPrecio(rs.getDouble(6));
-                datos.setUrl_imagen(rs.getString(7));
+                item = new MaterialesDto();
+                item.setId(rs.getInt(1));
+                item.setId_clasificacion(rs.getInt(2));
+                item.setId_proveedor(rs.getInt(3));
+                
+                item.setProveedor(rs.getString(4));
+                item.setClasificacion(rs.getString(5));
+                
+                item.setDescripcion(rs.getString(6));
+                item.setUnidad(rs.getString(7));
+                item.setPrecio(rs.getDouble(8));
+                item.setUrl_imagen(rs.getString(9));
 
-                equipos.add(datos);
-                datos = null;
+                list.add(item);
+                item = null;
             }
             stm.close();
             rs.close();
@@ -116,9 +126,139 @@ public class materialesController {
         } catch (Exception e) {
             e.getMessage();
         }
-        return equipos;
+        return list;
     }
 
+    public List<MaterialesDto> getMaterialByDescripcion(String dato) {
+        con = null;
+        pst = null;
+        sql = "select materiales.id, materiales.id_clasificacion, materiales.id_proveedor, proveedor.nombre as pronombre, "
+                + "clasificacion.descripcion as cladesc, materiales.descripcion, materiales.unidad, materiales.precio, materiales.url_imagen "
+                + "from materiales "
+                + "left join clasificacion on clasificacion.id = materiales.id_clasificacion "
+                + "left join proveedor on proveedor.id = materiales.id_proveedor "
+                + "where materiales.descripcion ilike '%"+dato+"%' order by materiales.id;";
+        System.out.println("SQL "+sql);
+        List<MaterialesDto> list = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+            
+            while (rs.next()) {
+                item = new MaterialesDto();
+                item.setId(rs.getInt(1));
+                item.setId_clasificacion(rs.getInt(2));
+                item.setId_proveedor(rs.getInt(3));
+                item.setProveedor(rs.getString(4));
+                item.setClasificacion(rs.getString(5));
+                item.setDescripcion(rs.getString(6));
+                item.setUnidad(rs.getString(7));
+                item.setPrecio(rs.getDouble(8));
+                item.setUrl_imagen(rs.getString(9));                
+                
+                list.add(item);
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+            System.out.println("descrip "+e.getMessage());
+        }
+        return list;
+    }
+    
+    public List<MaterialesDto> getMaterialByEmpresa(String dato) {
+        con = null;
+        pst = null;
+        sql = "select materiales.id, materiales.id_clasificacion, materiales.id_proveedor, proveedor.nombre as pronombre, "
+                + "clasificacion.descripcion as cladesc, materiales.descripcion, materiales.unidad, materiales.precio, materiales.url_imagen "
+                + "from materiales "
+                + "left join clasificacion on clasificacion.id = materiales.id_clasificacion "
+                + "left join proveedor on proveedor.id = materiales.id_proveedor "
+                + "where proveedor.nombre ilike '%"+dato+"%'";
+        List<MaterialesDto> list = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                item = new MaterialesDto();
+                item.setId(rs.getInt(1));
+                item.setId_clasificacion(rs.getInt(2));
+                item.setId_proveedor(rs.getInt(3));
+                
+                item.setProveedor(rs.getString(4));
+                item.setClasificacion(rs.getString(5));
+                
+                item.setDescripcion(rs.getString(6));
+                item.setUnidad(rs.getString(7));
+                item.setPrecio(rs.getDouble(8));
+                item.setUrl_imagen(rs.getString(9));
+
+                list.add(item);
+                item = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+            System.out.println("empres "+e.getMessage());
+        }
+        return list;
+    }
+    
+    public List<MaterialesDto> getMaterialByClasificacion(String dato) {
+        con = null;
+        pst = null;
+        sql = "select materiales.id, materiales.id_clasificacion, materiales.id_proveedor, proveedor.nombre as pronombre, "
+                + "clasificacion.descripcion as cladesc, materiales.descripcion, materiales.unidad, materiales.precio, materiales.url_imagen "
+                + "from materiales "
+                + "left join clasificacion on clasificacion.id = materiales.id_clasificacion "
+                + "left join proveedor on proveedor.id = materiales.id_proveedor "
+                + "where clasificacion.descripcion ilike '%"+dato+"%'";
+        List<MaterialesDto> list = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                item = new MaterialesDto();
+                item.setId(rs.getInt(1));
+                item.setId_clasificacion(rs.getInt(2));
+                item.setId_proveedor(rs.getInt(3));
+                
+                item.setProveedor(rs.getString(4));
+                item.setClasificacion(rs.getString(5));
+                
+                item.setDescripcion(rs.getString(6));
+                item.setUnidad(rs.getString(7));
+                item.setPrecio(rs.getDouble(8));
+                item.setUrl_imagen(rs.getString(9));
+
+                list.add(item);
+                item = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+            System.out.println("clasifi "+e.getMessage());
+        }
+        return list;
+    }
+    
     public List<Materiales> getMaterialByID(int id) {
         con = null;
         pst = null;
@@ -153,12 +293,16 @@ public class materialesController {
         return aux;
     }
 
-    public List<Materiales> getMaterialByDescripcion(String descrip) {
+    public List<MaterialesDto> getMaterialAllModal() {
         con = null;
         pst = null;
-        sql = "select * from equipo where descripcion ilike '%" + descrip + "%'";
-        //sql = "select * from equipo where LOWER(descripcion) = LOWER('"+descrip+"')";
-        List<Materiales> aux = new ArrayList<>();
+        sql = "select materiales.id, proveedor.nombre as pronombre, "
+                + "materiales.descripcion, materiales.precio "
+                + "from materiales "
+                + "left join clasificacion on clasificacion.id = materiales.id_clasificacion "
+                + "left join proveedor on proveedor.id = materiales.id_proveedor "
+                + "order by clasificacion.id asc";
+        List<MaterialesDto> list = new ArrayList<>();
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -166,29 +310,96 @@ public class materialesController {
             rs = stm.executeQuery(sql);
 
             while (rs.next()) {
-                datos = new Materiales();
-                datos.setId(rs.getInt(1));
-                datos.setId_clasificacion(rs.getInt(2));
-                datos.setId_proveedor(rs.getInt(3));
-                datos.setDescripcion(rs.getString(4));
-                datos.setUnidad(rs.getString(5));
-                datos.setPrecio(rs.getDouble(6));
-                datos.setUrl_imagen(rs.getString(7));
+                item = new MaterialesDto();
+                item.setId(rs.getInt(1));
+                item.setProveedor(rs.getString(2));
+                item.setDescripcion(rs.getString(3));
+                item.setPrecio(rs.getDouble(4));
 
-                aux.add(datos);
-                datos = null;
+                list.add(item);
+                item = null;
             }
             stm.close();
             rs.close();
             con.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("err- " + e.getMessage());
+            e.getMessage();
+            System.out.println("dd "+e.getMessage());
+        }
+        return list;
+    }
+    
+    public List<MaterialesDto> getMaterialByDescripcionModal(String dato) {
+        con = null;
+        pst = null;
+        sql = "select materiales.id, proveedor.nombre as pronombre, "
+                + "materiales.descripcion, materiales.precio "
+                + "from materiales "
+                + "left join clasificacion on clasificacion.id = materiales.id_clasificacion "
+                + "left join proveedor on proveedor.id = materiales.id_proveedor "
+                + "where materiales.descripcion ilike '%"+dato+"%'"
+                + "order by clasificacion.id asc";
+        List<MaterialesDto> list = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                item = new MaterialesDto();
+                item.setId(rs.getInt(1));
+                item.setProveedor(rs.getString(2));
+                item.setDescripcion(rs.getString(3));
+                item.setPrecio(rs.getDouble(4));
+
+                list.add(item);
+                item = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+            System.out.println("dd "+e.getMessage());
+        }
+        return list;
+    }
+    
+    public List<Materiales> getMaterialById(int id) {
+        con = null;
+        pst = null;
+        sql = "select descripcion, unidad, precio "
+                + "from materiales "
+                + "where id = "+id;
+        List<Materiales> list = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Materiales();                
+                datos.setDescripcion(rs.getString(1));
+                datos.setUnidad(rs.getString(2));
+                datos.setPrecio(rs.getDouble(3));
+
+                list.add(datos);
+                item = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
             e.getMessage();
         }
-        return aux;
+        return list;
     }
-
+    
     // traemos el id sgt para hacer la insercion
     public int getIDSgt() {
         int id = 0;

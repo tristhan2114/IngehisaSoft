@@ -5,6 +5,11 @@
  */
 package vistaPanelApusDialog;
 
+import controlador.materialesController;
+import java.awt.event.KeyEvent;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import modelo.MaterialesDto;
 import vistaPanelApus.panelApus;
 
 /**
@@ -16,9 +21,18 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
     /**
      * Creates new form dialogEquipo
      */
+    
+    private materialesController ctrMaterial = new materialesController();
+    
+    // variable para caracter
+    private Character kpress;
+    
     public dialogMateriales() {
         initComponents();
         setTitle("Consulta de datos de Materiales");
+        
+        setEsquemaTable();
+        setTableMaterialesAll();
     }
 
     /**
@@ -37,15 +51,17 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
         btnClosed = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Descripción: ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 13, 80, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -55,19 +71,46 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Empresa", "Descripcion", "precio"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setMinWidth(40);
+            table.getColumnModel().getColumn(0).setPreferredWidth(40);
+            table.getColumnModel().getColumn(0).setMaxWidth(40);
+            table.getColumnModel().getColumn(3).setMinWidth(70);
+            table.getColumnModel().getColumn(3).setPreferredWidth(70);
+            table.getColumnModel().getColumn(3).setMaxWidth(70);
+        }
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 53, -1, 170));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 53, 530, 170));
 
-        jTextField1.setText("jTextField1");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 10, 250, -1));
 
         btnClosed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
@@ -76,21 +119,21 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
                 btnClosedActionPerformed(evt);
             }
         });
-        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 0, 30, 30));
+        jPanel1.add(btnClosed, new org.netbeans.lib.awtextra.AbsoluteConstraints(524, 0, 30, 30));
 
         jButton1.setText("Todos");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(365, 10, -1, -1));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Total");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 232, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 557, 256));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -101,11 +144,19 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnClosedActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
-        int fila = table.rowAtPoint(evt.getPoint());
-        panelApus.jTextField4.setText(table.getValueAt(fila, 0).toString());
-        //frmIntFactura.txtCliente.setText(table.getValueAt(fila, 1).toString() + " "+ 
-          //      table.getValueAt(fila, 2).toString());  
+       
     }//GEN-LAST:event_tableMouseClicked
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            getFiltoByMateriales();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        setTableMaterialesAll();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,10 +197,79 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClosed;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
+
+     // no move columnTable y hide 
+    private void setEsquemaTable() {
+        // jTable1
+        table.getTableHeader().setReorderingAllowed(false);
+    }
+    
+    // metodo para limpiar tabla
+    private void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+    }
+
+     // datos de carga default de la tabla Materiales
+    private void setTableMaterialesAll() {
+        // jTable1
+        int sizeRows = table.getRowCount();
+        if (sizeRows > 0) {
+            clearTable();
+        }
+        List<MaterialesDto> list = ctrMaterial.getMaterialAllModal();
+
+        if (list.isEmpty()) {
+            // jLabel1
+            jLabel1.setText("No hay registros");
+        } else {
+            jLabel1.setText("Total de registros: " + list.size());
+        }
+
+        addRowTable(list);
+    }
+    
+    // lleno el cuerpo de la tabla
+    private void addRowTable(List<MaterialesDto> list) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        Object[] row;
+        for (MaterialesDto item : list) {
+            row = new Object[4];
+            row[0] = item.getId();
+            row[1] = item.getProveedor();
+            
+            row[2] = item.getDescripcion();
+            row[3] = item.getPrecio();
+            
+            model.addRow(row);
+            row = null;
+        }
+        
+        if (list.isEmpty()) {
+            // jLabel1
+            jLabel1.setText("No hay registros");
+        } else {
+            jLabel1.setText("Total de registros: " + list.size());
+        }
+        table.setModel(model);
+    }
+    
+    private void getFiltoByMateriales() {
+        if(table.getRowCount()>0){
+            clearTable();
+        }
+        List<MaterialesDto> lista = null;
+        // descripcion
+        String dato = jTextField1.getText();
+            lista = ctrMaterial.getMaterialByDescripcionModal(dato);
+       
+        addRowTable(lista);
+    }
 }

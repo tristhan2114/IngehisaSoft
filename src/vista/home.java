@@ -553,7 +553,7 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     public static javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    public static javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     public static javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;

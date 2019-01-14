@@ -615,7 +615,7 @@ select id, empresa, oferta, fecha_creacion, id_manual from presupuesto where id_
 group by id_manual , id
 order by id_manual asc
 
-OFERRTA 1
+OFERTA 1
 AGRUPAR SEGUN VERSIONES
 SI NO ES EL CASO SOLO VA LA TABLA PRINCIPAL
 
@@ -629,4 +629,7 @@ LO DEMAS ES MANUAL OSEA TIPIADO
 
 TRAER TODO LAS OFERTAS SEGUN ESTEN EL ORDEN DE TBL PRINCIPAL Y SI TIENE VERSIONES SE COLOCAN DE BAJO DE LA MISMA
 
+para la consulta por año
+                                                        dia-mes-año              dia-mes-año
+SELECT * FROM presupuesto WHERE fecha_creacion BETWEEN '01-01-2019 00:00:00' AND '01-12-2019 23:59:59'
  */

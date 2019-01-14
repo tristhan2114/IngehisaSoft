@@ -9,6 +9,7 @@ import controlador.clasificacionController;
 import controlador.materialesController;
 import controlador.proveedorController;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +26,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import modelo.Clasificacion;
 import modelo.Materiales;
+import modelo.MaterialesDto;
 import modelo.Proveedor;
 import util.validaciones;
 import static vista.home.activoFrmIndirectoPoliza;
@@ -62,6 +64,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     public FrmMateriales() {
         initComponents();
 
+        jRadioButton1.setSelected(true);
         setIconifiable(true);
         setTitle("Materiales");
 
@@ -76,9 +79,9 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
         // carga de datos default en la tabla
         setEsquemaTable();
-        setTableMaterialesAll();
         getIdSgt();
 
+        setTableMaterialesAll();
         setImageDefault();
 
     }
@@ -92,6 +95,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -118,6 +122,12 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jButton7 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
 
@@ -254,14 +264,14 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Descripción", "Empresa", "Clasificación", "Precio", "Imagen"
+                "Id", "id_clasificacion", "id_proveedor", "Empresa", "Clasificación", "Descripción", "Unidad", "Precio", "Imagen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -272,13 +282,21 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMinWidth(50);
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
             jTable1.getColumnModel().getColumn(0).setMaxWidth(50);
-            jTable1.getColumnModel().getColumn(1).setMinWidth(200);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(5).setMinWidth(200);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(6).setMinWidth(60);
+            jTable1.getColumnModel().getColumn(6).setPreferredWidth(60);
+            jTable1.getColumnModel().getColumn(6).setMaxWidth(60);
         }
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 778, 152));
@@ -286,6 +304,37 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("jLabel7");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 210, 280, -1));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setText("Filtro");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 25, -1, -1));
+
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField4KeyPressed(evt);
+            }
+        });
+        jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 260, -1));
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Descripción");
+        jPanel2.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 18, -1, -1));
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Empresa");
+        jPanel2.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 18, -1, -1));
+
+        buttonGroup1.add(jRadioButton3);
+        jRadioButton3.setText("Clasificación");
+        jPanel2.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 18, -1, -1));
+
+        jButton7.setText("Todos");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 810, 230));
 
@@ -389,6 +438,38 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        jButton4.setEnabled(false); // BtnSave
+        jButton5.setEnabled(false); // BtnEdit
+        
+        int fila = jTable1.rowAtPoint(evt.getPoint());
+        
+        jTextField1.setText(jTable1.getValueAt(fila, 0).toString()); // id
+        jComboBox2.setSelectedIndex(Integer.parseInt(jTable1.getValueAt(fila, 1).toString())-1); //clasificacion
+        jComboBox1.setSelectedIndex(Integer.parseInt(jTable1.getValueAt(fila, 2).toString())-1); // proveedor
+        
+        jTextField3.setText(jTable1.getValueAt(fila, 6).toString()); // unidad
+        txtdescripcion.setText(jTable1.getValueAt(fila, 5).toString()); // descripcion
+        jTextField2.setText(jTable1.getValueAt(fila, 7).toString());// precio
+        
+        //imagen
+        String ruta = System.getProperty("user.dir") + "\\resource\\img\\material\\"+jTable1.getValueAt(fila, 8).toString();
+        setImageReturn(ruta);
+        
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            getFiltoByMateriales();
+        }
+        
+    }//GEN-LAST:event_jTextField4KeyPressed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        setTableMaterialesAll();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -426,15 +507,18 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -447,12 +531,16 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextArea txtdescripcion;
     // End of variables declaration//GEN-END:variables
 
@@ -484,6 +572,14 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private void setEsquemaTable() {
         // jTable1
         jTable1.getTableHeader().setReorderingAllowed(false);
+        // ocultar  columnas 1 y 2
+        jTable1.getColumnModel().getColumn(1).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(1).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(1).setPreferredWidth(0);
+        
+        jTable1.getColumnModel().getColumn(2).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(2).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(2).setPreferredWidth(0);
     }
 
     // metodo para limpiar tabla
@@ -499,7 +595,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         if (sizeRows > 0) {
             clearTable();
         }
-        List<Materiales> list = ctrMaterial.getMaterialAll();
+        List<MaterialesDto> list = ctrMaterial.getMaterialAll();
 
         if (list.isEmpty()) {
             // jLabel7
@@ -523,24 +619,48 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
     }
+    
+    // imagen default carga
+    private void setImageReturn(String ruta) {
+        ImageIcon icon = new ImageIcon(ruta);
+        jLabel8.setSize(150, 120);
+
+        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(jLabel8.getWidth(), jLabel8.getHeight(), Image.SCALE_DEFAULT));
+        jLabel8.setText(null);
+        jLabel8.setIcon(icono);
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+    }
 
     // lleno el cuerpo de la tabla
-    private void addRowTable(List<Materiales> list) {
+    private void addRowTable(List<MaterialesDto> list) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         Object[] row;
-        for (Materiales item : list) {
-            row = new Object[7];
+        for (MaterialesDto item : list) {
+            row = new Object[9];
             row[0] = item.getId();
             row[1] = item.getId_clasificacion();
             row[2] = item.getId_proveedor();
-            row[3] = item.getDescripcion();
-            row[4] = item.getUnidad();
-            row[5] = item.getPrecio();
-            row[6] = item.getUrl_imagen();
+            
+            row[3] = item.getProveedor();
+            row[4] = item.getClasificacion();
+            
+            row[5] = item.getDescripcion();
+            row[6] = item.getUnidad();
+            row[7] = item.getPrecio();
+            row[8] = item.getUrl_imagen();
 
             model.addRow(row);
             row = null;
         }
+        
+        if (list.isEmpty()) {
+            // jLabel7
+            jLabel7.setText("No hay registros");
+        } else {
+            jLabel7.setText("Total de registros: " + list.size());
+        }
+        
         jTable1.setModel(model);
     }
 
@@ -648,6 +768,28 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             System.out.println("err-" + e.getMessage());
         }
+    }
+
+    private void getFiltoByMateriales() {
+        if(jTable1.getRowCount()>0){
+            clearTable();
+        }
+        List<MaterialesDto> lista = null;
+        // descripcion
+        String dato = jTextField4.getText();
+        if(jRadioButton1.isSelected()){
+            System.out.println("dato "+dato);
+            lista = ctrMaterial.getMaterialByDescripcion(dato);
+        }
+        // empresa
+        if(jRadioButton2.isSelected()){
+            lista = ctrMaterial.getMaterialByEmpresa(dato);
+        }
+        // clasificacion
+        if(jRadioButton3.isSelected()){
+            lista = ctrMaterial.getMaterialByClasificacion(dato);
+        }
+        addRowTable(lista);
     }
 }
 

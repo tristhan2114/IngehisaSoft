@@ -217,13 +217,14 @@ public class Login extends javax.swing.JFrame {
 
                 // jLabel1 :: nombre y apellido
                 home home1 = new home();
-                home1.jLabel1.setText("Bienvenido "+rs[1]+" "+rs[2]);
+                home1.jLabel1.setText("Bienvenido "+rs[2]+" "+rs[3]);
                 // metodo para desabilitar
                 if(!rs[4].equals("1")){
                     home1.menuEquipo.setEnabled(false);
                     home1.jMenuItem2.setEnabled(false);
                     home1.menuIManoObra.setEnabled(false);
                     home1.jMenuItem5.setEnabled(false);
+                    home1.jMenuItem3.setEnabled(false);
                 }
                 home1.setVisible(true);
                 
@@ -236,7 +237,4 @@ public class Login extends javax.swing.JFrame {
             ex.getMessage();
         }
     }
-
-    // usernamer :ingehisaAdmin 
-    // pass : ingehisa*2019
 }
