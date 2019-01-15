@@ -537,7 +537,6 @@ public class FrmEquipo extends javax.swing.JInternalFrame {
         } else {
             jLabel10.setText("Total de registros: " + listEq.size());
         }
-
         addRowTable(listEq);
     }
 
@@ -651,7 +650,6 @@ public class FrmEquipo extends javax.swing.JInternalFrame {
                 jLabel10.setText("No se encontrarón resultados");
                 clearTable();
             } else {
-
                 addRowTable(listFill);
                 jLabel10.setText("Total de registros: " + listFill.size());
             }

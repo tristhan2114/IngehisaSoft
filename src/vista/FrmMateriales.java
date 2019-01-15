@@ -61,6 +61,8 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private String path_ = System.getProperty("user.dir") + "\\resource\\img\\";
     private String pathSaveImage = System.getProperty("user.dir") + "\\resource\\img\\material\\";
 
+    private String imagenEdit = "";
+
     public FrmMateriales() {
         initComponents();
 
@@ -230,6 +232,11 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, -1, -1));
 
         jButton5.setText("Editar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -440,22 +447,22 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         jButton4.setEnabled(false); // BtnSave
-        jButton5.setEnabled(false); // BtnEdit
-        
+        jButton5.setEnabled(true); // BtnEdit
+
         int fila = jTable1.rowAtPoint(evt.getPoint());
-        
+
         jTextField1.setText(jTable1.getValueAt(fila, 0).toString()); // id
-        jComboBox2.setSelectedIndex(Integer.parseInt(jTable1.getValueAt(fila, 1).toString())-1); //clasificacion
-        jComboBox1.setSelectedIndex(Integer.parseInt(jTable1.getValueAt(fila, 2).toString())-1); // proveedor
-        
+        jComboBox2.setSelectedIndex(Integer.parseInt(jTable1.getValueAt(fila, 1).toString()) - 1); //clasificacion
+        jComboBox1.setSelectedIndex(Integer.parseInt(jTable1.getValueAt(fila, 2).toString()) - 1); // proveedor
+
         jTextField3.setText(jTable1.getValueAt(fila, 6).toString()); // unidad
         txtdescripcion.setText(jTable1.getValueAt(fila, 5).toString()); // descripcion
         jTextField2.setText(jTable1.getValueAt(fila, 7).toString());// precio
-        
+
+        imagenEdit = jTable1.getValueAt(fila, 8).toString();
         //imagen
-        String ruta = System.getProperty("user.dir") + "\\resource\\img\\material\\"+jTable1.getValueAt(fila, 8).toString();
+        String ruta = System.getProperty("user.dir") + "\\resource\\img\\material\\" + jTable1.getValueAt(fila, 8).toString();
         setImageReturn(ruta);
-        
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
@@ -463,12 +470,15 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         if (kpress == KeyEvent.VK_ENTER) {
             getFiltoByMateriales();
         }
-        
     }//GEN-LAST:event_jTextField4KeyPressed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         setTableMaterialesAll();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        setEditMaterial();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -576,7 +586,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jTable1.getColumnModel().getColumn(1).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(1).setMinWidth(0);
         jTable1.getColumnModel().getColumn(1).setPreferredWidth(0);
-        
+
         jTable1.getColumnModel().getColumn(2).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(2).setMinWidth(0);
         jTable1.getColumnModel().getColumn(2).setPreferredWidth(0);
@@ -603,7 +613,6 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         } else {
             jLabel7.setText("Total de registros: " + list.size());
         }
-
         addRowTable(list);
     }
 
@@ -619,7 +628,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
     }
-    
+
     // imagen default carga
     private void setImageReturn(String ruta) {
         ImageIcon icon = new ImageIcon(ruta);
@@ -641,10 +650,10 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
             row[0] = item.getId();
             row[1] = item.getId_clasificacion();
             row[2] = item.getId_proveedor();
-            
+
             row[3] = item.getProveedor();
             row[4] = item.getClasificacion();
-            
+
             row[5] = item.getDescripcion();
             row[6] = item.getUnidad();
             row[7] = item.getPrecio();
@@ -653,14 +662,13 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
             model.addRow(row);
             row = null;
         }
-        
+
         if (list.isEmpty()) {
             // jLabel7
             jLabel7.setText("No hay registros");
         } else {
             jLabel7.setText("Total de registros: " + list.size());
         }
-        
         jTable1.setModel(model);
     }
 
@@ -691,12 +699,12 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
                     datos.setUrl_imagen(name);
                 }
 
-                System.out.println("dto " + datos.toString());
-                //if (ctrMaterial.ingresar(datos)) {
-                if(!datos.getUrl_imagen().equals("default.png")){
-                    //copyImagenInsert(name, rutaImagenSelect);
+                //System.out.println("dto " + datos.toString());
+                if (ctrMaterial.ingresar(datos)) {
+                    if (!datos.getUrl_imagen().equals("default.png")) {
+                        copyImagenInsert(name, rutaImagenSelect);
+                    }
                 }
-                //}
                 // de nuevo fichero null o vacio y modelo
                 fichero = null;
                 datos = null;
@@ -707,22 +715,49 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
         }
-
     }
 
     private void setEditMaterial() {
         //jComboBox1, jComboBox2, txtdescripcion, jTextField3, jTextField2, la urlFile, jTextField1
-        try {
-            if (txtdescripcion.getText().length() > 0
-                    && jTextField3.getText().length() > 0) {
+        //jComboBox1, jComboBox2, txtdescripcion, jTextField3, jTextField2, la urlFile
+        if (txtdescripcion.getText().length() > 0
+                && jTextField3.getText().length() > 0) {
+            try {
+                boolean insertImgUpdate = false;
+                datos = new Materiales();
+                Proveedor pro = (Proveedor) jComboBox1.getSelectedItem();
+                Clasificacion cla = (Clasificacion) jComboBox2.getSelectedItem();
+                datos.setId_clasificacion(cla.getId());
+                datos.setId_proveedor(pro.getId());
+                datos.setDescripcion(txtdescripcion.getText());
+                datos.setUnidad(jTextField3.getText());
+                datos.setPrecio(Double.parseDouble(jTextField2.getText()));
 
-            } else {
-                JOptionPane.showConfirmDialog(this, "Campos vacios \ny/o no ha seleccionado una imagen", "Alerta", 2);
+                if (fichero == null) {
+                    if (!imagenEdit.equals("")) {
+                        datos.setUrl_imagen(imagenEdit);
+                    }
+                } else {
+                    datos.setUrl_imagen(name);
+                    insertImgUpdate = true;
+                }
+
+                //System.out.println("dto " + datos.toString());
+                if (ctrMaterial.actualizar(datos)) {
+                    if (insertImgUpdate = true) {
+                        copyImagenInsert(name, rutaImagenSelect);
+                    }
+                    imagenEdit = "";
+                }
+                // de nuevo fichero null o vacio y modelo
+                fichero = null;
+                datos = null;
+            } catch (Exception e) {
+                System.out.println("");
+                e.getMessage();
             }
-
-        } catch (Exception e) {
-            System.out.println("");
-            e.getMessage();
+        } else {
+            JOptionPane.showConfirmDialog(this, "Campos vacios", "Alerta", 2);
         }
     }
 
@@ -771,22 +806,22 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     }
 
     private void getFiltoByMateriales() {
-        if(jTable1.getRowCount()>0){
+        if (jTable1.getRowCount() > 0) {
             clearTable();
         }
         List<MaterialesDto> lista = null;
         // descripcion
         String dato = jTextField4.getText();
-        if(jRadioButton1.isSelected()){
-            System.out.println("dato "+dato);
+        if (jRadioButton1.isSelected()) {
+            System.out.println("dato " + dato);
             lista = ctrMaterial.getMaterialByDescripcion(dato);
         }
         // empresa
-        if(jRadioButton2.isSelected()){
+        if (jRadioButton2.isSelected()) {
             lista = ctrMaterial.getMaterialByEmpresa(dato);
         }
         // clasificacion
-        if(jRadioButton3.isSelected()){
+        if (jRadioButton3.isSelected()) {
             lista = ctrMaterial.getMaterialByClasificacion(dato);
         }
         addRowTable(lista);
@@ -826,7 +861,6 @@ http://www.tutorialesprogramacionya.com/postgresqlya/temarios/descripcion.php?co
 
 pagina de logo online
 https://www.crearlogogratisonline.com/
-
 
 
  */

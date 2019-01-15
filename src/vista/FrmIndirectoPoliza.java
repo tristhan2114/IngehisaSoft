@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.clasificacionController;
+import controlador.materialesController;
 import controlador.proveedorController;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import modelo.Clasificacion;
+import modelo.Materiales;
+import modelo.MaterialesDto;
 import modelo.Proveedor;
 import util.validaciones;
 
@@ -36,11 +39,15 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
     private Clasificacion clasificacion = null;
     private Proveedor proveedor = null;
 
+    private clasificacionController ctrClasif = new clasificacionController();
+    private materialesController ctrMater = new materialesController();
+
     public FrmIndirectoPoliza() {
         initComponents();
 
         setIconifiable(true);
 
+        jRadioButton1.setSelected(true);
         jButton3.setVisible(false);
         //jButton5.setVisible(false);
         setTitle("Gestión - Clasificación y Proveedores");
@@ -60,6 +67,7 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -85,6 +93,10 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jTextField6 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -247,25 +259,22 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 33, 390, 310));
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Información de Empresa  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "  Información", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Empresa", "Lineas"
+                "Detalle"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -279,6 +288,25 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
         jScrollPane3.setViewportView(jTable3);
 
         jPanel3.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 91, 370, 210));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setText("Filtro");
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 23, -1, -1));
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Proveedor");
+        jPanel3.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, -1));
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Clasificacion");
+        jPanel3.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, -1, -1));
+
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField6KeyPressed(evt);
+            }
+        });
+        jPanel3.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 340, -1));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 33, 390, 310));
 
@@ -299,12 +327,16 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // tbl Proveedores
-        jButton4.setEnabled(false);
-        jButton5.setEnabled(true);
-        int fila = jTable2.rowAtPoint(evt.getPoint());
-        jTextField3.setText(jTable2.getValueAt(fila, 0).toString());
-        jTextField4.setText(jTable2.getValueAt(fila, 1).toString());
-        jTextField5.setText(jTable2.getValueAt(fila, 2).toString());
+        try {
+            jButton4.setEnabled(false);
+            jButton5.setEnabled(true);
+            int fila = jTable2.rowAtPoint(evt.getPoint());
+            jTextField3.setText(jTable2.getValueAt(fila, 0).toString());
+            jTextField4.setText(jTable2.getValueAt(fila, 1).toString());
+            jTextField5.setText(jTable2.getValueAt(fila, 2).toString());
+        } catch (Exception e) {
+            e.getMessage();
+        }
 
     }//GEN-LAST:event_jTable2MouseClicked
 
@@ -322,6 +354,13 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
         // btn update proveedor
         setUpdateProveedor();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
+        kpress = evt.getKeyChar();
+        if (kpress == KeyEvent.VK_ENTER) {
+            getBusq();
+        }
+    }//GEN-LAST:event_jTextField6KeyPressed
 
     /**
      * @param args the command line arguments
@@ -359,6 +398,7 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -370,9 +410,12 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -384,6 +427,7 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 
     // no move columnTable y dimension fija 
@@ -400,6 +444,11 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
 
     private void setCleanProvee() {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
+    }
+
+    private void setCleanTbl3() {
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         model.setRowCount(0);
     }
 
@@ -509,6 +558,35 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
         }
     }
 
+    /// para saber la empresa que vende
+    private void getBusq() {
+        if (jTable3.getRowCount() > 0) {
+            setCleanTbl3();
+        }
+        List<Materiales> list = null;
+        String txt = jTextField6.getText();
+
+        if (txt.length() > 0) {
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            if (jRadioButton1.isSelected()) {
+                list = ctrMater.getMaterByProveedor(txt);
+            }
+            if (jRadioButton2.isSelected()) {
+                list = ctrMater.getMaterByClasificacion(txt);
+            }
+
+            Object[] row;
+            for (Materiales materiales : list) {
+                row = new Object[1];
+                row[0] = materiales.getDescripcion();
+                model.addRow(row);
+                row = null;
+            }
+            jTable3.setModel(model);
+        }
+
+    }
+
     /*
     en ultima tabla hacer filtro
     busqueda 1
@@ -518,5 +596,5 @@ public class FrmIndirectoPoliza extends javax.swing.JInternalFrame {
     busqueda 2
     ingresa clasificacion 
       salen las empresas que venden esa clasificacion 
-    */
+     */
 }

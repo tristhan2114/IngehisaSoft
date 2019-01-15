@@ -424,4 +424,69 @@ public class materialesController {
         }
         return (id + 1);
     }
+    
+    // provee nombre y clasifi descripcion
+    public List<Materiales>getMaterByClasificacion(String dto){
+       con = null;
+        pst = null;
+        sql = "select distinct proveedor.nombre  "
+                + "from materiales "
+                + "left join clasificacion on clasificacion.id = materiales.id_clasificacion "
+                + "left join proveedor on proveedor.id = materiales.id_proveedor "
+                + "where clasificacion.descripcion ilike '%"+dto+"%' "
+                + "order by proveedor.nombre asc";
+        List<Materiales> aux = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Materiales();
+                datos.setDescripcion(rs.getString(1));
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return aux; 
+    }
+    
+    public List<Materiales>getMaterByProveedor(String dto){
+       con = null;
+        pst = null;
+        sql = "select materiales.descripcion "
+                + "from materiales "
+                + "left join proveedor on proveedor.id = materiales.id_proveedor "
+                + "where proveedor.nombre ilike '%"+dto+"%' "
+                + "order by materiales.descripcion asc";
+        List<Materiales> aux = new ArrayList<>();
+        conPg = new conexion();
+        try {
+            con = conPg.conn();
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                datos = new Materiales();
+                datos.setDescripcion(rs.getString(1));
+                aux.add(datos);
+                datos = null;
+            }
+            stm.close();
+            rs.close();
+            con.close();
+            conPg = null;
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return aux; 
+    }
+    
 }
