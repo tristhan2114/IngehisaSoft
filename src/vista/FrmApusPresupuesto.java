@@ -597,8 +597,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         if (jCheckBox1.isSelected()) {
             // traemos el sgt
             int valor = ctrPres.getCountApusByPresupuestoManual();
-            System.out.println("sss "+valor);
-            
+            System.out.println("sss " + valor);
+
             jTextField10.setText("Id Presu...");
             jTextField10.setEnabled(false);
             jLabel4.setText("0");
@@ -606,11 +606,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             jTextField11.setEnabled(false);
 
             //hacer conteo de consulta y traer oferta sgt
-            jTextField12.setText(""+valor); // aqui el valor count
+            jTextField12.setText("" + valor); // aqui el valor count
             // en txtField la oferta que sigue
             // traer si se duplica ese presupuesto manual 
             // select count(id_manual) from presupuesto where id_manual = 6  (valor + 1)
-            int sgt = ctrPres .getCountPresupuestoManualById_manual(valor);
+            int sgt = ctrPres.getCountPresupuestoManualById_manual(valor);
             String ofrt = "OFERTA: INGEHISA 00" + valor + " - REV 00" + (sgt + 1);
             jTextField4.setText(ofrt);
         } else {
@@ -619,6 +619,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             jLabel4.setText("0");
             jTextField11.setText("Id Apus...");
             jTextField11.setEnabled(true);
+            jTextField12.setText(" 1 | 0");
             // hago consulta y count de manuales
 
             // limpiamos tabla, notas, subtotal, iva, subtotalIva, total
@@ -873,7 +874,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             entity = new EsquemaPresupuesto();
             String codigo = table.getValueAt(i, 0).toString().trim();
             if (codigo.length() > 0) {
-                entity.setCodigo(Integer.parseInt(table.getValueAt(i, 0).toString().trim()));
+                entity.setCodigo(Double.parseDouble(table.getValueAt(i, 0).toString().trim()));
             }
             //entity.setCabeceraTitulo(ss);
             entity.setRubro(table.getValueAt(i, 1).toString());
@@ -882,7 +883,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             if (auxStr.equals("")) {
 
             } else {
-                entity.setCantidad(Integer.parseInt(table.getValueAt(i, 3).toString()));
+                entity.setCantidad(Double.parseDouble(table.getValueAt(i, 3).toString()));
             }
             entity.setPreUnit(table.getValueAt(i, 4).toString());
             entity.setPreTotM(table.getValueAt(i, 5).toString());
@@ -1028,6 +1029,15 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         styleTitle.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
         styleTitle.setFont(headerTitle);
 
+        // estilo numero
+        CellStyle styleNumero = wb.createCellStyle();
+        styleNumero.setBorderTop(CellStyle.BORDER_THIN);
+        styleNumero.setBorderBottom(CellStyle.BORDER_THIN);
+        styleNumero.setBorderRight(CellStyle.BORDER_THIN);
+        styleNumero.setBorderLeft(CellStyle.BORDER_THIN);
+        styleNumero.setDataFormat(wb.createDataFormat().getFormat("0.00"));
+        styleNumero.setFont(fontGene);
+
         try {
             // inicio de insertar imagen
             // read the image to the stream
@@ -1055,6 +1065,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             boolean bandera4 = false;
             boolean bandera5 = false;
             boolean bandera6 = false;
+
+            int position = 0;
 
             for (int re = 0; re < sizePresupuesto; ++re) {
                 Row fila = hoja.createRow(re);
@@ -1157,6 +1169,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
 
                 // body de la tabla
                 if (re == 7) {
+                    position = re;
                     int sizePresuRes = datos.getListTbl().size();
                     for (int size = 0; size < sizePresuRes; ++size) {
                         fila = hoja.createRow(re);
@@ -1164,26 +1177,31 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                             Cell celda2 = fila.createCell(j);
                             celda2.setCellStyle(styleTitlDerGene);
                             if (j == 1) {
+                                celda2.setCellStyle(styleTitlDerGene);
                                 String aux = datos.getListTbl().get(size).getNumeracion().trim();
                                 if (aux.equals("")) {
                                     celda2.setCellValue("");
+                                    celda2.setCellStyle(styleTitlDerGene);
                                 } else {
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                    celda2.setCellValue(Integer.parseInt(datos.getListTbl().get(size).getNumeracion().trim()));
+                                    celda2.setCellValue(Double.parseDouble(datos.getListTbl().get(size).getNumeracion().trim()));
+                                    celda2.setCellStyle(styleTitlDerGene);
                                 }
                             } else if (j == 2) {
                                 celda2.setCellStyle(styleTitlIzqGene);
                                 hoja.addMergedRegion(new CellRangeAddress(re, re, 2, 7));
                                 celda2.setCellValue(datos.getListTbl().get(size).getDescripcion());
                             } else if (j == 8) {
+                                celda2.setCellStyle(styleTitlIzqGene);
                                 celda2.setCellValue(datos.getListTbl().get(size).getUnidad());
                             } else if (j == 9) {
                                 String aux = datos.getListTbl().get(size).getCantidad().trim();
                                 if (aux.equals("")) {
                                     celda2.setCellValue("");
                                 } else {
-                                    celda2.setCellValue(Integer.parseInt(datos.getListTbl().get(size).getCantidad().trim()));
+                                    celda2.setCellValue(Double.parseDouble(datos.getListTbl().get(size).getCantidad().trim()));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             } else if (j == 10) {
                                 String aux = datos.getListTbl().get(size).getPreUnit();
@@ -1192,6 +1210,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                                 } else {
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                     celda2.setCellValue(Double.parseDouble(datos.getListTbl().get(size).getPreUnit()));
+                                    celda2.setCellStyle(styleNumero);
                                 }
 
                             } else if (j == 11) {
@@ -1204,6 +1223,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                                     celda2.setCellType(Cell.CELL_TYPE_FORMULA);
                                     celda2.setCellFormula(strFormula);
                                     celda2.setCellValue(Double.parseDouble(datos.getListTbl().get(size).getPreTot()));
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                         }
@@ -1212,7 +1232,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                     acumPosition = re;
                     bandera1 = true;
                 }
-                
+
                 // footer del presumen 
                 if (bandera1 == true) {
                     if (re == acumPosition) {
@@ -1231,9 +1251,15 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                                 celda2.setCellStyle(styleTitlIzq);
                             }
                             if (j == 11) {
-                                celda2.setCellStyle(styleTitlDerGene);
+                                /*celda2.setCellStyle(styleTitlDerGene);
                                 celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                celda2.setCellValue(Double.parseDouble(datos.getSubtotal()));
+                                celda2.setCellValue(Double.parseDouble(datos.getSubtotal()));*/
+
+                                String strFormula = "SUM(L" + (position + 1) + ":L" + ((position) + datos.getListTbl().size()) + ")";
+                                celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                celda2.setCellFormula(strFormula);
+                                celda2.setCellStyle(styleNumero);
+
                             }
                             // FIN VALORES
                         }
@@ -1246,6 +1272,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
 
                 if (bandera2 == true) {
                     if (re == acumPosition) {
+                        double porc = 0.0;
                         //System.out.println("nueva position bandera2 " + acumPosition);
                         //System.out.println("re  " + re);
                         fila = hoja.createRow(re);
@@ -1256,14 +1283,20 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                                 celda2.setCellStyle(styleTitlIzq);
                                 hoja.addMergedRegion(new CellRangeAddress(re, re, 9, 10));
                                 celda2.setCellValue("IVA " + datos.getIva() + "%");
+                                porc = Double.parseDouble(datos.getIva());
                             }
                             if (j == 10) {
                                 celda2.setCellStyle(styleTitlIzq);
                             }
                             if (j == 11) {
-                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                /*celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 celda2.setCellStyle(styleTitlDerGene);
-                                celda2.setCellValue(Double.parseDouble(datos.getSubtotalIva()));
+                                celda2.setCellValue(Double.parseDouble(datos.getSubtotalIva()));*/
+                                //porc = porc / 100;
+                                String strFormula = "SUM(L" + (re ) + "*" +porc + "%)";
+                                celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                celda2.setCellFormula(strFormula);
+                                celda2.setCellStyle(styleNumero);
                             }
                             // FIN VALORES
                         }
@@ -1289,9 +1322,14 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                                 celda2.setCellStyle(styleTitlIzq);
                             }
                             if (j == 11) {
-                                celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                /*celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 celda2.setCellStyle(styleTitlDerGene);
-                                celda2.setCellValue(Double.parseDouble(datos.getTotal()));
+                                celda2.setCellValue(Double.parseDouble(datos.getTotal()));*/
+                                
+                                String strFormula = "SUM(L" + (re -1 ) +":L"+(re)+")";
+                                celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                celda2.setCellFormula(strFormula);
+                                celda2.setCellStyle(styleNumero);
                             }
                             // FIN VALORES
                         }
@@ -1372,11 +1410,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             // lo id_apus & id_manual
             // si jTextField11 != Id Apus...
             if (!jTextField11.getText().equals("Id Apus...")) {
-                System.out.println("vvvIF "+jTextField11.getText());
+                System.out.println("vvvIF " + jTextField11.getText());
                 dtos.setId_apus(Integer.parseInt(jTextField11.getText()));
                 dtos.setId_manual(0);
             } else {
-                System.out.println("vvv "+jTextField11.getText());
+                System.out.println("vvv " + jTextField11.getText());
                 dtos.setId_apus(0);
                 dtos.setId_manual(Integer.parseInt(jTextField12.getText()));
             }
@@ -1413,7 +1451,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
 
         List<Presupuesto> aux = ctrPres.getPresupuestoByID(txt);
         addImportDtos(aux);
-        
+
         jTextField11.setText("Id Apus...");
 
     }
@@ -1500,7 +1538,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         int sizeTblBody = table.getRowCount();
         int sizeTblNot = jTable1.getRowCount();
         clearCompImport(sizeTblBody, sizeTblNot);
-        
+
         // verificamos que no haiga presupuesto segun apus
         int valor = ctrPres.getCountApusByPresupuesto(txt);
         //System.out.println("dto " + valor);
@@ -1513,13 +1551,13 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         } else {
             // traigo los datos sumando otra revision
             String ofrt = "OFERTA: INGEHISA 00" + txt + " - REV 00" + (valor + 1);
-            
+
             List<Presupuesto> aux = ctrPres.getPresupuestoByID_Apus(txt);
             addImportDtos(aux);
-            
+
             jTextField4.setText(ofrt);
             jTextField4.setEditable(false);
-
+            jTextField12.setText(" 1 | 0");
             //JOptionPane.showMessageDialog(null, "Realizando resivión siguiente de APUS");
         }
     }

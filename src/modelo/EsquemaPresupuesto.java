@@ -17,17 +17,17 @@ public class EsquemaPresupuesto {
     // en la misma hoja donde se guenera el apus
     private String[] cabeceraTitulo =  new String [3];
     
-    private int codigo;
+    private double codigo;
     private String rubro;
     private String unidad;
-    private int cantidad; // la escribo yo
+    private double cantidad; // la escribo yo
     private String preUnit;
     private String preTotM;
 
     public EsquemaPresupuesto() {
     }
 
-    public EsquemaPresupuesto(String[] cabeceraTitulo, int codigo, String rubro, String unidad, int cantidad, String preUnit, String preTotM) {
+    public EsquemaPresupuesto(String[] cabeceraTitulo, double codigo, String rubro, String unidad, double cantidad, String preUnit, String preTotM) {
         this.cabeceraTitulo = cabeceraTitulo;
         this.codigo = codigo;
         this.rubro = rubro;
@@ -45,11 +45,11 @@ public class EsquemaPresupuesto {
         this.cabeceraTitulo = cabeceraTitulo;
     }
 
-    public int getCodigo() {
+    public double getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(double codigo) {
         this.codigo = codigo;
     }
 
@@ -69,11 +69,11 @@ public class EsquemaPresupuesto {
         this.unidad = unidad;
     }
 
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 

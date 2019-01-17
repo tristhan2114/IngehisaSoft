@@ -5298,6 +5298,34 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 // para hacer la suma de M + N + O + P
                 int positionM = 0, positionN = 0, positionO = 0, positionP = 0;
                 int positionAuxVuelt = 0;
+                // inicio valor oferta
+                // estilo que convierte a solo numero la celda
+                CellStyle styleNumero = wb.createCellStyle();
+                styleNumero.setBorderTop(CellStyle.BORDER_THIN);
+                styleNumero.setBorderBottom(CellStyle.BORDER_THIN);
+                styleNumero.setBorderRight(CellStyle.BORDER_THIN);
+                styleNumero.setBorderLeft(CellStyle.BORDER_THIN);
+                styleNumero.setDataFormat(wb.createDataFormat().getFormat("0.00"));
+                styleNumero.setFont(fontGene);
+                // fin valor oferta
+                // inicio stilo numero sin borde 
+                CellStyle styleNumeroSinBord = wb.createCellStyle();
+                styleNumeroSinBord.setDataFormat(wb.createDataFormat().getFormat("0.00"));
+                styleNumeroSinBord.setFont(fontGene);
+                // fin srylo sin borde
+                // estilo porcentaje
+                CellStyle stylePorcentaje = wb.createCellStyle();
+                stylePorcentaje.setBorderTop(CellStyle.BORDER_THIN);
+                stylePorcentaje.setBorderBottom(CellStyle.BORDER_THIN);
+                stylePorcentaje.setBorderRight(CellStyle.BORDER_THIN);
+                stylePorcentaje.setBorderLeft(CellStyle.BORDER_THIN);
+                stylePorcentaje.setDataFormat(wb.createDataFormat().getFormat("0.00%"));
+                stylePorcentaje.setFont(fontGene);
+                // fin estilo porcentaje
+
+                // variable para hacer el autosuma de cada tabla
+                int re = 0;
+
                 for (int i = sizeRowAux; i < sizeRowApus; i++) {
                     Row fila = hoja.createRow(i);
                     Cell celda = fila.createCell(1);
@@ -5326,6 +5354,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 //celda2.setCellStyle(styleTitlIzq);
                                 celda2.setCellValue(Double.parseDouble(dto.getValorOfert()));
                                 celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                celda.setCellStyle(styleNumeroSinBord);
                             }
                         }
                         positionAuxVuelt++;
@@ -5376,6 +5405,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellStyle(styleDes);
                                     celda2.setCellValue(acumCodRubro);
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumeroSinBord);
                                 } else if (j == 6) {
                                     celda2.setCellStyle(styleTitle);
                                     celda2.setCellValue("UNIDAD:");
@@ -5454,6 +5484,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             }
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 10) {
+                            re = i;
                             //System.out.println("positionAuxVuelt " + positionAuxVuelt);
                             // obtengo el tama�o de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaEquipo().size();
@@ -5472,25 +5503,42 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 // creo la celda con sus datos
                                 for (int h = 1; h < 8; h++) {
                                     Cell celda2 = fila.createCell(h);
-                                    celda2.setCellStyle(styleTitlIzqGene);
                                     if (h == 1) {
+                                        celda2.setCellStyle(styleTitlIzqGene);
                                         hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
                                         celda2.setCellValue(dto.getTablaEquipo().get(g).get(0));
+                                    } else if (h == 2) {
+                                        celda2.setCellStyle(styleTitlIzqGene);
                                     } else if (h == 3) {
-                                        celda2.setCellValue(Integer.parseInt(dto.getTablaEquipo().get(g).get(1)));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(1)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 4) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(2)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 5) {
-                                        celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(3)));
-                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        /*celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(3)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);*/
+
+                                        String strFormula = "SUM(D" + (i + 1) + "*E" + (i + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
+
                                     } else if (h == 6) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(4)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 7) {
-                                        celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(5)));
+                                        /*celda2.setCellValue(Double.parseDouble(dto.getTablaEquipo().get(g).get(5)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);*/
+
+                                        String strFormula = "SUM(F" + (i + 1) + "*G" + (i + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                 }
                                 g++;
@@ -5504,15 +5552,22 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             // subtotal de equipo table
                             for (int j = 1; j < 8; j++) {
                                 Cell celda2 = fila.createCell(j);
-                                celda2.setCellStyle(styleTitlIzq);
                                 if (j == 1) {
+                                    celda2.setCellStyle(styleTitlIzq);
                                     hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 6));
                                     celda2.setCellValue("-- SUBTOTAL (M)");
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(Double.parseDouble(dto.getTxtSubtEquipo()));
+                                    /*celda2.setCellValue(Double.parseDouble(dto.getTxtSubtEquipo()));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);*/
                                     positionM = i;
+
+                                    String strFormula = "SUM(H" + (re + 1) + ":H" + ((re) + dto.getTablaEquipo().size()) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
+
                                 }
                             }
                             positionAuxVuelt++;
@@ -5550,6 +5605,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             }
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 14) {
+                            re = i;
                             // datos de la tabla mano de obra                            
                             // obtengo el tama�o de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaManObra().size();
@@ -5564,25 +5620,40 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 // creo la celda con sus datos
                                 for (int h = 1; h < 8; h++) {
                                     Cell celda2 = fila.createCell(h);
-                                    celda2.setCellStyle(styleTitlIzqGene);
                                     if (h == 1) {
+                                        celda2.setCellStyle(styleTitlIzqGene);
                                         hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
                                         celda2.setCellValue(dto.getTablaManObra().get(g).get(0));
                                     } else if (h == 3) {
-                                        celda2.setCellValue(Integer.parseInt(dto.getTablaManObra().get(g).get(1)));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(1)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 4) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(2)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 5) {
-                                        celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(3)));
+                                        /*celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(3)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);*/
+
+                                        String strFormula = "SUM(D" + (i + 1) + "*E" + (i + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 6) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(4)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 7) {
-                                        celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(5)));
+                                        /*celda2.setCellValue(Double.parseDouble(dto.getTablaManObra().get(g).get(5)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);*/
+
+                                        String strFormula = "SUM(F" + (i + 1) + "*G" + (i + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                 }
                                 g++;
@@ -5600,9 +5671,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue("-- SUBTOTAL (N)");
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(Double.parseDouble(dto.getTxtSubtManObra()));
+                                    /*celda2.setCellValue(Double.parseDouble(dto.getTxtSubtManObra()));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);*/
                                     positionN = i;
+                                    String strFormula = "SUM(H" + (re + 1) + ":H" + ((re) + dto.getTablaManObra().size()) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5637,6 +5713,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             }
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 18) {
+                            re = i;
                             // datos de la tabla materiales
                             // obtengo el tama�o de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaMateriales().size();
@@ -5651,21 +5728,29 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 // creo la celda con sus datos
                                 for (int h = 1; h < 8; h++) {
                                     Cell celda2 = fila.createCell(h);
-                                    celda2.setCellStyle(styleTitlIzqGene);
                                     if (h == 1) {
+                                        celda2.setCellStyle(styleTitlIzqGene);
                                         hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 3));
                                         celda2.setCellValue(dto.getTablaMateriales().get(g).get(0));
                                     } else if (h == 4) {
+                                        celda2.setCellStyle(styleTitlIzqGene);
                                         celda2.setCellValue(dto.getTablaMateriales().get(g).get(1));
                                     } else if (h == 5) {
-                                        celda2.setCellValue(Integer.parseInt(dto.getTablaMateriales().get(g).get(2)));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaMateriales().get(g).get(2)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 6) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaMateriales().get(g).get(3)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 7) {
-                                        celda2.setCellValue(Double.parseDouble(dto.getTablaMateriales().get(g).get(4)));
+                                        /*celda2.setCellValue(Double.parseDouble(dto.getTablaMateriales().get(g).get(4)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);*/
+                                        String strFormula = "SUM(F" + (i + 1) + "*G" + (i + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                 }
                                 g++;
@@ -5683,9 +5768,15 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue("-- SUBTOTAL (O)");
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(Double.parseDouble(dto.getTxtSubtMateriales()));
+                                    /*celda2.setCellValue(Double.parseDouble(dto.getTxtSubtMateriales()));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);*/
                                     positionO = i;
+
+                                    String strFormula = "SUM(H" + (re + 1) + ":H" + ((re) + dto.getTablaMateriales().size()) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5720,6 +5811,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                             }
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 22) {
+                            re = i;
                             // datos de la tabla transporte
                             // obtengo el tama�o de la tabla (n) rows
                             int sizeTblEquip = dto.getTablaTransport().size();
@@ -5734,21 +5826,29 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 // creo la celda con sus datos
                                 for (int h = 1; h < 8; h++) {
                                     Cell celda2 = fila.createCell(h);
-                                    celda2.setCellStyle(styleTitlIzqGene);
                                     if (h == 1) {
+                                        celda2.setCellStyle(styleTitlIzqGene);
                                         hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 3));
                                         celda2.setCellValue(dto.getTablaTransport().get(g).get(0));
                                     } else if (h == 4) {
+                                        celda2.setCellStyle(styleTitlIzqGene);
                                         celda2.setCellValue(dto.getTablaTransport().get(g).get(1));
                                     } else if (h == 5) {
-                                        celda2.setCellValue(Integer.parseInt(dto.getTablaTransport().get(g).get(2)));
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(2)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 6) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(3)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
                                     } else if (h == 7) {
-                                        celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(4)));
+                                        /*celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(4)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);*/
+                                        String strFormula = "SUM(F" + (i + 1) + "*G" + (i + 1) + ")";
+                                        celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                        celda2.setCellFormula(strFormula);
+                                        celda2.setCellStyle(styleNumero);
                                     }
                                 }
                                 g++;
@@ -5766,13 +5866,20 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     celda2.setCellValue("-- SUBTOTAL (P)");
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(Double.parseDouble(dto.getTxtSubtTransport()));
+                                    /*celda2.setCellValue(Double.parseDouble(dto.getTxtSubtTransport()));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);*/
                                     positionP = i;
+
+                                    String strFormula = "SUM(H" + (re + 1) + ":H" + ((re) + dto.getTablaTransport().size()) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             positionAuxVuelt++;
                         } else if (positionAuxVuelt == 24) {
+                            re = i;
                             // valor costo directo
                             for (int j = 1; j < 8; j++) {
                                 Cell celda2 = fila.createCell(j);
@@ -5788,7 +5895,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     System.out.println("str " + strFormula);
                                     celda2.setCellType(Cell.CELL_TYPE_FORMULA);
                                     celda2.setCellFormula(strFormula);
-
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5809,11 +5916,20 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 }
                                 if (j == 6) {
                                     hoja.addMergedRegion(new CellRangeAddress(i, i, 4, 5));
-                                    celda2.setCellValue(dto.getnIngrUtil());
+                                    /*celda2.setCellValue(dto.getnIngrUtil());*/
+                                    double val = Double.parseDouble(dto.getnIngrUtil());
+                                    val = val / 100;
+                                    celda2.setCellValue(val);
+                                    celda2.setCellStyle(stylePorcentaje);
+
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(Double.parseDouble(dto.getrIngrUtil()));
-                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    /*celda2.setCellValue(Double.parseDouble(dto.getrIngrUtil()));
+                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);*/
+                                    String strFormula = "SUM(H" + (re + 1) + "*G" + (i + 1) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5829,11 +5945,20 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 }
                                 if (j == 6) {
                                     hoja.addMergedRegion(new CellRangeAddress(i, i, 4, 5));
-                                    celda2.setCellValue(dto.getnOthUtil());
+                                    /*celda2.setCellValue(dto.getnOthUtil());*/
+                                    double val = Double.parseDouble(dto.getnOthUtil());
+                                    val = val / 100;
+                                    celda2.setCellValue(val);
+                                    celda2.setCellStyle(stylePorcentaje);
                                 }
                                 if (j == 7) {
-                                    celda2.setCellValue(Double.parseDouble(dto.getrOthUtil()));
+                                    /*celda2.setCellValue(Double.parseDouble(dto.getrOthUtil()));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);*/
+                                    String strFormula = "SUM(H" + (re + 1) + "*G" + (i + 1) + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5849,8 +5974,13 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 }
                                 if (j == 7) {
                                     hoja.addMergedRegion(new CellRangeAddress(i, i, 4, 6));
-                                    celda2.setCellValue(Double.parseDouble(dto.getCostTotRubro()));
+                                    /*celda2.setCellValue(Double.parseDouble(dto.getCostTotRubro()));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);*/
+                                    String strFormula = "SUM(H" + (re + 1) + ":H" + i + ")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5871,8 +6001,14 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 }
                                 if (j == 7) {
                                     hoja.addMergedRegion(new CellRangeAddress(i, i, 4, 6));
-                                    celda2.setCellValue(Double.parseDouble(dto.getValorOfert()));
+                                    /*celda2.setCellValue(Double.parseDouble(dto.getValorOfert()));
                                     celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleNumero);*/
+                                    
+                                    String strFormula = "SUM(H" + (i)+")";
+                                    celda2.setCellType(Cell.CELL_TYPE_FORMULA);
+                                    celda2.setCellFormula(strFormula);
+                                    celda2.setCellStyle(styleNumero);
                                 }
                             }
                             positionAuxVuelt++;
@@ -6075,12 +6211,10 @@ public class FrmApus extends javax.swing.JInternalFrame {
             // save a base de datos y el file a un folder del sistema *********
             //saveDbFile(datos, resumen, wb);
             saveDbFile(datos, wb);
-
             wb.write(new FileOutputStream(archivo));
-            respuesta = "Exportación exitosa.";
             //resumen.clear();
             datos.clear();
-
+            respuesta = "Exportación exitosa.";
         } catch (IOException | NumberFormatException e) {
             System.out.println("err-FrmApus " + e.getMessage());
         }
