@@ -14,10 +14,13 @@ import java.sql.SQLException;
  * @author personal
  */
 public class conexion {
+    // 192.168.100.244:5432
+    // ingehisa
+    // ingehisa*1234
 
-    private String url = "jdbc:postgresql://localhost:5432/ingehisaSoft";
+    private String url = "jdbc:postgresql://192.168.100.244:5432/ingehisaSoft";
     private final String user = "postgres";
-    private final String pass = "1234";
+    private final String pass = "123";
     private Connection conn = null;
 
     public Connection conn() {
@@ -35,16 +38,23 @@ public class conexion {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         try {
-            String url = "jdbc:postgresql://localhost:5432/ingehisaSoft";
+            String url = "jdbc:postgresql://192.168.100.244:5432/inventario";
             String user = "postgres";
-            String pass = "1234";
+            String pass = "123";
             Connection conn = null;
             conn = DriverManager.getConnection(url, user, pass);
             System.out.println("ok");
         } catch (Exception es) {
             System.out.println("ERROR AL OBTENER LA CONEXION+ " + es);
         }
-    }
+    }*/
+    
 }
+
+/*
+
+https://www.youtube.com/watch?v=aSCXX2pnu9E
+
+*/
