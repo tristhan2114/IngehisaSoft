@@ -18,9 +18,9 @@ public class conexion {
     // ingehisa
     // ingehisa*1234
 
-    private String url = "jdbc:postgresql://192.168.100.244:5432/ingehisaSoft";
+    private String url = "jdbc:postgresql://localhost:5432/ingehisaSoft";
     private final String user = "postgres";
-    private final String pass = "123";
+    private final String pass = "1234";
     private Connection conn = null;
 
     public Connection conn() {

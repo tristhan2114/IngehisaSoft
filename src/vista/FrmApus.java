@@ -6483,6 +6483,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
             apus.setDatosApus(formatoJSONApus);
             //apus.setDatosPresResu(formatoJSONResumen);
             apus.setDatosPresResu("---");
+            apus.setId_usuario(Integer.parseInt(home.jLabel2.getText()));
 
             id_pk = ctrApus.ingresar(apus);
 

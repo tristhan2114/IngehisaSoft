@@ -412,6 +412,7 @@ public class presupuestoController {
                 datos.setOferta(rs.getString(4));
                 datos.setDatosPrespuesto(rs.getString(5));
                 datos.setUrl_file(rs.getString(6));
+                datos.setId_usuario(rs.getInt(10));
 
                 aux.add(datos);
                 datos = null;

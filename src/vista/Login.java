@@ -33,6 +33,7 @@ public class Login extends javax.swing.JFrame {
         this.setResizable(false); // no maximizable
         this.setSize(310, 328);  //tamaño
         this.setLocationRelativeTo(null); // centrar
+
         imagenFondo();
     }
 
@@ -72,9 +73,11 @@ public class Login extends javax.swing.JFrame {
         fondo.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 20, 160, 20));
         jLabel2.getAccessibleContext().setAccessibleName("INICIAR SESSION");
 
+        txtUsuario.setText("cmullo");
         txtUsuario.setToolTipText("Ingrese usuario");
         fondo.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 170, -1));
 
+        jPassClave.setText("ingehisa*temp*2019");
         jPassClave.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jPassClaveKeyPressed(evt);
@@ -116,7 +119,6 @@ public class Login extends javax.swing.JFrame {
         });
         fondo.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 80, -1));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/fondo.jpg"))); // NOI18N
         jLabel5.setText("jLabel5");
         fondo.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 280, 280));
 
@@ -192,14 +194,15 @@ public class Login extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void imagenFondo() {
-        String ruta = System.getProperty("user.dir")+"\\src\\imagen\\fondo.jpg";
-        //System.out.println(ruta);
-        ImageIcon fot = new ImageIcon(ruta);
-        Image imgEscalada = fot.getImage().getScaledInstance(jLabel5.getWidth(),
-                jLabel5.getHeight(), Image.SCALE_SMOOTH);
-        Icon iconoEscalado = new ImageIcon(imgEscalada);
-        jLabel5.setIcon(iconoEscalado);
-        this.repaint();
+        String ruta = System.getProperty("user.dir") + "\\resource\\img\\fondo.jpg";
+
+        imagenFondo = new ImageIcon(ruta);
+        imagenFondoRedimensionado = new ImageIcon(imagenFondo.getImage().getScaledInstance(jLabel5.getWidth(),
+                jLabel5.getHeight(), java.awt.Image.SCALE_FAST));
+        jLabel5.setIcon(imagenFondoRedimensionado);
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
     }
 
     private void login() {
@@ -208,18 +211,19 @@ public class Login extends javax.swing.JFrame {
 
         try {
             String[] rs = metodoslogin.validar_ingreso(usuario, clave);
-            
+
             if (rs[0].equals("1")) {
                 this.dispose();
-                JOptionPane.showMessageDialog(null, "Bienvenido "+rs[2]+" "+rs[3]+"\n Has ingresado "
+                JOptionPane.showMessageDialog(null, "Bienvenido " + rs[2] + " " + rs[3] + "\n Has ingresado "
                         + "satisfactoriamente al sistema", "Mensaje de bienvenida",
                         JOptionPane.INFORMATION_MESSAGE);
 
                 // jLabel1 :: nombre y apellido
                 home home1 = new home();
-                home1.jLabel1.setText("Bienvenido "+rs[2]+" "+rs[3]);
+                home1.jLabel1.setText("Bienvenido " + rs[2] + " " + rs[3]);
+                home1.jLabel2.setText(rs[1]);
                 // metodo para desabilitar
-                if(!rs[4].equals("1")){
+                if (!rs[4].equals("1")) {
                     home1.menuEquipo.setEnabled(false);
                     home1.jMenuItem2.setEnabled(false);
                     home1.menuIManoObra.setEnabled(false);
@@ -227,7 +231,7 @@ public class Login extends javax.swing.JFrame {
                     home1.jMenuItem3.setEnabled(false);
                 }
                 home1.setVisible(true);
-                
+
             } else {
                 JOptionPane.showMessageDialog(null, "Acceso denegado:\n"
                         + "Por favor ingrese un usuario y/o contraseñía correctos", "Acceso denegado",
@@ -237,4 +241,8 @@ public class Login extends javax.swing.JFrame {
             ex.getMessage();
         }
     }
+
+    // imagen logo fondo
+    private ImageIcon imagenFondo;
+    private ImageIcon imagenFondoRedimensionado;
 }

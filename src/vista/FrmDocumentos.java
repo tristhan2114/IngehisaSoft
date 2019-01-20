@@ -45,7 +45,7 @@ public class FrmDocumentos extends javax.swing.JInternalFrame {
         setTitle("Documentos / Sistema");
         setTablesNoMoveHeader();
         setLlenarDatosTbl();
-        
+
         setTblManual();
     }
 
@@ -241,7 +241,7 @@ public class FrmDocumentos extends javax.swing.JInternalFrame {
                 // ultimo necesito el id de presupúesto                
                 getExportFile(pathFilePresupuesto + txt); // txt :: la ruta
             }
-        } 
+        }
     }//GEN-LAST:event_jTable2MouseClicked
 
     /**
@@ -315,7 +315,8 @@ public class FrmDocumentos extends javax.swing.JInternalFrame {
         if (rows > 0) {
             limpiarTabla();
         }
-        List<Apus> listApus = ctrApus.getApusAll();
+        String id_user = home.jLabel2.getText();
+        List<Apus> listApus = ctrApus.getApusAll(id_user);
         List<Presupuesto> listPresupuesto = null;
 
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
@@ -415,20 +416,25 @@ public class FrmDocumentos extends javax.swing.JInternalFrame {
         if (jTable2.getRowCount() > 0) {
             limpiarTablaManual();
         }
+        int id_user = Integer.parseInt(home.jLabel2.getText());
+
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         List<Presupuesto> listPresupuesto = ctrPres.getPresupuestoByID_Manual();
+        System.out.println("ssasas "+listPresupuesto.toString());
         for (Presupuesto presupuesto : listPresupuesto) {
-            //Sección 2
-            Object[] fila = new Object[5];
-            //Sección 3
-            fila[0] = presupuesto.getId(); // Id apus
-            fila[1] = presupuesto.getUrl_file(); // Empresa
+            if (presupuesto.getId_usuario() == id_user ) {
+                //Sección 2
+                Object[] fila = new Object[5];
+                //Sección 3
+                fila[0] = presupuesto.getId(); // Id apus
+                fila[1] = presupuesto.getUrl_file(); // Empresa
 
-            //Sección 4
-            modelo.addRow(fila);
+                //Sección 4
+                modelo.addRow(fila);
+            }
         }
         //Sección 5
         jTable2.setModel(modelo);
     }
-    
+
 }

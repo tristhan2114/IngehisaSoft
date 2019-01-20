@@ -6,6 +6,7 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -51,7 +52,7 @@ public class home extends javax.swing.JFrame {
         // agregro el desktop al formulario padre
         //escritorio.setSize(1050, 650);
         setContentPane(escritorio);
-        //escritorio.setBackground(new Color(69, 64, 92));
+        escritorio.setBackground(new Color(255, 252, 251));
         escritorio.setLayout(null);
 
         //imagen
@@ -73,6 +74,7 @@ public class home extends javax.swing.JFrame {
         escritorio = new javax.swing.JDesktopPane();
         Imagen_fondo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -99,6 +101,15 @@ public class home extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        escritorio.setBackground(new java.awt.Color(153, 153, 255));
+        escritorio = new javax.swing.JDesktopPane() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.LIGHT_GRAY);
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
         escritorio.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         escritorio.setBackground(Color.gray);
         escritorio.add(Imagen_fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 340, 240));
@@ -107,6 +118,11 @@ public class home extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("jLabel1");
         escritorio.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 310, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("jLabel2");
+        escritorio.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
         jMenuBar1.setForeground(new java.awt.Color(102, 255, 204));
 
@@ -543,6 +559,7 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JLabel Imagen_fondo;
     public static javax.swing.JDesktopPane escritorio;
     public static javax.swing.JLabel jLabel1;
+    public static javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu2;

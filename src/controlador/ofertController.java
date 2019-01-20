@@ -150,12 +150,13 @@ public class ofertController {
         return aux;
     }
 
-    public List<Oferta> getOfertByPresuApus() {
+    public List<Oferta> getOfertByPresuApus(String id_user) {
         List<Oferta> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
-        sql = "select id, empresa, oferta, fecha_creacion, id_apus from presupuesto where id_apus !=0 "
+        sql = "select id, empresa, oferta, fecha_creacion, id_apus, id_usuario "
+                + "from presupuesto where id_apus !=0 and id_usuario="+id_user+" "
                 + "group by id_apus , id "
                 + "order by id_apus asc";
         conPg = new conexion();
@@ -193,12 +194,13 @@ public class ofertController {
         return aux;
     }
 
-    public List<Oferta> getOfertByPresuManual() {
+    public List<Oferta> getOfertByPresuManual(String id_user) {
         List<Oferta> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
-        sql = "select id, empresa, oferta, fecha_creacion, id_manual from presupuesto where id_manual !=0 "
+        sql = "select id, empresa, oferta, fecha_creacion, id_manual "
+                + "from presupuesto where id_manual !=0 and id_usuario="+id_user+" "
                 + "group by id_manual , id "
                 + "order by id_manual asc";
         conPg = new conexion();

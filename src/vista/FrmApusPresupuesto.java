@@ -1406,6 +1406,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             dtos.setEmpresa(jTextField1.getText());
             dtos.setProyecto(jTextField2.getText());
             dtos.setOferta(jTextField4.getText());
+            
+            dtos.setId_usuario(Integer.parseInt(home.jLabel2.getText()));
 
             // lo id_apus & id_manual
             // si jTextField11 != Id Apus...

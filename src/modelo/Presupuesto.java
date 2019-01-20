@@ -21,11 +21,13 @@ public class Presupuesto {
     
     private int id_apus;
     private int id_manual;
+    
+    private int id_usuario;
 
     public Presupuesto() {
     }
 
-    public Presupuesto(int id, String empresa, String proyecto, String oferta, String datosPrespuesto, String url_file, int id_apus, int id_manual) {
+    public Presupuesto(int id, String empresa, String proyecto, String oferta, String datosPrespuesto, String url_file, int id_apus, int id_manual, int id_usuario) {
         this.id = id;
         this.empresa = empresa;
         this.proyecto = proyecto;
@@ -34,7 +36,9 @@ public class Presupuesto {
         this.url_file = url_file;
         this.id_apus = id_apus;
         this.id_manual = id_manual;
+        this.id_usuario = id_usuario;
     }
+
 
     public int getId() {
         return id;
@@ -100,9 +104,17 @@ public class Presupuesto {
         this.id_manual = id_manual;
     }
 
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
     @Override
     public String toString() {
-        return "Presupuesto{" + "id=" + id + ", empresa=" + empresa + ", proyecto=" + proyecto + ", oferta=" + oferta + ", datosPrespuesto=" + datosPrespuesto + ", url_file=" + url_file + ", id_apus=" + id_apus + ", id_manual=" + id_manual + '}';
+        return "Presupuesto{" + "id=" + id + ", empresa=" + empresa + ", proyecto=" + proyecto + ", oferta=" + oferta + ", datosPrespuesto=" + datosPrespuesto + ", url_file=" + url_file + ", id_apus=" + id_apus + ", id_manual=" + id_manual + ", id_usuario=" + id_usuario + '}';
     }
     
 }

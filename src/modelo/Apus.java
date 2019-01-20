@@ -19,17 +19,20 @@ public class Apus {
     private String datosApus;
     private String datosPresResu; // presupúesto resumen
     private String url_file;
+    
+    private int id_usuario;
 
     public Apus() {
     }
 
-    public Apus(int id, String empresa, String proyecto, String datosApus, String datosPresResu, String url_file) {
+    public Apus(int id, String empresa, String proyecto, String datosApus, String datosPresResu, String url_file, int id_usuario) {
         this.id = id;
         this.empresa = empresa;
         this.proyecto = proyecto;
         this.datosApus = datosApus;
         this.datosPresResu = datosPresResu;
         this.url_file = url_file;
+        this.id_usuario = id_usuario;
     }
 
     public int getId() {
@@ -79,6 +82,16 @@ public class Apus {
     public void setUrl_file(String url_file) {
         this.url_file = url_file;
     }
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
+    
 
     @Override
     public String toString() {

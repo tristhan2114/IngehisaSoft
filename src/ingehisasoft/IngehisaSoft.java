@@ -20,6 +20,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import vista.Login;
 import vista.home;
 
 /**
@@ -38,7 +39,7 @@ public class IngehisaSoft {
         // TODO code application logic here
         
         
-       new home().setVisible(true);
+       //new Login().setVisible(true);
        
         //auxEj();
         //ej2();

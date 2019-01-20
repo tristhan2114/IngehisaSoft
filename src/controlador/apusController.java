@@ -32,8 +32,8 @@ public class apusController {
         int resultado = 0;
         con = null;
         pst = null;
-        sql = "INSERT INTO apus (empresa, proyecto, datosapus, datospresresu) "
-                + "values (?,?,?,?)";
+        sql = "INSERT INTO apus (empresa, proyecto, datosapus, datospresresu, id_usuario) "
+                + "values (?,?,?,?,?)";
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -42,6 +42,7 @@ public class apusController {
             pst.setString(2, datos.getProyecto());
             pst.setString(3, datos.getDatosApus());
             pst.setString(4, datos.getDatosPresResu());
+            pst.setInt(5, datos.getId_usuario());
 
             pst.execute();
             
@@ -86,12 +87,12 @@ public class apusController {
         }
     }
      
-     public List<Apus> getApusAll() {
+     public List<Apus> getApusAll(String id_user) {
         List<Apus> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
-        sql = "select * from apus";
+        sql = "select * from apus where id_usuario="+id_user;
         conPg = new conexion();
         
         try {

@@ -327,9 +327,10 @@ public class FrmOferta extends javax.swing.JInternalFrame {
         }
 
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-
-        List<Oferta> listOfrtPA = ctrOfert.getOfertByPresuApus();
-        List<Oferta> listOfrtPM = ctrOfert.getOfertByPresuManual();
+        String id_user = home.jLabel2.getText();
+        List<Oferta> listOfrtPA = ctrOfert.getOfertByPresuApus(id_user);
+        
+        List<Oferta> listOfrtPM = ctrOfert.getOfertByPresuManual(id_user);
 
         for (Oferta oferta : listOfrtPA) {
             //Sección 2
