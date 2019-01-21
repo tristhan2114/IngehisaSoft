@@ -220,7 +220,8 @@ public class Login extends javax.swing.JFrame {
 
                 // jLabel1 :: nombre y apellido
                 home home1 = new home();
-                home1.jLabel1.setText("Bienvenido " + rs[2] + " " + rs[3]);
+                String name = "Bienvenido " + rs[2] + " " + rs[3];
+                home1.jLabel1.setText(name.toUpperCase());
                 home1.jLabel2.setText(rs[1]);
                 // metodo para desabilitar
                 if (!rs[4].equals("1")) {

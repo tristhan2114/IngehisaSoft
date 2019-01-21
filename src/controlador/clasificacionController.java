@@ -54,6 +54,7 @@ public class clasificacionController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("Error clasifiController " + e.getMessage());
@@ -76,6 +77,7 @@ public class clasificacionController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {

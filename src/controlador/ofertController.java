@@ -75,6 +75,7 @@ public class ofertController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -105,6 +106,7 @@ public class ofertController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
@@ -143,6 +145,7 @@ public class ofertController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -186,6 +189,7 @@ public class ofertController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("Error clasifiController " + e.getMessage());
@@ -231,6 +235,7 @@ public class ofertController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("Error clasifiController " + e.getMessage());

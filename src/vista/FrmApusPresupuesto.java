@@ -73,6 +73,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         validacion = new validaciones();
         initComponents();
         setTitle("Presupuesto / Oferta");
+        jLabel4.setVisible(false);
         setTablesNoMoveHeader();
         setIconifiable(true);
 
@@ -597,7 +598,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         if (jCheckBox1.isSelected()) {
             // traemos el sgt
             int valor = ctrPres.getCountApusByPresupuestoManual();
-            System.out.println("sss " + valor);
+            //System.out.println("sss " + valor);
 
             jTextField10.setText("Id Presu...");
             jTextField10.setEnabled(false);
@@ -1388,7 +1389,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             datos = null;
         } catch (IOException | NumberFormatException e) {
             e.getMessage();
-            System.out.println("err-FrmApusPresupuesto " + e.getMessage());
+            //System.out.println("err-FrmApusPresupuesto " + e.getMessage());
         }
         return respuesta;
     }
@@ -1412,11 +1413,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             // lo id_apus & id_manual
             // si jTextField11 != Id Apus...
             if (!jTextField11.getText().equals("Id Apus...")) {
-                System.out.println("vvvIF " + jTextField11.getText());
+                //System.out.println("vvvIF " + jTextField11.getText());
                 dtos.setId_apus(Integer.parseInt(jTextField11.getText()));
                 dtos.setId_manual(0);
             } else {
-                System.out.println("vvv " + jTextField11.getText());
+                //System.out.println("vvv " + jTextField11.getText());
                 dtos.setId_apus(0);
                 dtos.setId_manual(Integer.parseInt(jTextField12.getText()));
             }
@@ -1450,8 +1451,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         int sizeTblBody = table.getRowCount();
         int sizeTblNot = jTable1.getRowCount();
         clearCompImport(sizeTblBody, sizeTblNot);
-
-        List<Presupuesto> aux = ctrPres.getPresupuestoByID(txt);
+        
+        String id_user = home.jLabel2.getText();
+        List<Presupuesto> aux = ctrPres.getPresupuestoByID(txt, id_user);
         addImportDtos(aux);
 
         jTextField11.setText("Id Apus...");
@@ -1544,9 +1546,10 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         // verificamos que no haiga presupuesto segun apus
         int valor = ctrPres.getCountApusByPresupuesto(txt);
         //System.out.println("dto " + valor);
+        String id_user = home.jLabel2.getText();
         if (valor == 0) {
-
-            List<Presupuesto> aux = ctrPres.getPresupuestoByApusID(txt);
+            
+            List<Presupuesto> aux = ctrPres.getPresupuestoByApusID(txt, id_user);
             addImportDtos(aux);
             jTextField4.setEditable(false);
             //jTextField11.setEditable(false); // id apus
@@ -1554,7 +1557,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             // traigo los datos sumando otra revision
             String ofrt = "OFERTA: INGEHISA 00" + txt + " - REV 00" + (valor + 1);
 
-            List<Presupuesto> aux = ctrPres.getPresupuestoByID_Apus(txt);
+            List<Presupuesto> aux = ctrPres.getPresupuestoByID_Apus(txt, id_user);
             addImportDtos(aux);
 
             jTextField4.setText(ofrt);

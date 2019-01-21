@@ -130,6 +130,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton3 = new javax.swing.JRadioButton();
         jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
 
@@ -343,6 +344,14 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         });
         jPanel2.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
 
+        jButton8.setText("Eliminar");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 20, -1, -1));
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 810, 230));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
@@ -411,8 +420,8 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
                 fichero = file.getSelectedFile();
                 //Devuelve la ruta hasta llegar a la carpeta imagenes
                 rutaImagenSelect = file.getSelectedFile().getAbsolutePath();
-                System.out.println("" + rutaImagenSelect);
-                System.out.println("" + file.getSelectedFile().getName());
+                //System.out.println("" + rutaImagenSelect);
+                //System.out.println("" + file.getSelectedFile().getName());
                 name = file.getSelectedFile().getName();
                 //La imagen seleccionada se muestra en el lbfoto
                 ImageIcon icon = new ImageIcon(rutaImagenSelect);
@@ -480,6 +489,19 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         setEditMaterial();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // eliminar segun seleccionados
+        int[] selectTbl = jTable1.getSelectedRows();
+        if (selectTbl.length > 0) {
+            for (int i = 0; i < selectTbl.length; i++) {
+                int id = Integer.parseInt(jTable1.getValueAt(selectTbl[i], 0).toString());
+                ctrMaterial.setDeleteMaterial(id);
+            }
+            JOptionPane.showConfirmDialog(null, "Material Eliminado ", "Información", 2);
+            setTableMaterialesAll();
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -525,6 +547,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -701,15 +724,18 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
                 //System.out.println("dto " + datos.toString());
                 if (ctrMaterial.ingresar(datos)) {
+                    JOptionPane.showConfirmDialog(this, "Material grabado con exito", "Confirmación", 2);
                     if (!datos.getUrl_imagen().equals("default.png")) {
                         copyImagenInsert(name, rutaImagenSelect);
+                        //setTableMaterialesAll();
+                        getMaterialByID(jTextField1.getText());
                     }
                 }
                 // de nuevo fichero null o vacio y modelo
                 fichero = null;
                 datos = null;
             } catch (Exception e) {
-                System.out.println("");
+                //System.out.println("");
                 e.getMessage();
             }
         } else {
@@ -732,6 +758,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
                 datos.setDescripcion(txtdescripcion.getText());
                 datos.setUnidad(jTextField3.getText());
                 datos.setPrecio(Double.parseDouble(jTextField2.getText()));
+                datos.setId(Integer.parseInt(jTextField1.getText()));
 
                 if (fichero == null) {
                     if (!imagenEdit.equals("")) {
@@ -744,8 +771,11 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
                 //System.out.println("dto " + datos.toString());
                 if (ctrMaterial.actualizar(datos)) {
+                    JOptionPane.showConfirmDialog(this, "Material grabado con exito", "Confirmación", 2);
                     if (insertImgUpdate = true) {
                         copyImagenInsert(name, rutaImagenSelect);
+                        setTableMaterialesAll();
+                        getMaterialByID(jTextField1.getText());
                     }
                     imagenEdit = "";
                 }
@@ -753,7 +783,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
                 fichero = null;
                 datos = null;
             } catch (Exception e) {
-                System.out.println("");
+                //System.out.println("");
                 e.getMessage();
             }
         } else {
@@ -801,7 +831,8 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
             }
 
         } catch (Exception e) {
-            System.out.println("err-" + e.getMessage());
+            //System.out.println("err-" + e.getMessage());
+            e.getMessage();
         }
     }
 
@@ -813,7 +844,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         // descripcion
         String dato = jTextField4.getText();
         if (jRadioButton1.isSelected()) {
-            System.out.println("dato " + dato);
+            //System.out.println("dato " + dato);
             lista = ctrMaterial.getMaterialByDescripcion(dato);
         }
         // empresa
@@ -824,6 +855,14 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
         if (jRadioButton3.isSelected()) {
             lista = ctrMaterial.getMaterialByClasificacion(dato);
         }
+        addRowTable(lista);
+    }
+
+    private void getMaterialByID(String id){
+        if (jTable1.getRowCount() > 0) {
+            clearTable();
+        }
+        List<MaterialesDto> lista = ctrMaterial.getMaterialByID(id);
         addRowTable(lista);
     }
 }

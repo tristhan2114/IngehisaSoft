@@ -48,6 +48,7 @@ public class usuarioController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
@@ -78,6 +79,7 @@ public class usuarioController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
@@ -114,6 +116,7 @@ public class usuarioController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -148,6 +151,7 @@ public class usuarioController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -182,6 +186,7 @@ public class usuarioController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("err- " + e.getMessage());
@@ -218,6 +223,7 @@ public class usuarioController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("err- " + e.getMessage());
@@ -254,6 +260,7 @@ public class usuarioController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -279,6 +286,7 @@ public class usuarioController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();

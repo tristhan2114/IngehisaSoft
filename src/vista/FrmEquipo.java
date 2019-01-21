@@ -590,7 +590,7 @@ public class FrmEquipo extends javax.swing.JInternalFrame {
                 }
                 equipo = null;
             } catch (Exception e) {
-                System.out.println("err-saveEq " + e.getMessage());
+                //System.out.println("err-saveEq " + e.getMessage());
                 e.getMessage();
             }
         } else {
@@ -618,7 +618,7 @@ public class FrmEquipo extends javax.swing.JInternalFrame {
             }
             equipo = null;
         } catch (Exception e) {
-            System.out.println("err-editEq " + e.getMessage());
+            //System.out.println("err-editEq " + e.getMessage());
             e.getMessage();
         }
 

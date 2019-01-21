@@ -55,6 +55,7 @@ public class proveedorController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("Error proveeController " + e.getMessage());
@@ -77,6 +78,7 @@ public class proveedorController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
@@ -101,6 +103,7 @@ public class proveedorController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {

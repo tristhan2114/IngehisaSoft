@@ -6512,7 +6512,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
 
     // metodo de busqueda APUS
     private void importAPUS(String txt) {
-        List<Apus> aux = ctrApus.getApusByID(txt);
+        String id_user= home.jLabel2.getText();
+        List<Apus> aux = ctrApus.getApusByID(txt, id_user);
         if (!aux.isEmpty()) {
             gt = new gestionImportApusBD();
             gt.importarDtos(aux);

@@ -48,6 +48,7 @@ public class equipoController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
@@ -77,6 +78,7 @@ public class equipoController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
@@ -112,6 +114,7 @@ public class equipoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -146,6 +149,7 @@ public class equipoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -181,6 +185,7 @@ public class equipoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("err- "+e.getMessage());
@@ -207,6 +212,7 @@ public class equipoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();

@@ -44,6 +44,7 @@ public class home extends javax.swing.JFrame {
     public home() {
         initComponents();
 
+        jLabel2.setVisible(false);
         jMenuItem11.setVisible(false);
         // escritorio
         setLocationRelativeTo(null);
@@ -57,6 +58,7 @@ public class home extends javax.swing.JFrame {
 
         //imagen
         imagenFondo();
+       
     }
 
     /**
@@ -114,10 +116,10 @@ public class home extends javax.swing.JFrame {
         escritorio.setBackground(Color.gray);
         escritorio.add(Imagen_fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 340, 240));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Gisha", 1, 18)); // NOI18N
         jLabel1.setText("jLabel1");
-        escritorio.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 310, -1));
+        escritorio.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 800, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));

@@ -55,6 +55,7 @@ public class apusController {
             
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("insert "+e.getMessage());
@@ -78,6 +79,7 @@ public class apusController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
@@ -115,6 +117,7 @@ public class apusController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("Error clasifiController " + e.getMessage());
@@ -151,6 +154,7 @@ public class apusController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("Error clasifiController " + e.getMessage());
@@ -187,6 +191,7 @@ public class apusController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("Error clasifiController " + e.getMessage());
@@ -195,12 +200,12 @@ public class apusController {
         return aux;
     }
 
-     public List<Apus> getApusByID(String dto) {
+     public List<Apus> getApusByID(String dto, String id_user) {
         List<Apus> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
-        sql = "select * from apus where id =" + dto + "";
+        sql = "select * from apus where id =" + dto + " and id_usuario="+id_user;
         conPg = new conexion();
         
         try {
@@ -223,6 +228,7 @@ public class apusController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             System.out.println("Error clasifiController " + e.getMessage());

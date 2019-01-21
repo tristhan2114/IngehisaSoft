@@ -50,10 +50,10 @@ public class manoObraController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
-            System.out.println("err- "+e.getMessage());
             e.getMessage();
             conPg = null;
             return false;
@@ -85,10 +85,12 @@ public class manoObraController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
             e.getMessage();
+            System.out.println("dff "+e.getMessage());
             return false;
         }
     }
@@ -124,6 +126,7 @@ public class manoObraController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -161,6 +164,7 @@ public class manoObraController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -198,6 +202,7 @@ public class manoObraController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
@@ -223,6 +228,7 @@ public class manoObraController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();

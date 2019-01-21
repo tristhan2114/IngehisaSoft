@@ -44,7 +44,7 @@ public class loginController {
             rs.close();
             stm.close();
             cn.close();
-
+            cn = null;
         } catch (Exception ex) {
             ex.getMessage();
         }

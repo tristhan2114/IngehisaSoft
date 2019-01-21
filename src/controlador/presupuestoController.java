@@ -68,9 +68,10 @@ public class presupuestoController {
 
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("insert Pres " + e.getMessage());
+            //System.out.println("insert Pres " + e.getMessage());
             e.getMessage();
         }
         return resultado;
@@ -91,10 +92,11 @@ public class presupuestoController {
             pst.execute();
             pst.close();
             con.close();
+            conPg.close();
             conPg = null;
             return true;
         } catch (Exception e) {
-            System.out.println("update Pres " + e.getMessage());
+            //System.out.println("update Pres " + e.getMessage());
             e.getMessage();
             return false;
         }
@@ -128,9 +130,10 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("Error clasifiController " + e.getMessage());
+            //System.out.println("Error clasifiController " + e.getMessage());
             e.getMessage();
         }
         return aux;
@@ -164,9 +167,10 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("Error clasifiController " + e.getMessage());
+            //System.out.println("Error clasifiController " + e.getMessage());
             e.getMessage();
         }
         return aux;
@@ -200,9 +204,10 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("ErrorPresuController " + e.getMessage());
+            //System.out.println("ErrorPresuController " + e.getMessage());
             e.getMessage();
         }
         return aux;
@@ -236,20 +241,21 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("ErrorPresuController " + e.getMessage());
+            //System.out.println("ErrorPresuController " + e.getMessage());
             e.getMessage();
         }
         return aux;
     }
 
-    public List<Presupuesto> getPresupuestoByID(String dto) {
+    public List<Presupuesto> getPresupuestoByID(String dto, String id_user) {
         List<Presupuesto> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
-        sql = "select * from presupuesto where id =" + dto + "";
+        sql = "select * from presupuesto where id =" + dto + " and id_usuario="+id_user;
         conPg = new conexion();
 
         try {
@@ -272,9 +278,10 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("ErrorPresuController " + e.getMessage());
+            //System.out.println("ErrorPresuController " + e.getMessage());
             e.getMessage();
         }
         return aux;
@@ -309,9 +316,10 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("ErrorPresuController " + e.getMessage());
+            //System.out.println("ErrorPresuController " + e.getMessage());
             e.getMessage();
         }
         return aux;
@@ -344,21 +352,23 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
-            System.out.println("err- " + e.getMessage());
+            //System.out.println("err- " + e.getMessage());
         }
         return param;
     }
 
     // cuando es busqueda de apus y envia sgt revision
-    public List<Presupuesto> getPresupuestoByID_Apus(String dto) {
+    public List<Presupuesto> getPresupuestoByID_Apus(String dto, String id_user) {
         List<Presupuesto> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
-        sql = "select * from presupuesto where id_apus =" + dto + " order by fecha_creacion desc limit 1";
+        sql = "select * from presupuesto where id_apus =" + dto + " and id_usuario="+id_user
+                + "order by fecha_creacion desc limit 1";
         conPg = new conexion();
 
         try {
@@ -381,9 +391,10 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("ErrorPresuController " + e.getMessage());
+            //System.out.println("ErrorPresuController " + e.getMessage());
             e.getMessage();
         }
         return aux;
@@ -420,9 +431,10 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("ErrorPresuController " + e.getMessage());
+            //System.out.println("ErrorPresuController " + e.getMessage());
             e.getMessage();
         }
         return aux;
@@ -450,10 +462,11 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
-            System.out.println("err- " + e.getMessage());
+            //System.out.println("err- " + e.getMessage());
         }
         return (param+1);
     }
@@ -479,21 +492,22 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
             e.getMessage();
-            System.out.println("err- " + e.getMessage());
+            //System.out.println("err- " + e.getMessage());
         }
         return (param);
     }
      
     // traemos datos de APUS y convertimos a Presupuesto
-    public List<Presupuesto> getPresupuestoByApusID(String dto) {
+    public List<Presupuesto> getPresupuestoByApusID(String dto, String id_user) {
         List<Presupuesto> aux = new ArrayList<>();
         con = null;
         rs = null;
         stm = null;
-        sql = "select * from apus where id =" + dto + "";
+        sql = "select * from apus where id =" + dto + " and id_usuario="+id_user;
         conPg = new conexion();
         
         try {
@@ -530,9 +544,10 @@ public class presupuestoController {
             stm.close();
             rs.close();
             con.close();
+            conPg.close();
             conPg = null;
         } catch (Exception e) {
-            System.out.println("ErrorPresuController " + e.getMessage());
+            //System.out.println("ErrorPresuController " + e.getMessage());
             e.getMessage();
         }
         return aux;
