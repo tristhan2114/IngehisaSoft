@@ -67,7 +67,8 @@ public class panelApus extends javax.swing.JPanel {
     public panelApus() {
         validacion = new validaciones();
         initComponents();
-
+        
+        jTextField20.setVisible(false);
         setTablesNoMoveHeader(); // 
         setNoEditableTextField(); //
     }
@@ -297,22 +298,15 @@ public class panelApus extends javax.swing.JPanel {
 
             },
             new String [] {
-                "<html><center>DESCRIPCION<br><b>A</b></center></html>", "<html><center>UNIDAD<br><b>B</b></center></html>", "<html><center>CANTIDAD<br><b>C</b></center></html>", "<html><center>TARIFA<br><b>D</b></center></html>", "<html><center>COSTO UNIT<br><b>E= C*D</b></center></html>"
+                "<html><center>DESCRIPCION<br><b>A</b></center></html>", "<html><center>UNIDAD<br><b></b></center></html>", "<html><center>DISTANCIA<br><b>A</b></center></html>", "<html><center>CANTIDAD<br><b>B</b></center></html>", "<html><center>TARIFA<br><b>C</b></center></html>", "<html><center>COSTO<br><b>D=A*B* C</b></center></html>"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, true, true, false
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
         });
         tableT.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -326,8 +320,8 @@ public class panelApus extends javax.swing.JPanel {
             tableT.getColumnModel().getColumn(0).setMaxWidth(250);
             tableT.getColumnModel().getColumn(1).setPreferredWidth(80);
             tableT.getColumnModel().getColumn(1).setMaxWidth(80);
-            tableT.getColumnModel().getColumn(2).setPreferredWidth(80);
-            tableT.getColumnModel().getColumn(2).setMaxWidth(80);
+            tableT.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tableT.getColumnModel().getColumn(3).setMaxWidth(80);
         }
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -517,7 +511,6 @@ public class panelApus extends javax.swing.JPanel {
             }
         });
 
-        jTextField20.setText("jTextField20");
         jTextField20.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField20KeyPressed(evt);
@@ -1007,24 +1000,20 @@ public class panelApus extends javax.swing.JPanel {
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
             // aqui la consulta
-            String fill = jTextField20.getText().trim();
-            int id = validacion.soloNumero(fill);
-            List<Transporte> listFill = ctrTransport.getTransporteByID(id);
 
             //Sección 1 
             DefaultTableModel modelo = (DefaultTableModel) tableT.getModel();
-            for (Transporte item : listFill) {
-                //Sección 2
-                Object[] fila = new Object[5];
-                //Sección 3
-                fila[0] = item.getDescripcion(); // descripcion
-                fila[1] = item.getUnidad(); // unidad 
-                fila[2] = ""; // cantidad
-                fila[3] = item.getTarifa(); // tarifa
-                fila[4] = ""; // costo unitario
-                //Sección 4
-                modelo.addRow(fila);
-            }
+
+            //Sección 2
+            Object[] fila = new Object[5];
+            //Sección 3
+            fila[0] = "Transporte "; // descripcion
+            fila[1] = ""; // unidad 
+            fila[2] = ""; // cantidad
+            fila[3] = ""; // tarifa
+            fila[4] = ""; // costo unitario
+            //Sección 4
+            modelo.addRow(fila);
 
             //Sección 5
             tableT.setModel(modelo);
@@ -1149,7 +1138,23 @@ public class panelApus extends javax.swing.JPanel {
 
     private void btnAddTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTActionPerformed
         try {
-            if (activoDlgTransporte == true) {
+            //Sección 1 
+            DefaultTableModel modelo = (DefaultTableModel) tableT.getModel();
+
+            //Sección 2
+            Object[] fila = new Object[5];
+            //Sección 3
+            fila[0] = "Transporte "; // descripcion
+            fila[1] = ""; // unidad 
+            fila[2] = ""; // cantidad
+            fila[3] = ""; // tarifa
+            fila[4] = ""; // costo unitario
+            //Sección 4
+            modelo.addRow(fila);
+
+            //Sección 5
+            tableT.setModel(modelo);
+            /*if (activoDlgTransporte == true) {
                 dlgTransporte.setLocation(833, 250);
                 dlgTransporte.moveToFront();
                 dlgTransporte.show();
@@ -1159,7 +1164,7 @@ public class panelApus extends javax.swing.JPanel {
                 vista.home.escritorio.add(dlgTransporte);
                 dlgTransporte.setLocation(833, 250);
                 dlgTransporte.show();
-            }
+            }*/
         } catch (Exception e) {
             e.getMessage();
             //System.out.println("err-  "+e.getMessage());
@@ -1361,18 +1366,22 @@ public class panelApus extends javax.swing.JPanel {
         if (sizeRows > 0) {
             // vamos a calcular costo unitario
             int position = tableT.getSelectedRow();
-            // traigo valor de cantidad [2]
-            String cant = tableT.getValueAt(position, 2).toString();
-            if (!cant.equals("")) { // columna cantidad no nula
-                double cantAux = validacion.solomoney(cant);
-                // R:[4]  = [2] * [3]
-                double tari = validacion.solomoney(tableT.getValueAt(position, 3).toString());
+            // traigo valor de tarifa [4]
+            String tarifa = tableT.getValueAt(position, 4).toString();
+
+            if (!tarifa.equals("")) { // columna cantidad no nula
+                double tari = validacion.solomoney(tarifa);
+                // R:[5]  = [2] * [3] * [4]
+                double cantAux = validacion.solomoney(tableT.getValueAt(position, 3).toString());
+                double distancia = validacion.solomoney(tableT.getValueAt(position, 2).toString());
 
                 double cost = getCostUnit(cantAux, tari);  // metodo n decimales
+                cost = getCostUnit(cost, distancia);  // metodo n decimales
 
-                tableT.setValueAt(String.valueOf(cost), position, 4); //R: pongo el valor 
-                tableT.setValueAt(String.valueOf(cantAux), position, 2); // pongo el valor de validaciones
-                tableT.setValueAt(String.valueOf(tari), position, 3); // pongo el valor de validaciones
+                tableT.setValueAt(String.valueOf(cost), position, 5); //R: pongo el valor 
+                tableT.setValueAt(String.valueOf(cantAux), position, 3); // pongo el valor de validaciones
+                tableT.setValueAt(String.valueOf(tari), position, 4); // pongo el valor de validaciones
+                tableT.setValueAt(String.valueOf(distancia), position, 2); // pongo el valor de validaciones
 
                 // calculo de subTotal de materiales de la tabla materiales
                 calTransporte();
@@ -1503,16 +1512,16 @@ public class panelApus extends javax.swing.JPanel {
 
     // hacer calculo de tableTransporte
     private void calTransporte() {
-        // [2] cantidad    -> lleno [4] = [2]*[3]
+        // [2] cantidad    -> lleno [5] = [2]*[3]*[4]
         // subtotalTransporte = suma de todo [4]  
         double subtotal = 0;
         DefaultTableModel model = (DefaultTableModel) tableT.getModel();
         int size = model.getRowCount(); // leer arriba comment
         if (size > 0) {
             for (int i = 0; i < size; ++i) {
-                String val = model.getValueAt(i, 4).toString();
+                String val = model.getValueAt(i, 5).toString();
                 if (!val.equals("")) {
-                    subtotal += Double.parseDouble(model.getValueAt(i, 4).toString());
+                    subtotal += Double.parseDouble(model.getValueAt(i, 5).toString());
                 }
             }
             subtotal = getCalEMaMT(subtotal);// metodo n decimales

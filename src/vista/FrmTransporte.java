@@ -642,3 +642,14 @@ public class FrmTransporte extends javax.swing.JInternalFrame {
     }
 
 }
+
+/*
+
+transporte es de porgusto
+modificar tabla transporte poner distancia *** asi
+todo hay q escribir manualmente
+
+descripcion     unidad  distancia   cantidad    tarifa        costo
+                            A          B           C        D = A*B*C
+
+*/

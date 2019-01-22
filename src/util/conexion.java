@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author personal
+  * @author Jonathan Mullito :)
  */
 public class conexion {
     // 192.168.100.244:5432
@@ -56,5 +56,5 @@ public class conexion {
 /*
 
 https://www.youtube.com/watch?v=aSCXX2pnu9E
-
+s
 */

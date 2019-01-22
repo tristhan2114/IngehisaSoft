@@ -639,12 +639,13 @@
         <Component class="javax.swing.JTable" name="tableT">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="5" rowCount="0">
-                <Column editable="false" title="&lt;html&gt;&lt;center&gt;DESCRIPCION&lt;br&gt;&lt;b&gt;A&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
-                <Column editable="false" title="&lt;html&gt;&lt;center&gt;UNIDAD&lt;br&gt;&lt;b&gt;B&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
-                <Column editable="true" title="&lt;html&gt;&lt;center&gt;CANTIDAD&lt;br&gt;&lt;b&gt;C&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
-                <Column editable="true" title="&lt;html&gt;&lt;center&gt;TARIFA&lt;br&gt;&lt;b&gt;D&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
-                <Column editable="false" title="&lt;html&gt;&lt;center&gt;COSTO UNIT&lt;br&gt;&lt;b&gt;E= C*D&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
+              <Table columnCount="6" rowCount="0">
+                <Column editable="true" title="&lt;html&gt;&lt;center&gt;DESCRIPCION&lt;br&gt;&lt;b&gt;A&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
+                <Column editable="true" title="&lt;html&gt;&lt;center&gt;UNIDAD&lt;br&gt;&lt;b&gt;&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
+                <Column editable="true" title="&lt;html&gt;&lt;center&gt;DISTANCIA&lt;br&gt;&lt;b&gt;A&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
+                <Column editable="true" title="&lt;html&gt;&lt;center&gt;CANTIDAD&lt;br&gt;&lt;b&gt;B&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
+                <Column editable="true" title="&lt;html&gt;&lt;center&gt;TARIFA&lt;br&gt;&lt;b&gt;C&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
+                <Column editable="true" title="&lt;html&gt;&lt;center&gt;COSTO&lt;br&gt;&lt;b&gt;D=A*B* C&lt;/b&gt;&lt;/center&gt;&lt;/html&gt;" type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -655,6 +656,11 @@
                   <Renderer/>
                 </Column>
                 <Column maxWidth="80" minWidth="-1" prefWidth="80" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -957,9 +963,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField20">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField20"/>
-      </Properties>
       <Events>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField20KeyPressed"/>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField20KeyReleased"/>

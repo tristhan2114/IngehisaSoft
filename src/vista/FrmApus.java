@@ -81,7 +81,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
     final String[] cabeceraEquipo = {"DESCRIPCION", "CANTIDAD\n A", "TARIFA\n B", "COSTO HORA\n C=AxB", "RENDIMIENTO\n R", "COSTO\n D=CxR"};
     final String[] cabeceraManObr = {"DESCRIPCION", "CANTIDAD\n A", "JORNAL /HR \n B", "COSTO HORA\n C=AxB", "RENDIMIENTO\n R", "COSTO\n D=CxR"};
     final String[] cabeceraMateriales = {"DESCRIPCION", "UNIDAD", "CANTIDAD\n A", "PRECIO\n B", "COSTO\n C=AxB"};
-    final String[] cabeceraTransporte = {"DESCRIPCION", "UNIDAD", "CANTIDAD\n A", "PRECIO\n B", "COSTO\n C=AxB"};
+    final String[] cabeceraTransporte = {"DESCRIPCION", "UNIDAD","DISTANCIA \n A", "CANTIDAD\n B", "PRECIO\n C", "COSTO\n D=AxBxC"};
     final String[] cabeceraResumenApus = {"NUMERACION", "DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO UNITARIO", "PRECIO TOTAL"};
 
     // instancia de gestion de paneles
@@ -4787,7 +4787,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 btnForComponentsActionPerformed(evt);
             }
         });
-        jPanel1.add(btnForComponents, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, -1, -1));
+        jPanel1.add(btnForComponents, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 13, -1, 20));
 
         jLabel1.setText("RECUERDE PARA DECIMALES  12.34  NO 12,34");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 30, -1, -1));
@@ -5797,16 +5797,18 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 Cell celda2 = fila.createCell(j);
                                 celda2.setCellStyle(styleCab);
                                 if (j == 1) {
-                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 3));
+                                    hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
                                     celda2.setCellValue(cabeceraTransporte[0]);
-                                } else if (j == 4) {
+                                } else if (j == 3) {
                                     celda2.setCellValue(cabeceraTransporte[1]);
-                                } else if (j == 5) {
+                                } else if (j == 4) {
                                     celda2.setCellValue(cabeceraTransporte[2]);
-                                } else if (j == 6) {
+                                } else if (j == 5) {
                                     celda2.setCellValue(cabeceraTransporte[3]);
-                                } else if (j == 7) {
+                                } else if (j == 6) {
                                     celda2.setCellValue(cabeceraTransporte[4]);
+                                } else if (j == 7) {
+                                    celda2.setCellValue(cabeceraTransporte[5]);
                                 }
                             }
                             positionAuxVuelt++;
@@ -5828,24 +5830,28 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                     Cell celda2 = fila.createCell(h);
                                     if (h == 1) {
                                         celda2.setCellStyle(styleTitlIzqGene);
-                                        hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 3));
+                                        hoja.addMergedRegion(new CellRangeAddress(i, i, 1, 2));
                                         celda2.setCellValue(dto.getTablaTransport().get(g).get(0));
-                                    } else if (h == 4) {
+                                    } else if (h == 3) {
                                         celda2.setCellStyle(styleTitlIzqGene);
                                         celda2.setCellValue(dto.getTablaTransport().get(g).get(1));
-                                    } else if (h == 5) {
+                                    } else if (h == 4) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(2)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellStyle(styleNumero);
-                                    } else if (h == 6) {
+                                    } else if (h == 5) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(3)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellStyle(styleNumero);
-                                    } else if (h == 7) {
+                                    }else if (h == 5) {
+                                        celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(4)));
+                                        celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                        celda2.setCellStyle(styleNumero);
+                                    }  else if (h == 7) {
                                         /*celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(4)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellStyle(styleNumero);*/
-                                        String strFormula = "SUM(F" + (i + 1) + "*G" + (i + 1) + ")";
+                                        String strFormula = "SUM(E"+ (i + 1)+"*F" + (i + 1) + "*G" + (i + 1) + ")";
                                         celda2.setCellType(Cell.CELL_TYPE_FORMULA);
                                         celda2.setCellFormula(strFormula);
                                         celda2.setCellStyle(styleNumero);
@@ -6248,6 +6254,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                     acum++;
                     //System.out.println("-g1- "+panel1.getComponentCount()); // cant de component en panel
                     if (panel1.getComponent(x) instanceof JPanel) {
+                        // BUSCAR COMPONENTE CHECK 
                         JPanel panelaux = (JPanel) panel1.getComponent(x); // entre al panelApus
                         //System.out.println("-g- "+panelaux.getComponentCount()); // cant de component en panel main
                         for (int y = 0; y < panelaux.getComponentCount(); y++) { // recorro panel q esta dentro de main
@@ -6297,31 +6304,31 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                         case 12:
                                             entFormtApus.setTxtSubtManObra(textField.getText());
                                             break;
-                                        case 15:
+                                        case 14:
                                             entFormtApus.setTxtSubtMateriales(textField.getText());
                                             break;
-                                        case 17:
+                                        case 16:
                                             entFormtApus.setTxtSubtTransport(textField.getText());
                                             break;
-                                        case 18:
+                                        case 17:
                                             entFormtApus.setCostDirecto(textField.getText());
                                             break;
-                                        case 19:
+                                        case 18:
                                             entFormtApus.setnIngrUtil(textField.getText());
                                             break;
-                                        case 20:
+                                        case 19:
                                             entFormtApus.setrIngrUtil(textField.getText());
                                             break;
-                                        case 21:
+                                        case 20:
                                             entFormtApus.setnOthUtil(textField.getText());
                                             break;
-                                        case 22:
+                                        case 21:
                                             entFormtApus.setrOthUtil(textField.getText());
                                             break;
-                                        case 23:
+                                        case 22:
                                             entFormtApus.setCostTotRubro(textField.getText());
                                             break;
-                                        case 24:
+                                        case 23:
                                             entFormtApus.setValorOfert(textField.getText());
                                             break;
                                         default:
@@ -6352,11 +6359,12 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                                 // para saber si es la tabla equipo y mano obra[0] [5]=6 other [0] [4]=5
                                                 int sizeColumnTable = table.getColumnCount();
                                                 //System.out.println("coolum " + sizeColumnTable);
+                                                //System.out.println("position table  " + (position));
                                                 if (sizeColumnTable == 6) {
-                                                    //System.out.println("table encontr");
+                                                    //System.out.println("table encontr "+cd);
                                                     if (size > 0) {
                                                         for (int ii = 0; ii < size; ++ii) {
-                                                            //System.out.println("position table  " + (position++));
+                                                            //System.out.println("position table  " + (position));
                                                             if (position == 7) {
                                                                 List<String> tablaEquipo = new ArrayList<>();
                                                                 tablaEquipo.add(table.getValueAt(ii, 0).toString());
@@ -6375,6 +6383,15 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                                                 tabla.add(table.getValueAt(ii, 4).toString());
                                                                 tabla.add(table.getValueAt(ii, 5).toString());
                                                                 entFormtApus.getTablaManObra().add(tabla);
+                                                            }else if (position == 15) {
+                                                                List<String> tabla = new ArrayList<>();
+                                                                tabla.add(table.getValueAt(ii, 0).toString());
+                                                                tabla.add(table.getValueAt(ii, 1).toString());
+                                                                tabla.add(table.getValueAt(ii, 2).toString());
+                                                                tabla.add(table.getValueAt(ii, 3).toString());
+                                                                tabla.add(table.getValueAt(ii, 4).toString());
+                                                                tabla.add(table.getValueAt(ii, 5).toString());
+                                                                entFormtApus.getTablaTransport().add(tabla);
                                                             }
                                                             /*System.out.println("**table " + table.getValueAt(ii, 0));
                                                             System.out.println("**table " + table.getValueAt(ii, 5));*/
@@ -6396,14 +6413,6 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                                                 tabla.add(table.getValueAt(ii, 3).toString());
                                                                 tabla.add(table.getValueAt(ii, 4).toString());
                                                                 entFormtApus.getTablaMateriales().add(tabla);
-                                                            } else if (position == 16) {
-                                                                List<String> tabla = new ArrayList<>();
-                                                                tabla.add(table.getValueAt(ii, 0).toString());
-                                                                tabla.add(table.getValueAt(ii, 1).toString());
-                                                                tabla.add(table.getValueAt(ii, 2).toString());
-                                                                tabla.add(table.getValueAt(ii, 3).toString());
-                                                                tabla.add(table.getValueAt(ii, 4).toString());
-                                                                entFormtApus.getTablaTransport().add(tabla);
                                                             }
                                                         }
                                                         position++;
