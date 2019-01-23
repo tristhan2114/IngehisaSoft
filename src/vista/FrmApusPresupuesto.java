@@ -76,7 +76,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     public FrmApusPresupuesto() {
         validacion = new validaciones();
         initComponents();
-        setTitle("Presupuesto / Oferta");
+        setTitle("Presupuesto / Ofertas");
         jLabel4.setVisible(false);
         setTablesNoMoveHeader();
         setIconifiable(true);
@@ -84,7 +84,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         jTextField1.setToolTipText("Proyecto");
         jTextField2.setToolTipText("Empresa");
         jTextField3.setToolTipText("INGENIERIA HIDROSANITARIA");
-        jTextField5.setToolTipText("Fecha...");
+        jTextField5.setToolTipText("Fecha");
+        jTextField13.setToolTipText("DIRIGIDO");
 
     }
 
@@ -127,6 +128,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jTextField12 = new javax.swing.JTextField();
+        jTextField13 = new javax.swing.JTextField();
 
         jMenu1.setText("jMenu1");
 
@@ -156,10 +158,10 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jTextField4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 85, 233, -1));
+        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 115, 233, -1));
 
         jTextField5.setText("Guayaquil, ");
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(537, 84, 242, -1));
+        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(537, 115, 242, -1));
 
         jTextField6.setText("0.0");
 
@@ -280,7 +282,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 359, 850, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 379, 850, -1));
 
         jButton2.setText("+");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -288,7 +290,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 86, -1, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 116, -1, 25));
 
         jButton3.setText("Calcular");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -296,7 +298,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(789, 83, -1, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(789, 112, -1, -1));
 
         jButton4.setText("Generar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -354,7 +356,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             table.getColumnModel().getColumn(5).setMaxWidth(90);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 115, 850, 230));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 850, 230));
 
         jButton5.setText("--");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +364,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(375, 86, -1, -1));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(375, 116, -1, 25));
 
         jTextField10.setText("Id Presu...");
         jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -410,6 +412,14 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         jTextField12.setText("1 | 0");
         getContentPane().add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 63, 78, -1));
 
+        jTextField13.setText("DIRIGIDO");
+        jTextField13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField13ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField13, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 88, 649, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -423,7 +433,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         // table Calculo keyPress tabla Resumen
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
-            setEventTableResumenPresupuesto();
+            //setEventTableResumenPresupuesto();
 
             /*int position = table.getSelectedRow();
             table.setRowHeight(position, 50);
@@ -652,6 +662,10 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField10KeyTyped
 
+    private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -709,6 +723,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
+    private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     public static javax.swing.JTextField jTextField4;
@@ -810,7 +825,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 // traigo valor de cantidad [3]
                 String cant = table.getValueAt(position, 3).toString();
                 if (!cant.equals("")) { // columna cantidad no nula
-                    int cantAux = validacion.soloNumero(cant);
+                    double cantAux = validacion.solomoney(cant);
                     // R:[5]  = [3] * [4]
                     double precUnit = validacion.solomoney(table.getValueAt(position, 4).toString());
                     table.setValueAt(String.valueOf(precUnit), position, 4); // pongo el valor de validaciones
@@ -909,6 +924,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         entity.setCampo1(jTextField1.getText());
         entity.setCampo2(jTextField2.getText());
         entity.setCampo3(jTextField3.getText());
+        entity.setCampo4(jTextField13.getText());
         entity.setOferta(jTextField4.getText());
         entity.setFecha(jTextField5.getText());
 
@@ -1061,7 +1077,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             final Picture pict = drawing.createPicture(anchor, pictureIndex);
             pict.resize(2);
 
-            int sizePresupuesto = 13 + datos.getListTbl().size() + datos.getNota().size();
+            int sizePresupuesto = 14 + datos.getListTbl().size() + datos.getNota().size();
 
             int acumPosition = 0;
             boolean bandera1 = false;
@@ -1113,8 +1129,22 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                         }
                     }
                 }
-
+                
                 if (re == 4) {
+                    for (int j = 1; j < 12; j++) {
+                        Cell celda2 = fila.createCell(j);
+                        celda2.setCellStyle(styleTitle);
+                        if (j == 1) {
+                            celda2.setCellValue("Sr.");
+                        }
+                        if (j == 2) {
+                            hoja.addMergedRegion(new CellRangeAddress(re, re, 2, 5));
+                            celda2.setCellValue(datos.getCampo4());
+                        }
+                    }
+                }
+
+                if (re == 5) {
                     for (int j = 1; j < 12; j++) {
                         Cell celda2 = fila.createCell(j);
                         if (j == 1) {
@@ -1128,7 +1158,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                     }
                 }
 
-                if (re == 5) {
+                if (re == 6) {
                     for (int j = 1; j < 12; j++) {
                         Cell celda2 = fila.createCell(j);
                         celda2.setCellStyle(styleTitle);
@@ -1140,7 +1170,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 }
 
                 // cabecera  tabla
-                if (re == 6) {
+                if (re == 7) {
                     for (int j = 1; j < 12; j++) {
                         Cell celda = fila.createCell(j);
                         celda.setCellStyle(styleCabe);
@@ -1173,7 +1203,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 }
 
                 // body de la tabla
-                if (re == 7) {
+                if (re == 8) {
                     position = re;
                     int sizePresuRes = datos.getListTbl().size();
                     for (int size = 0; size < sizePresuRes; ++size) {

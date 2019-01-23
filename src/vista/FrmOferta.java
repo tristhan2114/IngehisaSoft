@@ -55,7 +55,7 @@ public class FrmOferta extends javax.swing.JInternalFrame {
 
     public FrmOferta() {
         initComponents();
-        setTitle("Ofertas");
+        setTitle("Ofertas Resúmen");
 
         setIconifiable(true);
 

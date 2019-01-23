@@ -600,8 +600,8 @@ public class gestionImportApusBD {
                                 JTable table = (JTable) vp.getComponent(cd);
                                 int sizeColumnTable = table.getColumnCount();
                                 //System.out.println("coolum " + sizeColumnTable);
-                                //System.out.println("position "+position);
-                                if (sizeColumnTable == 6) {
+                                //System.out.println("position TBL "+position);
+                                if (sizeColumnTable == 7) {
                                     //System.out.println("table encontr");
                                     //System.out.println("position table  " + (position));
                                     if (position == 7) {
@@ -643,6 +643,24 @@ public class gestionImportApusBD {
                                         }
                                         //Sección 5
                                         table.setModel(modelo);
+                                    }else if (position == 16) { // new 9
+                                        List<List<String>> tbl = Fapus.getTablaTransport();
+                                        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+                                        for (List<String> list : tbl) {
+                                            //Sección 2
+                                            Object[] fila = new Object[6];
+                                            //Sección 3
+                                            fila[0] = list.get(0);
+                                            fila[1] = list.get(1);
+                                            fila[2] = list.get(2);
+                                            fila[3] = list.get(3);
+                                            fila[4] = list.get(4);
+                                            fila[5] = list.get(5);
+                                            //Sección 4
+                                            modelo.addRow(fila);
+                                        }
+                                        //Sección 5
+                                        table.setModel(modelo);
                                     }
                                     position++;
                                 } else {
@@ -652,24 +670,7 @@ public class gestionImportApusBD {
                                         DefaultTableModel modelo = (DefaultTableModel) table.getModel();
                                         for (List<String> list : tbl) {
                                             //Sección 2
-                                            Object[] fila = new Object[5];
-                                            //Sección 3
-                                            fila[0] = list.get(0);
-                                            fila[1] = list.get(1);
-                                            fila[2] = list.get(2);
-                                            fila[3] = list.get(3);
-                                            fila[4] = list.get(4);
-                                            //Sección 4
-                                            modelo.addRow(fila);
-                                        }
-                                        //Sección 5
-                                        table.setModel(modelo);
-                                    } else if (position == 16) { // new 13
-                                        List<List<String>> tbl = Fapus.getTablaTransport();
-                                        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-                                        for (List<String> list : tbl) {
-                                            //Sección 2
-                                            Object[] fila = new Object[7];
+                                            Object[] fila = new Object[6];
                                             //Sección 3
                                             fila[0] = list.get(0);
                                             fila[1] = list.get(1);
@@ -677,13 +678,12 @@ public class gestionImportApusBD {
                                             fila[3] = list.get(3);
                                             fila[4] = list.get(4);
                                             fila[5] = list.get(5);
-                                            fila[6] = list.get(6);
                                             //Sección 4
                                             modelo.addRow(fila);
                                         }
                                         //Sección 5
                                         table.setModel(modelo);
-                                    }
+                                    } 
                                     position++;
                                 }
                             }

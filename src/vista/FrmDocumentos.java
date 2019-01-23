@@ -424,7 +424,7 @@ public class FrmDocumentos extends javax.swing.JInternalFrame {
 
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         List<Presupuesto> listPresupuesto = ctrPres.getPresupuestoByID_Manual();
-        System.out.println("ssasas "+listPresupuesto.toString());
+        //System.out.println("ssasas "+listPresupuesto.toString());
         for (Presupuesto presupuesto : listPresupuesto) {
             if (presupuesto.getId_usuario() == id_user ) {
                 //Sección 2

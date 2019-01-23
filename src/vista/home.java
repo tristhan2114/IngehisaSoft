@@ -242,7 +242,7 @@ public class home extends javax.swing.JFrame {
 
         jMenuItem10.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/oferta.png"))); // NOI18N
-        jMenuItem10.setText("OFERTAS");
+        jMenuItem10.setText("RES - OFERT");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
@@ -251,7 +251,7 @@ public class home extends javax.swing.JFrame {
         jMenu4.add(jMenuItem10);
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/nominia.png"))); // NOI18N
-        jMenuItem1.setText("Pre-Manual");
+        jMenuItem1.setText("OFERTAS");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);

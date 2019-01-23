@@ -1107,6 +1107,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
 
     // Listas con datos de cada tabla
     private List<List<String>> getGrupTecnic() {
+        // 1 Tecnico 600    13  *** incluir en arrays
         List<List<String>> aux = new ArrayList<>(); // 7
         List<String> data = new ArrayList<>();
         data.add("1"); // cantidad
@@ -1160,6 +1161,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
     }
 
     private List<List<String>> getPersoSoport() {
+        // 1 Obrero 450    450/4  *** incluir en arrays
         List<List<String>> aux = new ArrayList<>(); // 7
         List<String> data = new ArrayList<>();
         data.add("1"); // cantidad
@@ -1197,6 +1199,7 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
     }
 
     private List<List<String>> getCostSemanal() {
+        // 1 lIQUIDACION 2    450/4  *** incluir en arrays
         List<List<String>> aux = new ArrayList<>(); // 7
         List<String> data = new ArrayList<>();
         data.add("1"); // cantidad

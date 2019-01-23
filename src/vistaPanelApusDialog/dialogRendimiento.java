@@ -57,22 +57,23 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jTextField9 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setText("Total tarifa de equipo y jornal real mano de obra (T): ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 17, 330, -1));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("T = ");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 43, 30, -1));
 
         jTextField1.setText("a");
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 42, 79, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 79, -1));
 
         btnClosed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         btnClosed.addActionListener(new java.awt.event.ActionListener() {
@@ -131,7 +132,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Adicional");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, 60, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 303, 60, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Variable");
@@ -150,7 +151,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Rendimiento");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 360, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 358, -1, -1));
 
         jTextField5.setText("0.0");
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
@@ -163,7 +164,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
                 jTextField5KeyPressed(evt);
             }
         });
-        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 300, 106, -1));
+        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 325, 106, -1));
 
         jTextField6.setText("0.0");
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -171,18 +172,14 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
                 jTextField6KeyPressed(evt);
             }
         });
-        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 325, 50, -1));
+        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, 50, -1));
 
         jTextField7.setText("0.0");
-        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 325, 106, -1));
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel8.setText("Rendimiento Total");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 390, -1, -1));
+        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 300, 106, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Subtotal 2 (Arriba / T)");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 302, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, -1, -1));
 
         jTextField8.setText("0.0");
         jTextField8.setPreferredSize(new java.awt.Dimension(62, 20));
@@ -191,7 +188,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
                 jTextField8KeyPressed(evt);
             }
         });
-        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, 50, -1));
+        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 352, 50, 22));
 
         jButton1.setText("Calcular SubTotal 1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -202,7 +199,10 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, -1, -1));
 
         jTextField9.setText("0.0");
-        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 106, -1));
+        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 352, 106, -1));
+
+        jLabel7.setText("Total tarifa de equipo y jornal real mano de obra (T): ");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 17, 330, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -212,7 +212,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -317,7 +317,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -409,7 +409,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
             String val = table.getValueAt(position, 1).toString();
             if (!val.equals("")) {
                 double suel = Double.parseDouble(table.getValueAt(position, 1).toString());
-                double aux = (double) Math.round(((cant * suel) / 26) * 100d) / 100d; // solo 2 decimales   
+                double aux = (double) Math.round(((cant * suel) / 26) * 10000d) / 10000d; // solo 2 decimales   
                 table.setValueAt(aux, position, 2); // pongo el valor    
             } else {
                 table.setValueAt("", position, 2); // pongo el valor  
@@ -422,7 +422,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
                 //System.out.println("aaa "+val);
                 if (!val.equals("")) {
                     double suel = Double.parseDouble(table.getValueAt(i, 1).toString());
-                    double aux = (double) Math.round(((cant * suel) / 26) * 100d) / 100d; // solo 2 decimales
+                    double aux = (double) Math.round(((cant * suel) / 26) * 10000d) / 10000d; // solo 2 decimales
                     table.setValueAt(aux, i, 2); // pongo el valor 
                 } else {
                     table.setValueAt("", i, 2); // pongo el valor 
@@ -451,7 +451,7 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
                         acum += tot;
                     }
                 }
-                acum = (double) Math.round((acum) * 100d) / 100d; // solo 2 decimales   
+                acum = (double) Math.round((acum) * 10000d) / 10000d; // solo 2 decimales   
                 jTextField2.setText(String.valueOf(acum)); // en txtField SubTot 1   
             }
         }
@@ -466,31 +466,43 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
         } else {
             double subtot1 = Double.parseDouble(jTextField2.getText());
             double variable = Double.parseDouble(var);
-            jTextField4.setText(String.valueOf((double) Math.round((subtot1 / variable) * 100d) / 100d));
-            calSubTot2();
+            jTextField4.setText(String.valueOf((double) Math.round((subtot1 / variable) * 10000d) / 10000d));
         }
     }
 
     // cal subtotal 2
     private void calSubTot2() {
-        // (Subtot 2) jTextField5 = (RVariable)jTextField4 / (T) jTextField1
-        double RVariable = Double.parseDouble(jTextField4.getText());
-        double T = Double.parseDouble(jTextField1.getText());
-        jTextField5.setText(String.valueOf((double) Math.round((RVariable / T) * 100d) / 100d));
+        // si jTextField6 == 0, 0.0, "" tomo el valor jTextField4 / jTextField1
+        String val = jTextField6.getText();
+        if (val.equals("") || val.equals("0") || val.equals("0.0")) {
+            double RVariable = Double.parseDouble(jTextField4.getText());
+            double T = Double.parseDouble(jTextField1.getText());
+            jTextField5.setText(String.valueOf((double) Math.round((RVariable / T) * 10000d) / 10000d));
+        } else {
+            System.out.println("mirame ");
+            // (Subtot 2) jTextField5 = (RVariable)jTextField7 / (T) jTextField1
+            double RVariable = Double.parseDouble(jTextField7.getText());
+            double T = Double.parseDouble(jTextField1.getText());
+            jTextField5.setText(String.valueOf((double) Math.round((RVariable / T) * 10000d) / 10000d));
+        }
     }
 
     // calculo de adicional
     private void calAdicional() {
-        //   jTextField7 = jTextField5 + jTextField6
+        //   jTextField7 = jTextField4 + jTextField6
         String rendi = jTextField6.getText().trim();
         if (rendi.equals("0") | rendi.equals("0.0") | rendi.equals("")) {
-            jTextField7.setText("0.0");
-        } else {
-            double valor1 = Double.parseDouble(jTextField5.getText());
-            double valor2 = Double.parseDouble(jTextField6.getText());
-            jTextField7.setText(String.valueOf((double) Math.round((valor1 + valor2) * 100d) / 100d));
+            double RVariable = Double.parseDouble(jTextField4.getText());
+            double T = Double.parseDouble(jTextField1.getText());
+            jTextField5.setText(String.valueOf((double) Math.round((RVariable / T) * 10000d) / 10000d));
 
-            calRendimiento();// rendimiento
+        } else {
+            double valor1 = Double.parseDouble(jTextField4.getText());
+            double valor2 = Double.parseDouble(jTextField6.getText());
+            jTextField7.setText(String.valueOf((double) Math.round((valor1 + valor2) * 10000d) / 10000d));
+
+            //calRendimiento();// rendimiento
+            calSubTot2();
         }
     }
 
@@ -504,12 +516,12 @@ public class dialogRendimiento extends javax.swing.JInternalFrame {
             double valRend = Double.parseDouble(rendi);
             double valor1 = Double.parseDouble(jTextField5.getText()); // subtot 2
 
-            String val = jTextField7.getText().trim();
+            String val = jTextField5.getText().trim();
             if (val.equals("0") | val.equals("0.0") | val.equals("")) {
-                jTextField9.setText(String.valueOf((double) Math.round(( (valRend*valor1)/100 ) * 100d) / 100d ));
+                //double valor2 = Double.parseDouble(jTextField7.getText()); // val adicional
+                //jTextField9.setText(String.valueOf((double) Math.round(( (valRend*valor2)/100 ) * 100d) / 100d));
             } else {
-                double valor2 = Double.parseDouble(jTextField7.getText()); // val adicional
-                jTextField9.setText(String.valueOf((double) Math.round(( (valRend*valor2)/100 ) * 100d) / 100d));
+                jTextField9.setText(String.valueOf((double) Math.round((valRend * valor1) * 10000d) / 10000d));
             }
         }
     }

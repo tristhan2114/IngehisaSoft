@@ -17,6 +17,8 @@ public class EsquemaPresupuestoManual {
     private String campo1; // proyecto
     private String campo2; // empresa
     private String campo3; // default
+    
+    private String campo4; // dirigido
 
     private String oferta;
     private String fecha;
@@ -33,21 +35,26 @@ public class EsquemaPresupuestoManual {
     public EsquemaPresupuestoManual() {
     }
 
-    public EsquemaPresupuestoManual(String campo1, String campo2, String campo3, String oferta, String fecha, List<EsquemaPresupuestoManualTabla> listTbl, String subtotal, String iva, String subtotalIva, String total, List<String> nota) {
+    public EsquemaPresupuestoManual(String campo1, String campo2, String campo3, String campo4, String oferta, String fecha, String subtotal, String iva, String subtotalIva, String total) {
         this.campo1 = campo1;
         this.campo2 = campo2;
         this.campo3 = campo3;
+        this.campo4 = campo4;
         this.oferta = oferta;
         this.fecha = fecha;
-        this.listTbl = listTbl;
         this.subtotal = subtotal;
         this.iva = iva;
         this.subtotalIva = subtotalIva;
         this.total = total;
-        this.nota = nota;
     }
 
-    
+    public String getCampo4() {
+        return campo4;
+    }
+
+    public void setCampo4(String campo4) {
+        this.campo4 = campo4;
+    }
 
     public String getCampo1() {
         return campo1;
