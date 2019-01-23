@@ -151,14 +151,14 @@ public class panelApus extends javax.swing.JPanel {
 
             },
             new String [] {
-                "<html><center>DESCRIPCION<br><b>A</b></center></htlm>", "<html><center>CANTIDAD<br><b>B</b></center></htlm>", "<html><center>TARIFA<br><b>C</b></center></htlm>", "<html><center>COSTO HORA<br><b>D= B*C</b></center></htlm>", "<html><center>RENDIMIENTO<br><b>E</b></center></htlm>", "<html><center>COST UNIT<br><b>F= D*E</b></center></htlm>"
+                "<html><center>DESCRIPCION<br><b>A</b></center></htlm>", "<html><center>CANTIDAD<br><b>B</b></center></htlm>", "<html><center>TARIFA<br><b>C</b></center></htlm>", "<html><center>COSTO HORA<br><b>D= B*C</b></center></htlm>", "<html><center>RENDIMIENTO<br><b>E</b></center></htlm>", "<html><center>COST UNIT<br><b>F= D*E</b></center></htlm>", "ID"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, true, false
+                false, true, false, false, true, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -167,6 +167,11 @@ public class panelApus extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tableE.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableEMouseClicked(evt);
             }
         });
         tableE.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -191,6 +196,9 @@ public class panelApus extends javax.swing.JPanel {
             tableE.getColumnModel().getColumn(4).setMaxWidth(85);
             tableE.getColumnModel().getColumn(5).setPreferredWidth(100);
             tableE.getColumnModel().getColumn(5).setMaxWidth(100);
+            tableE.getColumnModel().getColumn(6).setMinWidth(4);
+            tableE.getColumnModel().getColumn(6).setPreferredWidth(4);
+            tableE.getColumnModel().getColumn(6).setMaxWidth(4);
         }
 
         jTextField3.setText("ANALISIS DE PRECIOS UNITARIOS");
@@ -218,14 +226,14 @@ public class panelApus extends javax.swing.JPanel {
 
             },
             new String [] {
-                "<html><center>DESCRIPCION<br><b>A</b></center></html>", "<html><center>CANTIDAD<br><b>B</b></center></html>", "<html><center>JOR REAL/HOR<br><b>C</b></center></html>", "<html><center>COSTO HORA<br><b>D= B*C</b></center></html>", "<html><center>Rendimiento<br><b>E</b></center></html>", "<html><center>COST UNIT<br><b>F= D*E</b></center></html>"
+                "<html><center>DESCRIPCION<br><b>A</b></center></html>", "<html><center>CANTIDAD<br><b>B</b></center></html>", "<html><center>JOR REAL/HOR<br><b>C</b></center></html>", "<html><center>COSTO HORA<br><b>D= B*C</b></center></html>", "<html><center>Rendimiento<br><b>E</b></center></html>", "<html><center>COST UNIT<br><b>F= D*E</b></center></html>", "Id"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, true, false
+                false, true, false, false, true, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -234,6 +242,11 @@ public class panelApus extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tableM.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMMouseClicked(evt);
             }
         });
         tableM.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -247,6 +260,9 @@ public class panelApus extends javax.swing.JPanel {
             tableM.getColumnModel().getColumn(0).setMaxWidth(255);
             tableM.getColumnModel().getColumn(1).setPreferredWidth(65);
             tableM.getColumnModel().getColumn(1).setMaxWidth(65);
+            tableM.getColumnModel().getColumn(6).setMinWidth(4);
+            tableM.getColumnModel().getColumn(6).setPreferredWidth(4);
+            tableM.getColumnModel().getColumn(6).setMaxWidth(4);
         }
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -257,14 +273,14 @@ public class panelApus extends javax.swing.JPanel {
 
             },
             new String [] {
-                "<html><center>DESCRIPCION<br><b>A</b></center></html>", "<html><center>UNIDAD<br><b>B</b></center></html>", "<html><center>CANTIDAD<br><b>C</b></center></html>", "<html><center>PRECIO UNIT<br><b>D</b></center></html>", "<html><center>COST UNIT<br><b>E= C*D</b></center></html>"
+                "<html><center>DESCRIPCION<br><b>A</b></center></html>", "<html><center>UNIDAD<br><b>B</b></center></html>", "<html><center>CANTIDAD<br><b>C</b></center></html>", "<html><center>PRECIO UNIT<br><b>D</b></center></html>", "<html><center>COST UNIT<br><b>E= C*D</b></center></html>", "Id"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false
+                false, false, true, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -273,6 +289,11 @@ public class panelApus extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tableMa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMaMouseClicked(evt);
             }
         });
         tableMa.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -288,6 +309,9 @@ public class panelApus extends javax.swing.JPanel {
             tableMa.getColumnModel().getColumn(1).setMaxWidth(80);
             tableMa.getColumnModel().getColumn(2).setPreferredWidth(80);
             tableMa.getColumnModel().getColumn(2).setMaxWidth(80);
+            tableMa.getColumnModel().getColumn(5).setMinWidth(4);
+            tableMa.getColumnModel().getColumn(5).setPreferredWidth(4);
+            tableMa.getColumnModel().getColumn(5).setMaxWidth(4);
         }
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -298,11 +322,11 @@ public class panelApus extends javax.swing.JPanel {
 
             },
             new String [] {
-                "<html><center>DESCRIPCION<br><b>A</b></center></html>", "<html><center>UNIDAD<br><b></b></center></html>", "<html><center>DISTANCIA<br><b>A</b></center></html>", "<html><center>CANTIDAD<br><b>B</b></center></html>", "<html><center>TARIFA<br><b>C</b></center></html>", "<html><center>COSTO<br><b>D=A*B* C</b></center></html>"
+                "<html><center>DESCRIPCION<br><b>A</b></center></html>", "<html><center>UNIDAD<br><b></b></center></html>", "<html><center>DISTANCIA<br><b>A</b></center></html>", "<html><center>CANTIDAD<br><b>B</b></center></html>", "<html><center>TARIFA<br><b>C</b></center></html>", "<html><center>COSTO<br><b>D=A*B* C</b></center></html>", "Id"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -322,6 +346,9 @@ public class panelApus extends javax.swing.JPanel {
             tableT.getColumnModel().getColumn(1).setMaxWidth(80);
             tableT.getColumnModel().getColumn(3).setPreferredWidth(80);
             tableT.getColumnModel().getColumn(3).setMaxWidth(80);
+            tableT.getColumnModel().getColumn(6).setMinWidth(4);
+            tableT.getColumnModel().getColumn(6).setPreferredWidth(4);
+            tableT.getColumnModel().getColumn(6).setMaxWidth(4);
         }
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -505,6 +532,11 @@ public class panelApus extends javax.swing.JPanel {
             }
         });
 
+        jTextField19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField19MouseClicked(evt);
+            }
+        });
         jTextField19.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField19KeyPressed(evt);
@@ -547,16 +579,13 @@ public class panelApus extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(173, 173, 173)
                 .addComponent(jLabel15)
-                .addGap(57, 57, 57)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jLabel16)
                 .addGap(10, 10, 10)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(240, 240, 240)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
@@ -669,6 +698,9 @@ public class panelApus extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(jLabel14))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(240, 240, 240)
+                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -851,7 +883,7 @@ public class panelApus extends javax.swing.JPanel {
             DefaultTableModel modelo = (DefaultTableModel) tableE.getModel();
             for (Equipo equipo : listFill) {
                 //Sección 2
-                Object[] fila = new Object[6];
+                Object[] fila = new Object[7];
                 //Sección 3
                 fila[0] = equipo.getDescripcion(); // descripcion
                 fila[1] = ""; // cantidad (vacio)
@@ -859,6 +891,7 @@ public class panelApus extends javax.swing.JPanel {
                 fila[3] = ""; // costo hora (vacio)
                 fila[4] = ""; // rendimiento (vacio)
                 fila[5] = ""; // costo unitario (vacio)
+                fila[6] = equipo.getId(); // ID
                 //Sección 4
                 modelo.addRow(fila);
             }
@@ -889,6 +922,16 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             setEventTableEquipo();
         }// fin keyPress
+        
+        int suprimir = evt.getKeyCode();
+        if (suprimir == 127) {
+            // 0, 2, 3, 5 columnas
+            int position = tableE.getSelectedRow();
+            int columna = tableE.getSelectedColumn();
+            if(columna == 1 || columna == 4){
+                tableE.setValueAt("", position, columna);
+            }
+        }
     }//GEN-LAST:event_tableEKeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -938,7 +981,7 @@ public class panelApus extends javax.swing.JPanel {
             DefaultTableModel modelo = (DefaultTableModel) tableM.getModel();
             for (ManoObra manoObra : listFill) {
                 //Sección 2
-                Object[] fila = new Object[6];
+                Object[] fila = new Object[7];
                 //Sección 3
                 fila[0] = manoObra.getDescripcion(); // descripcion
                 fila[1] = ""; // cantidad (vacio)
@@ -946,6 +989,7 @@ public class panelApus extends javax.swing.JPanel {
                 fila[3] = ""; // costo hora (vacio)
                 fila[4] = ""; // rendimiento (vacio)
                 fila[5] = ""; // costo unitario (vacio)
+                fila[6] = manoObra.getId(); // ID
                 //Sección 4
                 modelo.addRow(fila);
             }
@@ -981,6 +1025,7 @@ public class panelApus extends javax.swing.JPanel {
                 fila[2] = ""; // cantidad
                 fila[3] = materiales.getPrecio(); // precio unit
                 fila[4] = ""; // costo unitario (vacio)
+                fila[5] = materiales.getId(); // ID
                 //Sección 4
                 modelo.addRow(fila);
             }
@@ -1036,6 +1081,16 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             setEventTableMateriales();
         }// fin keyPress
+        
+        int suprimir = evt.getKeyCode();
+        if (suprimir == 127) {
+            // 0, 1, 3, 4 columnas
+            int position = tableMa.getSelectedRow();
+            int columna = tableMa.getSelectedColumn();
+            if(columna == 2){
+                tableMa.setValueAt("", position, columna);
+            }
+        }
     }//GEN-LAST:event_tableMaKeyPressed
 
     private void txtSubEqMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSubEqMouseClicked
@@ -1084,6 +1139,16 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             setEventTableManoObra();
         }// fin keyPress
+        
+        int suprimir = evt.getKeyCode();
+        if (suprimir == 127) {
+            // 0, 2, 3, 5 columnas
+            int position = tableM.getSelectedRow();
+            int columna = tableM.getSelectedColumn();
+            if(columna == 1 || columna == 4){
+                tableM.setValueAt("", position, columna);
+            }
+        }
     }//GEN-LAST:event_tableMKeyPressed
 
     private void tableEKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableEKeyTyped
@@ -1096,6 +1161,13 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             setEventTableTransporte();
         }// fin keyPress
+        
+        int suprimir = evt.getKeyCode();
+        if (suprimir == 127) {
+            int position = tableT.getSelectedRow();
+            int columna = tableT.getSelectedColumn();
+            tableT.setValueAt("", position, columna);
+        }
     }//GEN-LAST:event_tableTKeyPressed
 
     private void btnAddMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMActionPerformed
@@ -1142,13 +1214,14 @@ public class panelApus extends javax.swing.JPanel {
             DefaultTableModel modelo = (DefaultTableModel) tableT.getModel();
 
             //Sección 2
-            Object[] fila = new Object[5];
+            Object[] fila = new Object[6];
             //Sección 3
             fila[0] = "Transporte "; // descripcion
             fila[1] = ""; // unidad 
-            fila[2] = ""; // cantidad
-            fila[3] = ""; // tarifa
-            fila[4] = ""; // costo unitario
+            fila[2] = ""; // distancia
+            fila[3] = ""; // cantidad
+            fila[4] = ""; // tarifa
+            fila[5] = ""; // costo
             //Sección 4
             modelo.addRow(fila);
 
@@ -1191,6 +1264,28 @@ public class panelApus extends javax.swing.JPanel {
     private void jTextField20KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField20KeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField20KeyReleased
+
+    private void tableEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEMouseClicked
+        // retorno el id en jTextField7
+        int fila = tableE.rowAtPoint(evt.getPoint());
+        jTextField7.setText(tableE.getValueAt(fila, 6).toString());
+    }//GEN-LAST:event_tableEMouseClicked
+
+    private void tableMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMMouseClicked
+        // retorno el id en jTextField18
+        int fila = tableM.rowAtPoint(evt.getPoint());
+        jTextField18.setText(tableM.getValueAt(fila, 6).toString());
+    }//GEN-LAST:event_tableMMouseClicked
+
+    private void tableMaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMaMouseClicked
+        // retorno el id en jTextField18
+        int fila = tableMa.rowAtPoint(evt.getPoint());
+        jTextField19.setText(tableMa.getValueAt(fila, 5).toString());
+    }//GEN-LAST:event_tableMaMouseClicked
+
+    private void jTextField19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField19MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField19MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1409,6 +1504,23 @@ public class panelApus extends javax.swing.JPanel {
             tableMa.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
             tableT.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
+        
+        // oculto columnas de los id
+        tableE.getColumnModel().getColumn(6).setMaxWidth(0);
+        tableE.getColumnModel().getColumn(6).setMinWidth(0);
+        tableE.getColumnModel().getColumn(6).setPreferredWidth(0);
+
+        tableM.getColumnModel().getColumn(6).setMaxWidth(0);
+        tableM.getColumnModel().getColumn(6).setMinWidth(0);
+        tableM.getColumnModel().getColumn(6).setPreferredWidth(0);
+
+        tableMa.getColumnModel().getColumn(5).setMaxWidth(0);
+        tableMa.getColumnModel().getColumn(5).setMinWidth(0);
+        tableMa.getColumnModel().getColumn(5).setPreferredWidth(0);
+
+        tableT.getColumnModel().getColumn(6).setMaxWidth(0);
+        tableT.getColumnModel().getColumn(6).setMinWidth(0);
+        tableT.getColumnModel().getColumn(6).setPreferredWidth(0);
 
     }
 

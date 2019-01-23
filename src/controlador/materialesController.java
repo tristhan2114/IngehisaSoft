@@ -350,7 +350,7 @@ public class materialesController {
         return list;
     }
 
-    public List<MaterialesDto> getMaterialByDescripcionModal(String dato) {
+    public List<MaterialesDto> getMaterialByDescripcionModal(String dato, int idP) {
         con = null;
         pst = null;
         sql = "select materiales.id, proveedor.nombre as pronombre, "
@@ -358,8 +358,8 @@ public class materialesController {
                 + "from materiales "
                 + "left join clasificacion on clasificacion.id = materiales.id_clasificacion "
                 + "left join proveedor on proveedor.id = materiales.id_proveedor "
-                + "where materiales.descripcion ilike '%" + dato + "%'"
-                + "order by clasificacion.id asc";
+                + "where materiales.descripcion ilike '%" + dato + "%' and materiales.id_proveedor="+idP
+                + " order by clasificacion.id asc";
         List<MaterialesDto> list = new ArrayList<>();
         conPg = new conexion();
         try {
@@ -392,7 +392,7 @@ public class materialesController {
     public List<Materiales> getMaterialById(int id) {
         con = null;
         pst = null;
-        sql = "select descripcion, unidad, precio "
+        sql = "select id, descripcion, unidad, precio "
                 + "from materiales "
                 + "where id = " + id;
         List<Materiales> list = new ArrayList<>();
@@ -404,9 +404,10 @@ public class materialesController {
 
             while (rs.next()) {
                 datos = new Materiales();
-                datos.setDescripcion(rs.getString(1));
-                datos.setUnidad(rs.getString(2));
-                datos.setPrecio(rs.getDouble(3));
+                datos.setId(rs.getInt(1));
+                datos.setDescripcion(rs.getString(2));
+                datos.setUnidad(rs.getString(3));
+                datos.setPrecio(rs.getDouble(4));
 
                 list.add(datos);
                 item = null;

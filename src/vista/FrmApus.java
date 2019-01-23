@@ -4787,7 +4787,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                 btnForComponentsActionPerformed(evt);
             }
         });
-        jPanel1.add(btnForComponents, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 13, -1, 20));
+        jPanel1.add(btnForComponents, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 13, -1, -1));
 
         jLabel1.setText("RECUERDE PARA DECIMALES  12.34  NO 12,34");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 30, -1, -1));
@@ -4850,6 +4850,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
     private void btnForComponentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForComponentsActionPerformed
         // asigno un nombre por default
         List<FormatoApus> datos = getSquemaExport();
+        //System.out.println("ddd "+datos.toString());
         if (!datos.isEmpty()) {
             selecArchivo.setSelectedFile(new File("Apus-0001.xlsx"));
             if (selecArchivo.showDialog(null, "Exportar") == JFileChooser.APPROVE_OPTION) {
@@ -5404,8 +5405,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                 } else if (j == 2) {
                                     celda2.setCellStyle(styleDes);
                                     celda2.setCellValue(acumCodRubro);
-                                    celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
-                                    celda2.setCellStyle(styleNumeroSinBord);
+                                    //celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
+                                    celda2.setCellStyle(styleTitlIzqGene);
                                 } else if (j == 6) {
                                     celda2.setCellStyle(styleTitle);
                                     celda2.setCellValue("UNIDAD:");
@@ -5843,7 +5844,7 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(3)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellStyle(styleNumero);
-                                    }else if (h == 5) {
+                                    }else if (h == 6) {
                                         celda2.setCellValue(Double.parseDouble(dto.getTablaTransport().get(g).get(4)));
                                         celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                         celda2.setCellStyle(styleNumero);
@@ -6289,8 +6290,8 @@ public class FrmApus extends javax.swing.JInternalFrame {
                                             entFormtApus.setAnalisis(textField.getText());
                                             break;
                                         case 3:
-                                            entFormtApus.setRubro(/*textField.getText()*/String.valueOf(rubr));// contador
-                                            rubr++;
+                                            entFormtApus.setRubro(textField.getText()/*String.valueOf(rubr)*/);// contador
+                                            //rubr++;
                                             break;
                                         case 4:
                                             entFormtApus.setUnidad(textField.getText());

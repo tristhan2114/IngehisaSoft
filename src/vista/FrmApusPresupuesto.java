@@ -782,7 +782,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             // traigo valor de cantidad [3]
             String cant = table.getValueAt(position, 3).toString();
             if (!cant.equals("")) { // columna cantidad no nula
-                int cantAux = validacion.soloNumero(cant);
+                double cantAux = validacion.solomoney(cant);
                 // R:[5]  = [3] * [4]
                 double precUnit = validacion.solomoney(table.getValueAt(position, 4).toString());
                 table.setValueAt(String.valueOf(precUnit), position, 4); // pongo el valor de validaciones

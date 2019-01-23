@@ -6,10 +6,14 @@
 package vistaPanelApusDialog;
 
 import controlador.materialesController;
+import controlador.proveedorController;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import modelo.MaterialesDto;
+import modelo.Proveedor;
 import vistaPanelApus.panelApus;
 
 /**
@@ -33,6 +37,7 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
         
         setEsquemaTable();
         setTableMaterialesAll();
+        llenarCboProveedor();
     }
 
     /**
@@ -52,6 +57,7 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
         btnClosed = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -61,7 +67,7 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Descripción: ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 13, 80, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 16, 80, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -111,7 +117,7 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
                 jTextField1KeyPressed(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 10, 250, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 10, 210, -1));
 
         btnClosed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagen/cerrar.png"))); // NOI18N
         btnClosed.addActionListener(new java.awt.event.ActionListener() {
@@ -127,11 +133,14 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(456, 10, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Total");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 232, -1, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 10, 155, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 557, 256));
 
@@ -197,6 +206,7 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClosed;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -205,6 +215,18 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 
+    // llenamos el cbo de proveedor
+    private void llenarCboProveedor() {
+        // jComboBox1
+        proveedorController ctrProvee = new proveedorController();
+        List<Proveedor> proveedores = (ArrayList<Proveedor>) ctrProvee.getProveedoresAll();
+        DefaultComboBoxModel cboModel = new DefaultComboBoxModel();
+        for (Proveedor proveedor : proveedores) {
+            cboModel.addElement(proveedor);
+        }
+        jComboBox1.setModel(cboModel);
+    }
+    
      // no move columnTable y hide 
     private void setEsquemaTable() {
         // jTable1
@@ -268,7 +290,9 @@ public class dialogMateriales extends javax.swing.JInternalFrame {
         List<MaterialesDto> lista = null;
         // descripcion
         String dato = jTextField1.getText();
-            lista = ctrMaterial.getMaterialByDescripcionModal(dato);
+        // empresa id
+        Proveedor pro = (Proveedor) jComboBox1.getSelectedItem();
+            lista = ctrMaterial.getMaterialByDescripcionModal(dato, pro.getId());
        
         addRowTable(lista);
     }

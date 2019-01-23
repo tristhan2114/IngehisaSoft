@@ -609,7 +609,7 @@ public class gestionImportApusBD {
                                         DefaultTableModel modelo = (DefaultTableModel) table.getModel();
                                         for (List<String> list : tbl) {
                                             //Sección 2
-                                            Object[] fila = new Object[6];
+                                            Object[] fila = new Object[7];
                                             //Sección 3
                                             fila[0] = list.get(0);
                                             fila[1] = list.get(1);
@@ -617,6 +617,7 @@ public class gestionImportApusBD {
                                             fila[3] = list.get(3);
                                             fila[4] = list.get(4);
                                             fila[5] = list.get(5);
+                                            fila[6] = list.get(6);
                                             //Sección 4
                                             modelo.addRow(fila);
                                         }
@@ -628,7 +629,7 @@ public class gestionImportApusBD {
                                         DefaultTableModel modelo = (DefaultTableModel) table.getModel();
                                         for (List<String> list : tbl) {
                                             //Sección 2
-                                            Object[] fila = new Object[6];
+                                            Object[] fila = new Object[7];
                                             //Sección 3
                                             fila[0] = list.get(0);
                                             fila[1] = list.get(1);
@@ -636,6 +637,7 @@ public class gestionImportApusBD {
                                             fila[3] = list.get(3);
                                             fila[4] = list.get(4);
                                             fila[5] = list.get(5);
+                                            fila[6] = list.get(6);
                                             //Sección 4
                                             modelo.addRow(fila);
                                         }
@@ -667,13 +669,15 @@ public class gestionImportApusBD {
                                         DefaultTableModel modelo = (DefaultTableModel) table.getModel();
                                         for (List<String> list : tbl) {
                                             //Sección 2
-                                            Object[] fila = new Object[5];
+                                            Object[] fila = new Object[7];
                                             //Sección 3
                                             fila[0] = list.get(0);
                                             fila[1] = list.get(1);
                                             fila[2] = list.get(2);
                                             fila[3] = list.get(3);
                                             fila[4] = list.get(4);
+                                            fila[5] = list.get(5);
+                                            fila[6] = list.get(6);
                                             //Sección 4
                                             modelo.addRow(fila);
                                         }
