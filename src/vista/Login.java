@@ -214,9 +214,6 @@ public class Login extends javax.swing.JFrame {
 
             if (rs[0].equals("1")) {
                 this.dispose();
-                JOptionPane.showMessageDialog(null, "Bienvenido " + rs[2] + " " + rs[3] + "\n Has ingresado "
-                        + "satisfactoriamente al sistema", "Mensaje de bienvenida",
-                        JOptionPane.INFORMATION_MESSAGE);
 
                 // jLabel1 :: nombre y apellido
                 home home1 = new home();
@@ -232,6 +229,10 @@ public class Login extends javax.swing.JFrame {
                     home1.jMenuItem3.setEnabled(false);
                 }
                 home1.setVisible(true);
+
+                JOptionPane.showMessageDialog(null, "Bienvenido " + rs[2] + " " + rs[3] + "\n Has ingresado "
+                        + "satisfactoriamente al sistema", "Mensaje de bienvenida",
+                        JOptionPane.INFORMATION_MESSAGE);
 
             } else {
                 JOptionPane.showMessageDialog(null, "Acceso denegado:\n"

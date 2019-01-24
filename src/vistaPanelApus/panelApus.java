@@ -67,7 +67,7 @@ public class panelApus extends javax.swing.JPanel {
     public panelApus() {
         validacion = new validaciones();
         initComponents();
-        
+
         jTextField20.setVisible(false);
         setTablesNoMoveHeader(); // 
         setNoEditableTextField(); //
@@ -876,33 +876,25 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             // aqui la consulta txtFiltro ::::: jTextField7
             String fill = jTextField7.getText().trim();
-            int id = validacion.soloNumero(fill);
-            List<Equipo> listFill = ctrEquip.getEquipoByID(id);
+            // validar id column [6]
+            if (tableE.getRowCount() == 0) {
+                setAddTableEquipoBD(fill);
+            } else {
+                String band = "false";
 
-            //Sección 1 
-            DefaultTableModel modelo = (DefaultTableModel) tableE.getModel();
-            for (Equipo equipo : listFill) {
-                //Sección 2
-                Object[] fila = new Object[7];
-                //Sección 3
-                fila[0] = equipo.getDescripcion(); // descripcion
-                fila[1] = ""; // cantidad (vacio)
-                fila[2] = equipo.getHora(); // hora
-                fila[3] = ""; // costo hora (vacio)
-                fila[4] = ""; // rendimiento (vacio)
-                fila[5] = ""; // costo unitario (vacio)
-                fila[6] = equipo.getId(); // ID
-                //Sección 4
-                modelo.addRow(fila);
+                for (int i = 0; i < tableE.getRowCount(); ++i) {
+                    String colunmID = tableE.getValueAt(i, 6).toString();
+                    if (colunmID.equals(fill)) {
+                        band = "true";
+                        break;
+                    }
+                }
+
+                if (band.equals("false")) {
+                    setAddTableEquipoBD(fill);
+                }
             }
 
-            // mensaje de error
-            if (listFill.isEmpty()) {
-                jTextField7.setText("No Ítem " + id);
-            }
-
-            //Sección 5
-            tableE.setModel(modelo);
         }
     }//GEN-LAST:event_jTextField7KeyPressed
 
@@ -922,13 +914,13 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             setEventTableEquipo();
         }// fin keyPress
-        
+
         int suprimir = evt.getKeyCode();
         if (suprimir == 127) {
             // 0, 2, 3, 5 columnas
             int position = tableE.getSelectedRow();
             int columna = tableE.getSelectedColumn();
-            if(columna == 1 || columna == 4){
+            if (columna == 1 || columna == 4) {
                 tableE.setValueAt("", position, columna);
             }
         }
@@ -974,33 +966,24 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             // aqui la consulta  txtCodManoObra ::: jTextField18
             String fill = jTextField18.getText().trim();
-            int id = validacion.soloNumero(fill);
-            List<ManoObra> listFill = ctrManObra.getManoObraByID(id);
+            // validar id column [6]
+            if (tableE.getRowCount() == 0) {
+                setAddTableManObraBD(fill);
+            } else {
+                String band = "false";
 
-            //Sección 1 
-            DefaultTableModel modelo = (DefaultTableModel) tableM.getModel();
-            for (ManoObra manoObra : listFill) {
-                //Sección 2
-                Object[] fila = new Object[7];
-                //Sección 3
-                fila[0] = manoObra.getDescripcion(); // descripcion
-                fila[1] = ""; // cantidad (vacio)
-                fila[2] = manoObra.getHora(); // tarifa
-                fila[3] = ""; // costo hora (vacio)
-                fila[4] = ""; // rendimiento (vacio)
-                fila[5] = ""; // costo unitario (vacio)
-                fila[6] = manoObra.getId(); // ID
-                //Sección 4
-                modelo.addRow(fila);
+                for (int i = 0; i < tableM.getRowCount(); ++i) {
+                    String colunmID = tableM.getValueAt(i, 6).toString();
+                    if (colunmID.equals(fill)) {
+                        band = "true";
+                        break;
+                    }
+                }
+
+                if (band.equals("false")) {
+                    setAddTableManObraBD(fill);
+                }
             }
-
-            // mensaje de error
-            if (listFill.isEmpty()) {
-                jTextField18.setText("No Ítem " + id);
-            }
-
-            //Sección 5
-            tableM.setModel(modelo);
         }
     }//GEN-LAST:event_jTextField18KeyPressed
 
@@ -1010,33 +993,24 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             // aqui la consulta getMaterialById
             String fill = jTextField19.getText().trim();
-            int id = validacion.soloNumero(fill);
-            List<Materiales> listFill = ctrMaterial.getMaterialById(id);
+            // validar id column [5]
+            if (tableE.getRowCount() == 0) {
+                setAddTableMaterialesBD(fill);
+            } else {
+                String band = "false";
 
-            //Sección 1 
-            DefaultTableModel modelo = (DefaultTableModel) tableMa.getModel();
+                for (int i = 0; i < tableMa.getRowCount(); ++i) {
+                    String colunmID = tableMa.getValueAt(i, 5).toString();
+                    if (colunmID.equals(fill)) {
+                        band = "true";
+                        break;
+                    }
+                }
 
-            for (Materiales materiales : listFill) {
-                //Sección 2
-                Object[] fila = new Object[6];
-                //Sección 3
-                fila[0] = materiales.getDescripcion(); // descripcion
-                fila[1] = materiales.getUnidad(); // unidad 
-                fila[2] = ""; // cantidad
-                fila[3] = materiales.getPrecio(); // precio unit
-                fila[4] = ""; // costo unitario (vacio)
-                fila[5] = materiales.getId(); // ID
-                //Sección 4
-                modelo.addRow(fila);
+                if (band.equals("false")) {
+                    setAddTableMaterialesBD(fill);
+                }
             }
-
-            // mensaje de error
-            if (listFill.isEmpty()) {
-                jTextField19.setText("No Ítem " + id);
-            }
-
-            //Sección 5
-            tableMa.setModel(modelo);
         }
     }//GEN-LAST:event_jTextField19KeyPressed
 
@@ -1081,13 +1055,13 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             setEventTableMateriales();
         }// fin keyPress
-        
+
         int suprimir = evt.getKeyCode();
         if (suprimir == 127) {
             // 0, 1, 3, 4 columnas
             int position = tableMa.getSelectedRow();
             int columna = tableMa.getSelectedColumn();
-            if(columna == 2){
+            if (columna == 2) {
                 tableMa.setValueAt("", position, columna);
             }
         }
@@ -1139,13 +1113,13 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             setEventTableManoObra();
         }// fin keyPress
-        
+
         int suprimir = evt.getKeyCode();
         if (suprimir == 127) {
             // 0, 2, 3, 5 columnas
             int position = tableM.getSelectedRow();
             int columna = tableM.getSelectedColumn();
-            if(columna == 1 || columna == 4){
+            if (columna == 1 || columna == 4) {
                 tableM.setValueAt("", position, columna);
             }
         }
@@ -1161,7 +1135,7 @@ public class panelApus extends javax.swing.JPanel {
         if (kpress == KeyEvent.VK_ENTER) {
             setEventTableTransporte();
         }// fin keyPress
-        
+
         int suprimir = evt.getKeyCode();
         if (suprimir == 127) {
             int position = tableT.getSelectedRow();
@@ -1504,7 +1478,7 @@ public class panelApus extends javax.swing.JPanel {
             tableMa.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
             tableT.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
-        
+
         // oculto columnas de los id
         tableE.getColumnModel().getColumn(6).setMaxWidth(0);
         tableE.getColumnModel().getColumn(6).setMinWidth(0);
@@ -1809,6 +1783,96 @@ public class panelApus extends javax.swing.JPanel {
             String aux1 = aux.replace(',', '.');
             return Double.parseDouble(aux1);
         }
+    }
+
+    private void setAddTableEquipoBD(String fill) {
+        int id = validacion.soloNumero(fill);
+        List<Equipo> listFill = ctrEquip.getEquipoByID(id);
+
+        //Sección 1 
+        DefaultTableModel modelo = (DefaultTableModel) tableE.getModel();
+        for (Equipo equipo : listFill) {
+            //Sección 2
+            Object[] fila = new Object[7];
+            //Sección 3
+            fila[0] = equipo.getDescripcion(); // descripcion
+            fila[1] = ""; // cantidad (vacio)
+            fila[2] = equipo.getHora(); // hora
+            fila[3] = ""; // costo hora (vacio)
+            fila[4] = ""; // rendimiento (vacio)
+            fila[5] = ""; // costo unitario (vacio)
+            fila[6] = equipo.getId(); // ID
+            //Sección 4
+            modelo.addRow(fila);
+        }
+
+        // mensaje de error
+        if (listFill.isEmpty()) {
+            jTextField7.setText("No Ítem " + id);
+        }
+
+        //Sección 5
+        tableE.setModel(modelo);
+    }
+
+    private void setAddTableManObraBD(String fill) {
+        int id = validacion.soloNumero(fill);
+        List<ManoObra> listFill = ctrManObra.getManoObraByID(id);
+
+        //Sección 1 
+        DefaultTableModel modelo = (DefaultTableModel) tableM.getModel();
+        for (ManoObra manoObra : listFill) {
+            //Sección 2
+            Object[] fila = new Object[7];
+            //Sección 3
+            fila[0] = manoObra.getDescripcion(); // descripcion
+            fila[1] = ""; // cantidad (vacio)
+            fila[2] = manoObra.getHora(); // tarifa
+            fila[3] = ""; // costo hora (vacio)
+            fila[4] = ""; // rendimiento (vacio)
+            fila[5] = ""; // costo unitario (vacio)
+            fila[6] = manoObra.getId(); // ID
+            //Sección 4
+            modelo.addRow(fila);
+        }
+
+        // mensaje de error
+        if (listFill.isEmpty()) {
+            jTextField18.setText("No Ítem " + id);
+        }
+
+        //Sección 5
+        tableM.setModel(modelo);
+    }
+
+    private void setAddTableMaterialesBD(String fill) {
+        int id = validacion.soloNumero(fill);
+        List<Materiales> listFill = ctrMaterial.getMaterialById(id);
+
+        //Sección 1 
+        DefaultTableModel modelo = (DefaultTableModel) tableMa.getModel();
+
+        for (Materiales materiales : listFill) {
+            //Sección 2
+            Object[] fila = new Object[6];
+            //Sección 3
+            fila[0] = materiales.getDescripcion(); // descripcion
+            fila[1] = materiales.getUnidad(); // unidad 
+            fila[2] = ""; // cantidad
+            fila[3] = materiales.getPrecio(); // precio unit
+            fila[4] = ""; // costo unitario (vacio)
+            fila[5] = materiales.getId(); // ID
+            //Sección 4
+            modelo.addRow(fila);
+        }
+
+        // mensaje de error
+        if (listFill.isEmpty()) {
+            jTextField19.setText("No Ítem " + id);
+        }
+
+        //Sección 5
+        tableMa.setModel(modelo);
     }
 
 }

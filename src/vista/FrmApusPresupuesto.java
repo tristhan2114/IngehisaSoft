@@ -1045,7 +1045,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         CellStyle styleTitle = wb.createCellStyle();
         Font headerTitle = wb.createFont();
         headerTitle.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        headerTitle.setFontHeightInPoints((short) 14);
+        headerTitle.setFontHeightInPoints((short) 13);
         styleTitle.setAlignment(CellStyle.ALIGN_CENTER);
         styleTitle.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
         styleTitle.setFont(headerTitle);
@@ -1077,7 +1077,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             final Picture pict = drawing.createPicture(anchor, pictureIndex);
             pict.resize(2);
 
-            int sizePresupuesto = 14 + datos.getListTbl().size() + datos.getNota().size();
+            int sizePresupuesto = 14 + datos.getListTbl().size() + datos.getNota().size() + 5;
 
             int acumPosition = 0;
             boolean bandera1 = false;
@@ -1129,11 +1129,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                         }
                     }
                 }
-                
+
                 if (re == 4) {
                     for (int j = 1; j < 12; j++) {
                         Cell celda2 = fila.createCell(j);
-                        celda2.setCellStyle(styleTitle);
+                        //celda2.setCellStyle(styleTitle);
                         if (j == 1) {
                             celda2.setCellValue("Sr.");
                         }
@@ -1148,7 +1148,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                     for (int j = 1; j < 12; j++) {
                         Cell celda2 = fila.createCell(j);
                         if (j == 1) {
-                            hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
+                            //hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
                             celda2.setCellValue(datos.getOferta());
                         }
                         if (j == 9) {
@@ -1328,7 +1328,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                                 celda2.setCellStyle(styleTitlDerGene);
                                 celda2.setCellValue(Double.parseDouble(datos.getSubtotalIva()));*/
                                 //porc = porc / 100;
-                                String strFormula = "SUM(L" + (re ) + "*" +porc + "%)";
+                                String strFormula = "SUM(L" + (re) + "*" + porc + "%)";
                                 celda2.setCellType(Cell.CELL_TYPE_FORMULA);
                                 celda2.setCellFormula(strFormula);
                                 celda2.setCellStyle(styleNumero);
@@ -1360,8 +1360,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                                 /*celda2.setCellType(Cell.CELL_TYPE_NUMERIC);
                                 celda2.setCellStyle(styleTitlDerGene);
                                 celda2.setCellValue(Double.parseDouble(datos.getTotal()));*/
-                                
-                                String strFormula = "SUM(L" + (re -1 ) +":L"+(re)+")";
+
+                                String strFormula = "SUM(L" + (re - 1) + ":L" + (re) + ")";
                                 celda2.setCellType(Cell.CELL_TYPE_FORMULA);
                                 celda2.setCellFormula(strFormula);
                                 celda2.setCellStyle(styleNumero);
@@ -1408,8 +1408,68 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                         acumPosition++;
                     }
                     bandera5 = false;
-                    //bandera3 = true;
+                    bandera6 = true;
                 }
+
+                // footer
+                /*
+                if (bandera6 == true) {
+                    if (re == acumPosition) {
+                        System.out.println("re ini " + re);
+                        /// examinar
+                        int sizePresuRes = 2;
+                        for (int size = 0; size < sizePresuRes; ++size) {
+                            fila = hoja.createRow(re);
+                            Cell celda2 = fila.createCell(0);
+                            celda2.setCellValue("");
+                            re++;
+                        }
+
+                        System.out.println("re desc for " + re);
+                        // datos
+                        sizePresuRes = 2;
+                        for (int size = 0; size < sizePresuRes; ++size) {
+                            fila = hoja.createRow(re);
+
+                            if (size == 0) {
+                                CellStyle styleFirma = wb.createCellStyle();
+                                styleFirma.setBorderTop(CellStyle.BORDER_THIN);
+                                styleFirma.setAlignment(CellStyle.ALIGN_LEFT);
+                                styleFirma.setFont(fontNeg);
+                                for (int j = 1; j < 12; j++) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(styleFirma);
+                                    if (j == 2) {
+                                        hoja.addMergedRegion(new CellRangeAddress(re, re, 2, 3));
+                                        celda2.setCellValue("Ing. Justo Moran P");
+                                    }
+
+                                    if (j == 3 || j == 4 || j == 5) {
+                                        celda2.setCellValue("");
+                                    }
+
+                                }
+                            }
+
+                            if (size == 1) {
+                                fila = hoja.createRow(re);
+                                for (int j = 1; j < 12; j++) {
+                                    Cell celda2 = fila.createCell(j);
+                                    celda2.setCellStyle(styleTitlIzqGene);
+                                    if (j == 2) {
+                                        hoja.addMergedRegion(new CellRangeAddress(re, re, 2, 3));
+                                        celda2.setCellValue("Gerente General");
+                                    }
+                                    if (j == 3 || j == 4 || j == 5) {
+                                        celda2.setCellValue("");
+                                    }
+                                }
+                            }
+                            re++;
+                        }
+                    }
+                    bandera6 = false;
+                }*/
 
             } // FIN FOR
             wb.write(new FileOutputStream(archivo));
@@ -1441,7 +1501,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             dtos.setEmpresa(jTextField1.getText());
             dtos.setProyecto(jTextField2.getText());
             dtos.setOferta(jTextField4.getText());
-            
+
             dtos.setId_usuario(Integer.parseInt(home.jLabel2.getText()));
 
             // lo id_apus & id_manual
@@ -1485,7 +1545,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         int sizeTblBody = table.getRowCount();
         int sizeTblNot = jTable1.getRowCount();
         clearCompImport(sizeTblBody, sizeTblNot);
-        
+
         String id_user = home.jLabel2.getText();
         List<Presupuesto> aux = ctrPres.getPresupuestoByID(txt, id_user);
         addImportDtos(aux);
@@ -1506,6 +1566,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             jTextField1.setText(dto.getCampo1());
             jTextField2.setText(dto.getCampo2());
             jTextField3.setText(dto.getCampo3());
+            
+            jTextField13.setText(dto.getCampo4());
 
             jTextField4.setText(dto.getOferta());
             jTextField5.setText(dto.getFecha());
@@ -1582,7 +1644,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         //System.out.println("dto " + valor);
         String id_user = home.jLabel2.getText();
         if (valor == 0) {
-            
+
             List<Presupuesto> aux = ctrPres.getPresupuestoByApusID(txt, id_user);
             addImportDtos(aux);
             jTextField4.setEditable(false);

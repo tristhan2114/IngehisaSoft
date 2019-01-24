@@ -1116,6 +1116,14 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         data.add("13"); // semanas
         aux.add(data);
         data = null;
+        
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("TECNICO"); // personal
+        data.add("600"); // costo semanal
+        data.add("13"); // semanas
+        aux.add(data);
+        data = null;
 
         data = new ArrayList<>();
         data.add("1"); // cantidad
@@ -1170,6 +1178,14 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         data.add("13"); // semanas
         aux.add(data);
         data = null;
+        
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("OBRERO"); // personal
+        data.add("450"); // costo semanal
+        data.add("4"); // semanas
+        aux.add(data);
+        data = null;
 
         data = new ArrayList<>();
         data.add("1"); // cantidad
@@ -1206,6 +1222,14 @@ public class FrmIndirectos extends javax.swing.JInternalFrame {
         data.add("VIATICOS"); // personal
         data.add("9"); // costo semanal
         data.add("13"); // semanas
+        aux.add(data);
+        data = null;
+        
+        data = new ArrayList<>();
+        data.add("1"); // cantidad
+        data.add("LIQUIDACION"); // personal
+        data.add("450"); // costo semanal
+        data.add("4"); // semanas
         aux.add(data);
         data = null;
 
