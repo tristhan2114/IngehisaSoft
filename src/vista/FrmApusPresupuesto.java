@@ -433,6 +433,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         // table Calculo keyPress tabla Resumen
         kpress = evt.getKeyChar();
         if (kpress == KeyEvent.VK_ENTER) {
+            calTableSubTot();
             //setEventTableResumenPresupuesto();
 
             /*int position = table.getSelectedRow();
@@ -1141,6 +1142,9 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                             hoja.addMergedRegion(new CellRangeAddress(re, re, 2, 5));
                             celda2.setCellValue(datos.getCampo4());
                         }
+                        if (j == 3 || j == 4 || j == 5 || j == 6) {
+                            celda2.setCellValue("");
+                        }
                     }
                 }
 
@@ -1646,6 +1650,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         if (valor == 0) {
 
             List<Presupuesto> aux = ctrPres.getPresupuestoByApusID(txt, id_user);
+            System.out.println("aux if "+aux.toString());
             addImportDtos(aux);
             jTextField4.setEditable(false);
             //jTextField11.setEditable(false); // id apus
@@ -1654,6 +1659,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             String ofrt = "OFERTA: INGEHISA 00" + txt + " - REV 00" + (valor + 1);
 
             List<Presupuesto> aux = ctrPres.getPresupuestoByID_Apus(txt, id_user);
+            //System.out.println("aux else "+aux.toString());
             addImportDtos(aux);
 
             jTextField4.setText(ofrt);

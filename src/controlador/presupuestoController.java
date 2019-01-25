@@ -44,8 +44,8 @@ public class presupuestoController {
         int resultado = 0;
         con = null;
         pst = null;
-        sql = "INSERT INTO presupuesto (empresa, proyecto, oferta, datopresupuesto, id_apus, id_manual) "
-                + "values (?,?,?,?,?,?)";
+        sql = "INSERT INTO presupuesto (empresa, proyecto, oferta, datopresupuesto, id_apus, id_manual, id_usuario) "
+                + "values (?,?,?,?,?,?,?)";
         conPg = new conexion();
         try {
             con = conPg.conn();
