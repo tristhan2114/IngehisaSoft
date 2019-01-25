@@ -771,7 +771,7 @@ public class FrmMateriales extends javax.swing.JInternalFrame {
 
                 //System.out.println("dto " + datos.toString());
                 if (ctrMaterial.actualizar(datos)) {
-                    JOptionPane.showConfirmDialog(this, "Material grabado con exito", "Confirmación", 2);
+                    JOptionPane.showConfirmDialog(this, "Material editado con exito", "Confirmación", 2);
                     if (insertImgUpdate = true) {
                         copyImagenInsert(name, rutaImagenSelect);
                         setTableMaterialesAll();

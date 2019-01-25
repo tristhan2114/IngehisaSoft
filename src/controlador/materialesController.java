@@ -36,7 +36,7 @@ public class materialesController {
         con = null;
         pst = null;
         sql = "INSERT INTO materiales (id_clasificacion, id_proveedor, descripcion, unidad, "
-                + "precio, url_imagen ) values (?,?,?,?,?)";
+                + "precio, url_imagen ) values (?,?,?,?,?,?)";
         conPg = new conexion();
         try {
             con = conPg.conn();
@@ -55,6 +55,7 @@ public class materialesController {
             conPg = null;
             return true;
         } catch (Exception e) {
+            System.out.println("cc "+e.getMessage());
             e.getMessage();
             return false;
         }
