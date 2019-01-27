@@ -56,6 +56,7 @@ public class presupuestoController {
             pst.setString(4, datos.getDatosPrespuesto());
             pst.setInt(5, datos.getId_apus());
             pst.setInt(6, datos.getId_manual());
+            pst.setInt(7, datos.getId_usuario());
 
             pst.execute();
 

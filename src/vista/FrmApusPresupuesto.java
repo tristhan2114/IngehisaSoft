@@ -163,20 +163,28 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         jTextField5.setText("Guayaquil, ");
         getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(537, 115, 242, -1));
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jTextField6.setText("0.0");
+        jPanel1.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 11, 120, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel1.setText("SUBTOTAL");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(654, 13, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel2.setText("IVA");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(658, 40, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel3.setText("TOTAL");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 66, -1, -1));
 
         jTextField7.setText("0.0");
+        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 36, 120, -1));
 
         jTextField8.setText("0.0");
+        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 62, 120, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -201,6 +209,8 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(0).setMaxWidth(456);
         }
 
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 8, 462, 94));
+
         jTextField9.setText("0");
         jTextField9.setPreferredSize(new java.awt.Dimension(21, 20));
         jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -208,6 +218,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jTextField9KeyPressed(evt);
             }
         });
+        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(682, 36, 28, 24));
 
         jButton6.setText("+");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -215,6 +226,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jButton6ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 8, -1, -1));
 
         jButton7.setText("--");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -222,65 +234,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 jButton7ActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(jButton6)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(5, 5, 5)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton7))))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 42, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 379, 850, -1));
 
@@ -1060,6 +1014,11 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         styleNumero.setDataFormat(wb.createDataFormat().getFormat("0.00"));
         styleNumero.setFont(fontGene);
 
+        CellStyle styleFirma = wb.createCellStyle();
+        styleFirma.setBorderTop(CellStyle.BORDER_THIN);
+        styleFirma.setAlignment(CellStyle.ALIGN_LEFT);
+        styleFirma.setFont(fontNeg);
+
         try {
             // inicio de insertar imagen
             // read the image to the stream
@@ -1152,7 +1111,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                     for (int j = 1; j < 12; j++) {
                         Cell celda2 = fila.createCell(j);
                         if (j == 1) {
-                            //hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 2));
+                            hoja.addMergedRegion(new CellRangeAddress(re, re, 1, 4));
                             celda2.setCellValue(datos.getOferta());
                         }
                         if (j == 9) {
@@ -1416,56 +1375,43 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                 }
 
                 // footer
-                /*
                 if (bandera6 == true) {
+                    acumPosition = re;
                     if (re == acumPosition) {
-                        System.out.println("re ini " + re);
+                        //System.out.println("re ini " + re);
                         /// examinar
                         int sizePresuRes = 2;
                         for (int size = 0; size < sizePresuRes; ++size) {
                             fila = hoja.createRow(re);
-                            Cell celda2 = fila.createCell(0);
-                            celda2.setCellValue("");
+                            //Cell celda2 = fila.createCell(0);
+                            //celda2.setCellValue("");
                             re++;
                         }
 
-                        System.out.println("re desc for " + re);
+                        //System.out.println("re desc for " + re);
                         // datos
                         sizePresuRes = 2;
                         for (int size = 0; size < sizePresuRes; ++size) {
                             fila = hoja.createRow(re);
-
                             if (size == 0) {
-                                CellStyle styleFirma = wb.createCellStyle();
-                                styleFirma.setBorderTop(CellStyle.BORDER_THIN);
-                                styleFirma.setAlignment(CellStyle.ALIGN_LEFT);
-                                styleFirma.setFont(fontNeg);
-                                for (int j = 1; j < 12; j++) {
+                                for (int j = 2; j < 4; j++) {
                                     Cell celda2 = fila.createCell(j);
                                     celda2.setCellStyle(styleFirma);
                                     if (j == 2) {
                                         hoja.addMergedRegion(new CellRangeAddress(re, re, 2, 3));
                                         celda2.setCellValue("Ing. Justo Moran P");
                                     }
-
-                                    if (j == 3 || j == 4 || j == 5) {
-                                        celda2.setCellValue("");
-                                    }
-
                                 }
+                                re++;
                             }
 
                             if (size == 1) {
                                 fila = hoja.createRow(re);
-                                for (int j = 1; j < 12; j++) {
+                                for (int j = 2; j < 4; j++) {
                                     Cell celda2 = fila.createCell(j);
-                                    celda2.setCellStyle(styleTitlIzqGene);
                                     if (j == 2) {
                                         hoja.addMergedRegion(new CellRangeAddress(re, re, 2, 3));
                                         celda2.setCellValue("Gerente General");
-                                    }
-                                    if (j == 3 || j == 4 || j == 5) {
-                                        celda2.setCellValue("");
                                     }
                                 }
                             }
@@ -1473,7 +1419,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
                         }
                     }
                     bandera6 = false;
-                }*/
+                }
 
             } // FIN FOR
             wb.write(new FileOutputStream(archivo));
@@ -1570,7 +1516,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
             jTextField1.setText(dto.getCampo1());
             jTextField2.setText(dto.getCampo2());
             jTextField3.setText(dto.getCampo3());
-            
+
             jTextField13.setText(dto.getCampo4());
 
             jTextField4.setText(dto.getOferta());
@@ -1650,7 +1596,7 @@ public class FrmApusPresupuesto extends javax.swing.JInternalFrame {
         if (valor == 0) {
 
             List<Presupuesto> aux = ctrPres.getPresupuestoByApusID(txt, id_user);
-            System.out.println("aux if "+aux.toString());
+            System.out.println("aux if " + aux.toString());
             addImportDtos(aux);
             jTextField4.setEditable(false);
             //jTextField11.setEditable(false); // id apus
